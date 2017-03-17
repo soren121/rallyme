@@ -1,0 +1,13 @@
+# This config file ensures consistency between editors
+# http://editorconfig.org/
+
+root = true
+
+[*]
+charset = utf-8
+insert_final_newline = true
+indent_size = 4
+indent_style = space
+
+[Makefile]
+indent_style = tab
