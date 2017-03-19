@@ -20,7 +20,7 @@ import java.sql.SQLException;
 // Please rename when this is something useful
 
 @WebServlet(name="Servlet", urlPatterns={"/Servlet"})
-public class ImdbResults extends HttpServlet {
+public class TempServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private Connection conn = null;
     private Configuration cfg;

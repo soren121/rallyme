@@ -19,7 +19,8 @@ it works:
  * Instead, you'll need to create your own branch to work on. You can do this 
    by running `git checkout -b <new branch name>` in a terminal.
 
- * You can (and should) commit & push your changes in your branch often.
+ * You can (and should) commit & push your changes in your branch often, and 
+   always remember to pull new changes before making changes.
 
  * When your feature is ready to be merged into the master branch, you'll need 
    to create a pull request in GitHub. Here's how to do that:
@@ -36,9 +37,9 @@ it works:
 
 ## Configuring the dev environment
 
-To build RallyMe, you'll need [Apache Maven](https://maven.apache.org/) and a 
-Java application server like [WildFly](http://wildfly.org/) or 
-[Apache Tomcat](https://tomcat.apache.org/).
+To build RallyMe, you'll need to install [Apache Maven](https://maven.apache.org/) 
+and a Java application server like [Apache Tomcat](https://tomcat.apache.org/) or 
+[WildFly](http://wildfly.org/).
 
 Please read the [Maven install guide](https://maven.apache.org/install.html)! 
 Otherwise, the commands below may not work.
