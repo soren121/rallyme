@@ -1,10 +1,14 @@
+html, body, #google-map {
+    width: 100%;
+    height: 100%;
+}
+
 header {
     background: #333;
-    position: fixed;
-    top: 0;
     padding: 15px;
     color: #fff;
-    width: calc(100% - 15px);
+    width: calc(100% - 30px);
+    height: 50px;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-around;
@@ -13,7 +17,8 @@ header {
 }
 
 #logo {
-    width: 12%;
+    width: 215px;
+    z-index: 10;
 }
 
 #location-search {
@@ -21,11 +26,21 @@ header {
     padding: 0 30px;
 }
 
-#location-search input[type="text"] {
-    height: 35px;
+#location-search input, #organizer-login {
+    font-size: 1.25em;
+    line-height: 1.4em;
 }
 
-#google-map {
-    width: 100%;
-    height: 100%;
+#location-search input[type="text"] {
+    width: calc(100% - 8px);
+    padding-right: 8px;
+    color: #333;
+}
+
+#organizer-login {
+    margin-right: 30px;
+}
+
+main {
+    height: calc(100% - 80px);
 }
