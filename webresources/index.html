@@ -2,8 +2,30 @@
 <html>
 <head>
     <title>RallyMe</title>
+    <link rel="stylesheet" type="text/css" href="css/pure-min.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
 </head>
 <body>
-    
+    <header>
+        <img id="logo" src="images/logo.svg" alt="RallyMe" />
+
+        <form id="location-search" class="pure-form pure-g" action="" method="POST">
+            <div class="pure-u-7-8">
+                <input type="text" name="search-text" placeholder="Enter your location..." />
+            </div>
+            <div class="pure-u-1-8">
+                <input type="submit" name="search-submit" class="pure-button" value="Search" />
+            </div>
+        </form>
+
+        <a id="organizer-login" class="pure-button pure-button-primary" href="Login">Organizer login</a>
+    </header>
+
+    <main>
+        <div id="google-map"></div>
+    </main>
+
+    <script type="text/javascript" async defer src="js/google-map.js"></script>
+    <script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&callback=initMap"></script>
 </body>
 </html>
