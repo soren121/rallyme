@@ -59,6 +59,9 @@ Run this command in the terminal:
 The resulting WAR file will be in the *target* folder, with the filename
 "RallyMe-x.y.z-SNAPSHOT.jar".
 
+To deploy this on WildFly, copy the folder to WildFly's standalone/deployments 
+folder.
+
 ### Building an exploded WAR
 
 Exploded WAR folders are helpful for development, since you don't have to wait 
@@ -71,3 +74,6 @@ To build an exploded WAR, run this in the terminal:
 
 The exploded WAR folder will be in the *target* folder, with the name 
 "RallyMe-x.y.z-SNAPSHOT".
+
+To deploy this on WildFly, copy the folder to WildFly's standalone/deployments 
+folder.
