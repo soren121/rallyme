@@ -9,9 +9,14 @@
     <header>
         <img id="logo" src="images/logo.svg" alt="RallyMe" />
     </header>
-
-    <main>
-        Body content
-    </main>
+	 <main>
+  <form action="Login" method="post">      
+  Username: <input type="text" name="username"> 
+  Password: <input type="password"  name ="password"> 
+  <input type="submit" value="Submit"><br>
+ 
+  </form>
+  
+ </main>
 </body>
 </html>
