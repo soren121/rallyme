@@ -73,23 +73,21 @@ public class Login extends HttpServlet {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String passwordHashExisting;
-        String salt;
+        String passwordHashExisting = null;
 
         try {
             stmt = conn.createStatement();
             stmt.closeOnCompletion();
             rs = stmt.executeQuery("SELECT salt, password FROM users WHERE username = ? LIMIT 1");
+        
+            if(rs.next()) {
+                passwordHashExisting = rs.getString("password");
+            } else {
+                printError(response.getWriter(), "Your username or password is incorrect.");
+                return;
+            }
         } catch (SQLException ex) {
             printError(response.getWriter(), "SQL exception: " + ex.getMessage());
-            return;
-        }
-
-        if(rs.next()) {
-            passwordHashExisting = rs.getString("password");
-            salt = rs.getString("salt");
-        } else {
-            printError(response.getWriter(), "Your username or password is incorrect.");
             return;
         }
 
