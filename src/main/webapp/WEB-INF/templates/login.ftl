@@ -15,8 +15,8 @@
 
             <form class="pure-form pure-form-stacked" action="Login" method="post">
                 <fieldset>
-                    <input class="pure-input-1" id="username" type="text" name="username" placeholder="Username" /> 
-                    <input class="pure-input-1" id="password" type="password" name="password" placeholder="Password" /> 
+                    <input class="pure-input-1" id="username" type="text" name="username" placeholder="Username" required /> 
+                    <input class="pure-input-1" id="password" type="password" name="password" placeholder="Password" required /> 
 
                     <input class="pure-input-1 pure-button pure-button-primary" type="submit" value="Submit" />
                 </fieldset>
