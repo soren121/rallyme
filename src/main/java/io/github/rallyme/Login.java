@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 @WebServlet(name="Login", urlPatterns={"/Login"})
@@ -40,8 +40,10 @@ public class Login extends HttpServlet {
         // Driver must be registered manually when loaded from WEB-INF/lib
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/rallyme", "rallyme", "admin");
-        } catch(SQLException ex) { }
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/rallyme?serverTimezone=UTC", "rallyme", "admin");
+        } catch(SQLException ex) {
+            throw new RuntimeException(ex);
+         }
     }
 
     public void printError(PrintWriter outStream, String errorStr) throws IOException {
@@ -68,7 +70,7 @@ public class Login extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> root = new HashMap<>();
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         ResultSet rs = null;
 
         String username = request.getParameter("username");
@@ -76,17 +78,17 @@ public class Login extends HttpServlet {
         String passwordHashExisting = null;
 
         try {
-            stmt = conn.createStatement();
-            stmt.closeOnCompletion();
-            rs = stmt.executeQuery("SELECT salt, password FROM users WHERE username = ? LIMIT 1");
-        
+            stmt = conn.prepareStatement("SELECT password FROM users WHERE username = ? LIMIT 1");
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+
             if(rs.next()) {
                 passwordHashExisting = rs.getString("password");
             } else {
                 printError(response.getWriter(), "Your username or password is incorrect.");
                 return;
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             printError(response.getWriter(), "SQL exception: " + ex.getMessage());
             return;
         }
