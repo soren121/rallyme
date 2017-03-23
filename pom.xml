@@ -48,10 +48,22 @@
           </webResources>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+        <version>1.2.0.Alpha4</version>
+        <configuration>
+          <name>${deployment.name}</name>
+          <runtimeName>${deployment.name}</runtimeName>
+          <username>rallyme</username>
+          <password>rallyme</password>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <deployment.name>${project.artifactId}.${project.packaging}</deployment.name>
   </properties>
 </project>
