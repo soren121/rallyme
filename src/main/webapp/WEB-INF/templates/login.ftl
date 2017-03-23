@@ -6,17 +6,22 @@
     <link rel="stylesheet" type="text/css" href="css/login.css" />
 </head>
 <body>
-    <header>
-        <img id="logo" src="images/logo.svg" alt="RallyMe" />
-    </header>
-	 <main>
-  <form action="Login" method="post">      
-  Username: <input type="text" name="username"> 
-  Password: <input type="password"  name ="password"> 
-  <input type="submit" value="Submit"><br>
- 
-  </form>
-  
- </main>
+	<div id="flex">
+        <main>
+            <section>
+                <img id="logo" src="images/logo.svg" alt="RallyMe" />
+                <h2>Organizer Login</h2>
+            </section>
+
+            <form class="pure-form pure-form-stacked" action="Login" method="post">
+                <fieldset>
+                    <input class="pure-input-1" id="username" type="text" name="username" placeholder="Username" /> 
+                    <input class="pure-input-1" id="password" type="password" name="password" placeholder="Password" /> 
+
+                    <input class="pure-input-1 pure-button pure-button-primary" type="submit" value="Submit" />
+                </fieldset>
+            </form>
+        </main>
+    </div>
 </body>
 </html>
