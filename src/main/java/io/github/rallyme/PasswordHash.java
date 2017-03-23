@@ -44,7 +44,7 @@ public class PasswordHash {
     public static String hashPassword(char[] password) {
         // Generate a random salt
         SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[SALT_BYTES];
+        byte[] salt = new byte[SALT_LEN];
         random.nextBytes(salt);
 
         // Hash the password
