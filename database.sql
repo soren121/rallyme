@@ -1,6 +1,9 @@
 SET NAMES utf8;
 USE `rallyme`;
 
+# Create rallyme user
+GRANT ALL ON `rallyme`.* TO 'rallyme'@'localhost' IDENTIFIED BY 'admin';
+
 CREATE TABLE `users` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `username` varchar(50) NOT NULL,
@@ -12,4 +15,4 @@ CREATE TABLE `users` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `username` (`username`),
     UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
