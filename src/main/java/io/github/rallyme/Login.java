@@ -40,7 +40,7 @@ public class Login extends HttpServlet {
         // Driver must be registered manually when loaded from WEB-INF/lib
         try {
             DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/rallyme", "root", "charlotte");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/rallyme", "rallyme", "admin");
         } catch(SQLException ex) { }
     }
 
