@@ -7,6 +7,10 @@
 </head>
 <body>
 	<div id="flex">
+        <p class="error">
+            <#if error??>${error}</#if>
+        </p>
+
         <main>
             <section>
                 <img id="logo" src="images/logo.svg" alt="RallyMe" />
