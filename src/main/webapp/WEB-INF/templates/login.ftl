@@ -7,9 +7,11 @@
 </head>
 <body>
 	<div id="flex">
-        <p class="error">
-            <#if error??>${error}</#if>
-        </p>
+        <#if error??>
+            <p class="error">
+                ${error}
+            </p>
+        </#if>
 
         <main>
             <section>
