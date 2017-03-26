@@ -23,6 +23,8 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 @WebServlet(name="Login", urlPatterns={"/Login"})
 public class Login extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -74,8 +76,8 @@ public class Login extends HttpServlet {
         ResultSet rs = null;
 
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String passwordHashExisting = null;
+        String candidatePassword = request.getParameter("password");
+        String existingPasswordHash = null;
 
         try {
             stmt = conn.prepareStatement("SELECT password FROM users WHERE username = ? LIMIT 1");
@@ -83,7 +85,7 @@ public class Login extends HttpServlet {
             rs = stmt.executeQuery();
 
             if(rs.next()) {
-                passwordHashExisting = rs.getString("password");
+                existingPasswordHash = rs.getString("password");
             } else {
                 printError(response.getWriter(), "Your username or password is incorrect.");
                 return;
@@ -93,7 +95,7 @@ public class Login extends HttpServlet {
             return;
         }
 
-        if(PasswordHash.validatePassword(password.toCharArray(), passwordHashExisting)) {
+        if(BCrypt.checkpw(candidatePassword, existingPasswordHash)) {
             try {
                 Template tpl = cfg.getTemplate("dashboard.ftl");
                 tpl.process(root, response.getWriter());
