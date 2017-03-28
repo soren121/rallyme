@@ -5,6 +5,7 @@ import rallyme.exception.UserException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.mindrot.jbcrypt.BCrypt;
@@ -76,9 +77,63 @@ public class User {
         }
     }
 
-    // public static User register(String userName, String email, String firstName, String lastName) throws UserException {
+    /**
+         Register a new user.
 
-    // }
+         @param userName The user's username.
+         @param password The user's password.
+         @param email The user's email address.
+         @param firstName The user's first name.
+         @param lastName The user's last name.
+
+         @return A User object for this user.
+         @throws UserException if there was an error while registering the user.
+     */
+    public static User register(String userName, String password, String email, String firstName, String lastName) throws UserException {
+        Connection conn = Database.getConnection();
+        int id = 0;
+        int result = -1;
+
+        // Hash password with bcrypt
+        String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        // Attempt to insert user
+        try {
+            PreparedStatement stmt = conn.prepareStatement(
+                "INSERT INTO users (username, password, email, first_name, last_name)" +
+                "VALUES(?, ?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, userName);
+            stmt.setString(2, passwordHash);
+            stmt.setString(3, email);
+            stmt.setString(4, firstName);
+            stmt.setString(5, lastName);
+            
+            // Execute query
+            result = stmt.executeUpdate();
+            // Request auto-increment column
+            ResultSet rs = stmt.getGeneratedKeys();
+
+             // Get auto-increment ID
+            if(rs.next()) {
+                id = rs.getInt(1);
+            }
+        } catch(SQLException ex) {
+            // MySQL error 1062 indicates a duplicate entry
+            if(ex.getErrorCode() == 1062) {
+                throw new UserException("That username is already taken. Please select a different username.");
+            } else {
+                throw new UserException("SQL exception: " + ex.getMessage());
+            }
+        }
+
+        // If user was added successfully, the result should be 1 new row
+        if(result == 1 && id > 0) {
+            return new User(id, userName, email, firstName, lastName);
+        } else {
+            throw new UserException("An unknown error occurred.");
+        }
+    }
 
     public int getId() {
         return this.id;
