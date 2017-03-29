@@ -47,7 +47,7 @@ public class Register extends TemplateServlet {
 
         try {
             // Attempt to log user in
-            User user = User.login(userName, password);
+            User user = User.register(userName, password, firstName, lastName, email);
             // Store User object in session
             request.getSession().setAttribute("user", user);
             // Redirect to dashboard
