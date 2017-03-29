@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS `rallies` (
     `twitter_handle` varchar(100) NOT NULL,
     `start_time` datetime NOT NULL,
     `geolocation` varchar(100) NOT NULL,
+    `latitude` float(11) NOT NULL,
+    `longitude` float(11) NOT NULL,
     `user_id` int(11) unsigned NOT NULL,
 
     PRIMARY KEY (`id`),

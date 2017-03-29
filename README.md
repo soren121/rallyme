@@ -52,3 +52,11 @@ The resulting WAR file will be in the *target* folder, with the filename
 
 To deploy this on WildFly, copy the folder to WildFly's standalone/deployments 
 folder.
+
+### Building a WAR archive (for final testing)
+
+Link to powerpoint:
+https://docs.google.com/presentation/d/1yf63zFsCgkxlgnwspXXayt-cxiavDVkgJ8bUzoWhSWM/edit#slide=id.g1dad1e7c08_0_229
+
+Link to google doc:
+https://docs.google.com/document/d/1RRb0AQKTRRRKakI_R6DX48wyuSwtJcjpE3VdAM7Qweg/edit
