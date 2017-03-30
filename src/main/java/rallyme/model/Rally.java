@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.Date;
+import java.util.Vector;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -62,6 +63,7 @@ public class Rally {
 	public int getId(){
 		return this.id;
 	}
+	
 	public String getDescription(){
 		return this.description;
 	}
@@ -175,6 +177,42 @@ public class Rally {
         } else {
             throw new UserException("An unknown error adding new rally has occurred.");
         }
+	}
+	
+	/***************************************************************************
+	 * getAllRallies
+	 *
+	 * 
+	 * @return Rally[] array of rally objects for all in database.
+	 * @throws UserException 
+	 ****************************************************************************/ 
+	public static Rally[] getAllRallies() throws UserException{
+		Connection conn = Database.getConnection();
+        ResultSet results;
+	    Vector<Rally> rallyList = new Vector<Rally>(); //used to create a String[] that is sent to next page and represented as table
+
+        // Attempt to delete rally
+        try {
+            PreparedStatement stmt = conn.prepareStatement(
+		                "SELECT * FROM rallies;",
+		                Statement.RETURN_GENERATED_KEYS);
+    
+            // Execute query
+            results = stmt.executeQuery();
+            //iterate through results and add to list
+            if(results.next()){
+            	rallyList.add(new Rally(results.getInt(1), //id
+            			results.getString(2), 			   //description
+            			results.getString(3),			   //twitter_handle
+            			results.getString(4),              //start_time
+            			results.getFloat(5),               //latitude
+            			results.getFloat(6),               //longitude
+            			results.getInt(7)));               //user_id
+            }
+        } catch(SQLException ex) {
+        	throw new UserException("SQL exception: " + ex.getMessage());
+        }
+		return (Rally[]) rallyList.toArray(new Rally[rallyList.size()]); //return list in array form
 	}
 	
 }
