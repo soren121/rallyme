@@ -51,7 +51,7 @@ public class Register extends TemplateServlet {
             // Store User object in session
             request.getSession().setAttribute("user", user);
             // Redirect to dashboard
-            response.sendRedirect("/Dashboard");
+            response.sendRedirect("Dashboard");
         } catch(UserException ex) {
             Map<String, Object> root = new HashMap<>();
             root.put("error", ex.getMessage());
