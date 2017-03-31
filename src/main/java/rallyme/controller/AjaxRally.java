@@ -29,6 +29,9 @@ public class AjaxRally extends TemplateServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		System.out.println("Started Ajax Controller");
+
+    	
         Rally[] ralliesArray;
         String jsonString;
 		
@@ -36,10 +39,22 @@ public class AjaxRally extends TemplateServlet {
 			ralliesArray = Rally.getAllRallies();
 			Gson gson = new Gson();
 			jsonString = gson.toJson(ralliesArray); //convert Obj[] array to json string
+			
+			//request.setAttribute("products", ralliesArray); // Will be available as ${products} in JSP
+			
+			response.setContentType("application/json");
+			PrintWriter out = response.getWriter();
+			out.print(jsonString);
+			out.flush();
+
+			//request.getRequestDispatcher("/index.html").forward(request, response);
+
 		} catch (UserException ex) {
 			ex.printStackTrace();
 		}
-
+		
+		System.out.println("Completed Ajax Controller");
+		
     }
 
     /**
