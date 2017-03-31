@@ -65,6 +65,10 @@ public class Rally {
 		return this.id;
 	}
 	
+	public String getName(){
+		return this.name;
+	}
+	
 	public String getDescription(){
 		return this.description;
 	}
