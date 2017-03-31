@@ -28,9 +28,6 @@ public class AjaxRally extends TemplateServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		System.out.println("Started Ajax Controller");
-
     	
         Rally[] ralliesArray;
         String jsonString;
@@ -52,9 +49,7 @@ public class AjaxRally extends TemplateServlet {
 		} catch (RallyException ex) {
 			ex.printStackTrace();
 		}
-		
-		System.out.println("Completed Ajax Controller");
-		
+				
     }
 
     /**

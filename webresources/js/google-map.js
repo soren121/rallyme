@@ -8,6 +8,40 @@ function initMap() {
         streetViewControl: false,
         fullscreenControl: false
     });
+    
+    //call servlet Get for Json and place all markers on map
+    var latitude;
+    var longitude;
+    var title;
+    
+	$.getJSON( "AjaxRally", function( data ) {
+    	  $.each( data, function(index, item) { 
+    		  latitude = null;
+    		  longitude = null;
+    		  title = null;
+			$.each(item, function(key, value){
+				if(key == "latitude"){
+					latitude = value;
+				} else if(key == "longitude") {
+					longitude = value;
+				} else if(key == "name"){
+					title = value;
+				} 			
+			});
+			
+			if(latitude != null && longitude != null && title != null){
+				var myLatLng = {lat: latitude, lng: longitude};
+				var marker = new google.maps.Marker({
+			        position: myLatLng,
+			        map: map,
+			        animation: google.maps.Animation.DROP,
+			        title: title
+			      });
+			  }
+    	  });
+   });
+
+    
 
     // Ask user for their location automatically
     if(navigator.geolocation) {
