@@ -37,7 +37,7 @@
                     <td>${rally.getLatitude()}</td>
                     <td>${rally.getLongitude()}</td>
                    
-                    <td><a id="organizer-button" class="pure-button" href="Add Rally">Edit Rally</a></td>
+                    <td><a id="organizer-button" class="pure-button" href="AddRally">Edit Rally</a></td>
                 </tr>
                 
            	</#list>
@@ -45,7 +45,7 @@
         </table>
         
         <p>
-            <a id="organizer-button" class="pure-button pure-button-primary" href="Add Rally">Add Rally</a>
+            <a id="organizer-button" class="pure-button pure-button-primary" href="AddRally">Add Rally</a>
         </p>
     </main>
 </body>
