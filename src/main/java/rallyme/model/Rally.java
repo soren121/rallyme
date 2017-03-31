@@ -7,50 +7,51 @@
 package rallyme.model;
 
 import rallyme.core.Database;
-import rallyme.exception.UserException;
+import rallyme.exception.RallyException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.mindrot.jbcrypt.BCrypt;
+import java.sql.Timestamp;
 
-import java.util.Date;
 import java.util.Vector;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class Rally {
 	
 	private int id;
+    private String name;
 	private String description;
-	private String twitter_handle;
-	private String start_time;		//DATETIME
-	private float latitude;			//Geolocation
+	private String twitterHandle;
+	private Timestamp startTime;
+	private float latitude;
 	private float longitude;
-	private int user_id; 			//owner of rally
+	private int userId; // owner of rally
 	
 	/****************
 	 * Constructors
 	 ***************/
-	public Rally(int id, String description, String twitter_handle, String start_time, float latitude, float longitude, int user_id){
+	public Rally(int id, String name, String description, String twitterHandle, Timestamp startTime, float latitude, float longitude, int userId){
 		this.id = id;
+        this.name = name;
 		this.description = description;
-		this.twitter_handle = twitter_handle;
-		this.start_time = start_time;
+        this.twitterHandle = twitterHandle;
+		this.startTime = startTime;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.user_id = user_id;
+		this.userId = userId;
 	}
 	
-	public Rally(String description, String twitter_handle, String start_time, float latitude, float longitude, int user_id){
-		this.description = description;
-		this.twitter_handle = twitter_handle;
-		this.start_time = start_time;
+	public Rally(String name, String description, String twitterHandle, Timestamp startTime, float latitude, float longitude, int userId){
+        this.name = name;
+        this.description = description;
+        this.twitterHandle = twitterHandle;
+		this.startTime = startTime;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.user_id = user_id;
+		this.userId = userId;
 	}
 	
 	public Rally(){
@@ -68,12 +69,12 @@ public class Rally {
 		return this.description;
 	}
 	
-	public String getTwitter_handle(){
-		return this.twitter_handle;
+	public String getTwitterHandle(){
+		return this.twitterHandle;
 	}
 	
-	public String getStart_time(){
-		return this.description;
+	public Timestamp getstartTime(){
+		return this.startTime;
 	}
 	
 	public float getLatitude(){
@@ -84,8 +85,8 @@ public class Rally {
 		return this.longitude;
 	}
 	
-	public int getUser_id(){
-		return this.user_id;
+	public int getUserId(){
+		return this.userId;
 	}
 	
 	/***********************
@@ -96,16 +97,16 @@ public class Rally {
 	 * addNewRally
 	 * 
 	 * @param description The details of rally.
-     * @param twitter_handle The twitter handle associated with rally instance.
-     * @param start_time DATETIME The stored in database time of event.
+     * @param twitterHandle The twitter handle associated with rally instance.
+     * @param startTime DATETIME The stored in database time of event.
      * @param latitude The Geolocation of event.
      * @param longitude The Geolocaiton of event.
-     * @param user_id The id of the user creating the rally.
+     * @param userId The id of the user creating the rally.
 	 * 
 	 * @return Rally object for this newly created rally.
 	 * @throws UserException 
 	 ****************************************************************************/ 
-	public static Rally addNewRally(String description, String twitter_handle, String start_time, float latitude, float longitude, int user_id) throws UserException{ 
+	public static Rally addNewRally(String name, String description, String twitterHandle, Timestamp startTime, float latitude, float longitude, int userId) throws RallyException { 
 		Connection conn = Database.getConnection();
         int id = 0;
         int result = -1;
@@ -113,15 +114,16 @@ public class Rally {
         // Attempt to insert user
         try {
             PreparedStatement stmt = conn.prepareStatement(
-		                "INSERT INTO rallies (description, twitter_handle, start_time, latitude, longitude, user_id)" +
+		                "INSERT INTO rallies (name, description, twitter_handle, start_time, latitude, longitude, user_id)" +
 		                "VALUES(?, ?, ?, ?, ?, ?)",
 		                Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, description);
-            stmt.setString(2, twitter_handle);
-            stmt.setString(3, start_time);
-            stmt.setString(4, String.valueOf(latitude));
-            stmt.setString(5, String.valueOf(longitude));
-            stmt.setString(6, String.valueOf(user_id));
+            stmt.setString(1, name);
+            stmt.setString(2, description);
+            stmt.setString(3, twitterHandle);
+            stmt.setTimestamp(4, startTime);
+            stmt.setFloat(5, latitude);
+            stmt.setFloat(6, longitude);
+            stmt.setInt(7, userId);
             
             // Execute query
             result = stmt.executeUpdate();
@@ -133,14 +135,14 @@ public class Rally {
             }
         } catch(SQLException ex) {
         	//print error
-        	throw new UserException("SQL exception: " + ex.getMessage());
+        	throw new RallyException("SQL exception: " + ex.getMessage());
         }
 
         // If user was added successfully, the result should be 1 new row
         if(result == 1) {
-            return new Rally(id, description, twitter_handle, start_time, latitude, longitude, user_id);
+            return new Rally(id, name, description, twitterHandle, startTime, latitude, longitude, userId);
         } else {
-            throw new UserException("An unknown error adding new rally has occurred.");
+            throw new RallyException("An unknown error adding new rally has occurred.");
         }
 	}
 	
@@ -152,30 +154,29 @@ public class Rally {
 	 * @return Int return 1 success.
 	 * @throws UserException
 	 **********************/ 
-	public static int deleteRally(int id) throws UserException {
+	public static int deleteRally(int id) throws RallyException {
 		Connection conn = Database.getConnection();
         int result = -1;
         
         // Attempt to delete rally
         try {
             PreparedStatement stmt = conn.prepareStatement(
-		                "DELETE FROM rallies WHERE id='?';",
-		                Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, String.valueOf(id));
+                "DELETE FROM rallies WHERE id = ?;");
+            stmt.setInt(1, id);
            
             // Execute query
             result = stmt.executeUpdate();
           
         } catch(SQLException ex) {
         	//print error
-        	throw new UserException("SQL exception: " + ex.getMessage());
+        	throw new RallyException("SQL exception: " + ex.getMessage());
         }
 
         // If user was added successfully, the result should be 1 new row
         if(result == 1) {
             return 1;
         } else {
-            throw new UserException("An unknown error adding new rally has occurred.");
+            throw new RallyException("An unknown error adding new rally has occurred.");
         }
 	}
 	
@@ -186,7 +187,7 @@ public class Rally {
 	 * @return Rally[] array of rally objects for all in database.
 	 * @throws UserException 
 	 ****************************************************************************/ 
-	public static Rally[] getAllRallies() throws UserException{
+	public static Rally[] getAllRallies() throws RallyException {
 		Connection conn = Database.getConnection();
         ResultSet results;
 	    Vector<Rally> rallyList = new Vector<Rally>(); //used to create a String[] that is sent to next page and represented as table
@@ -194,23 +195,25 @@ public class Rally {
         // Attempt to delete rally
         try {
             PreparedStatement stmt = conn.prepareStatement(
-		                "SELECT id, description, twitter_handle, start_time, latitude, longitude, user_id  FROM rallies;",
-		                Statement.RETURN_GENERATED_KEYS);
+                "SELECT * FROM rallies;");
     
             // Execute query
             results = stmt.executeQuery();
             //iterate through results and add to list
-            if(results.next()){
-            	rallyList.add(new Rally(results.getInt(1), //id
-            			results.getString(2), 			   //description
-            			results.getString(3),			   //twitter_handle
-            			results.getString(4),              //start_time
-            			results.getFloat(5),               //latitude
-            			results.getFloat(6),               //longitude
-            			results.getInt(7)));               //user_id
+            while(results.next()) {
+            	rallyList.add(new Rally(
+                    results.getInt("id"),
+                    results.getString("name"),
+                    results.getString("description"),
+                    results.getString("twitter_handle"),
+                    results.getTimestamp("start_time"), 
+                    results.getFloat("latitude"),
+                    results.getFloat("longitude"), 
+                    results.getInt("user_id")
+                ));
             }
         } catch(SQLException ex) {
-        	throw new UserException("SQL exception: " + ex.getMessage());
+        	throw new RallyException("SQL exception: " + ex.getMessage());
         }
 		return (Rally[]) rallyList.toArray(new Rally[rallyList.size()]); //return list in array form
 	}

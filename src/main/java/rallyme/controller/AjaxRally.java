@@ -3,7 +3,7 @@ package rallyme.controller;
 import rallyme.core.TemplateServlet;
 import rallyme.model.Rally;
 import rallyme.model.User;
-import rallyme.exception.UserException;
+import rallyme.exception.RallyException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class AjaxRally extends TemplateServlet {
 			ralliesArray = Rally.getAllRallies();
 			Gson gson = new Gson();
 			jsonString = gson.toJson(ralliesArray); //convert Obj[] array to json string
-			
+	
 			//request.setAttribute("products", ralliesArray); // Will be available as ${products} in JSP
 			
 			response.setContentType("application/json");
@@ -49,7 +49,7 @@ public class AjaxRally extends TemplateServlet {
 
 			//request.getRequestDispatcher("/index.html").forward(request, response);
 
-		} catch (UserException ex) {
+		} catch (RallyException ex) {
 			ex.printStackTrace();
 		}
 		

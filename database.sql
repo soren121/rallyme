@@ -18,8 +18,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 CREATE TABLE IF NOT EXISTS `rallies` (
     `id` int(11) unsigned NOT NULL,
-    `description` varchar(1000) NOT NULL,
-    `twitter_handle` varchar(100) NOT NULL,
+    `name` varchar(100) NOT NULL,
+    `description` TEXT NOT NULL,
+    `twitter_handle` varchar(100),
     `start_time` datetime NOT NULL,
     `geolocation` varchar(100) NOT NULL,
     `latitude` float(11) NOT NULL,
