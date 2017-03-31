@@ -2,46 +2,39 @@ function initMap() {
     var mapEl = document.querySelector('#google-map');
     // Show all of US in default view
     window.map = new google.maps.Map(mapEl, {
-        center: {lat: 39.05, lng: -94.34},
+        center: {lat: 39.05, lng: -94.34}, // roughly the center of the US
         zoom: 5,
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false
     });
     
-    //call servlet Get for Json and place all markers on map
-    var latitude;
-    var longitude;
-    var title;
-    
-	$.getJSON( "AjaxRally", function( data ) {
-    	  $.each( data, function(index, item) { 
-    		  latitude = null;
-    		  longitude = null;
-    		  title = null;
-			$.each(item, function(key, value){
-				if(key == "latitude"){
-					latitude = value;
-				} else if(key == "longitude") {
-					longitude = value;
-				} else if(key == "name"){
-					title = value;
-				} 			
-			});
-			
-			if(latitude != null && longitude != null && title != null){
-				var myLatLng = {lat: latitude, lng: longitude};
-				var marker = new google.maps.Marker({
-			        position: myLatLng,
-			        map: map,
-			        animation: google.maps.Animation.DROP,
-			        title: title
-			      });
-			  }
-    	  });
-   });
+    // call servlet Get for Json and place all markers on map
+    $.getJSON("AjaxRally", function(data) {
+        var rallyList = document.querySelector("#rally-list ul");
 
-    
+        $.each(data, function(index, item) { 
+            if(item.latitude != null && item.longitude != null && item.name != null) {
+                var marker = new google.maps.Marker({
+                    position: {
+                        lat: item.latitude, 
+                        lng: item.longitude
+                    },
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    title: item.name
+                });
+
+                var listItem = document.createElement("li");
+                var listItemLink = document.createElement("a");
+                listItemLink.href = "#";
+                listItemLink.textContent = item.name;
+
+                listItem.appendChild(listItemLink);
+                rallyList.appendChild(listItem);
+            }
+        });
+    });
 
     // Ask user for their location automatically
     if(navigator.geolocation) {

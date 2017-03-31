@@ -23,7 +23,7 @@
                     <th>Start time</th>
                     <th>Latitude</th>
                     <th>Longitude</th>
-
+                    <th>&nbsp;</th>
                 </tr>
             </thead>
 
