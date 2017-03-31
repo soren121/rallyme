@@ -13,33 +13,35 @@
 	</header>
 
     <main>
+       
         <table class="pure-table pure-table-striped">
             <thead>
                 <tr>
-                    <th>EventName</th>
-                    <th>EventTime</th>
-                    <th>EventMaxPeople</th>
-                    <th>EventCurrentPeople</th>
-                    <th>&nbsp;</th>
+                    <th>Rally name</th>
+                    <th>Description</th>
+                    <th>Twitter handle</th>
+                    <th>Start time</th>
+                    <th>Latitude</th>
+                    <th>Longitude</th>
+
                 </tr>
             </thead>
 
             <tbody>
-                <tr>
-                    <td>APP presentation</td>
-                    <td>APR/04</td>
-                    <td>56</td>
-                    <td>57</td>
+              <#list rallylist as rally>
+                	<tr>
+                    <td>${rally.getName()}</td>
+                    <td>${rally.getDescription()}</td>
+                    <td>${rally.getTwitterHandle()}</td>
+                    <td>${rally.getstartTime()}</td>
+                    <td>${rally.getLatitude()}</td>
+                    <td>${rally.getLongitude()}</td>
+                   
                     <td><a id="organizer-button" class="pure-button" href="Add Rally">Edit Rally</a></td>
                 </tr>
-                <tr>
-                    <td>MusicEvent</td>
-                    <td>APR/01</td>
-                    <td>100</td>
-                    <td>78</td>
-                    <td><a id="organizer-button" class="pure-button" href="Add Rally">Edit Rally</a></td>
-                </tr>
-            </tbody>
+                
+           	</#list>
+             </tbody>
         </table>
         
         <p>

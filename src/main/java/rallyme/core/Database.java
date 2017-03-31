@@ -9,7 +9,6 @@ public class Database {
     private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/rallyme?serverTimezone=UTC";
     private static final String CONNECTION_USER = "rallyme";
     private static final String CONNECTION_PASS = "admin";
-
     private static Connection conn = null;
 
     public static Connection getConnection() {

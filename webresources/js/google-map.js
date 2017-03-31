@@ -3,7 +3,10 @@ function initMap() {
     // Show all of US in default view
     window.map = new google.maps.Map(mapEl, {
         center: {lat: 39.05, lng: -94.34},
-        zoom: 5
+        zoom: 5,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false
     });
 
     // Ask user for their location automatically
