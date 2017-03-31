@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `rallies` (
     `name` varchar(100) NOT NULL,
     `description` TEXT NOT NULL,
     `twitter_handle` varchar(100),
-    `start_time` datetime NOT NULL,
+    `start_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `geolocation` varchar(100) NOT NULL,
     `latitude` float(11) NOT NULL,
     `longitude` float(11) NOT NULL,
