@@ -69,7 +69,7 @@ public class Rally {
 	}
 	
 	public String getTwitter_handle(){
-		return this.description;
+		return this.twitter_handle;
 	}
 	
 	public String getStart_time(){
@@ -194,7 +194,7 @@ public class Rally {
         // Attempt to delete rally
         try {
             PreparedStatement stmt = conn.prepareStatement(
-		                "SELECT * FROM rallies;",
+		                "SELECT id, description, twitter_handle, start_time, latitude, longitude, user_id  FROM rallies;",
 		                Statement.RETURN_GENERATED_KEYS);
     
             // Execute query
