@@ -11,8 +11,6 @@ function initMap() {
     
     // call servlet Get for Json and place all markers on map
     $.getJSON("AjaxRally", function(data) {
-        var rallyList = document.querySelector("#rally-list ul");
-
         $.each(data, function(index, item) { 
             if(item.latitude !== null && item.longitude !== null) {
                 var marker = new google.maps.Marker({

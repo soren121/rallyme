@@ -25,12 +25,17 @@
     <main>
         <div id="google-map"></div>
 
-        <div id="rally-list">
-            <div id="rally-list-toggle"></div>
+        <div id="rally-drawer">
+            <div class="drawer-toggle"></div>
 
             <section>
                 <h2>National rallies</h2>
-                <ul></ul>
+                <ul id="national-rallies"></ul>
+
+                <h2>Local rallies</h2>
+                <ul id="local-rallies">
+                    Set your location to see rallies near you.
+                </ul>
             </section>
         </div>
     </main>
@@ -39,7 +44,7 @@
     <script type="text/javascript" async src="js/lib/doT.min.js"></script>
     <script type="text/javascript" async src="js/rally-slider.js"></script>
     <script type="text/javascript">
-        window.rallySlider = new RallySlider(document.getElementById("rally-list"));
+        window.rallySlider = new RallySlider(document.getElementById("rally-drawer"));
     </script>
     <script type="text/javascript" async src="js/google-map.js"></script>
     <script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&callback=initMap"></script>

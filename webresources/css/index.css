@@ -54,7 +54,7 @@ main {
     position: relative;
 }
 
-#rally-list {
+#rally-drawer {
     max-width: 20vw;
     max-height: calc(100% - 50px);
 
@@ -76,11 +76,11 @@ main {
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 }
 
-#rally-list.closed {
+#rally-drawer.closed {
 	max-width: 20px;
 }
 
-#rally-list-toggle {
+.drawer-toggle {
     width: 20px;
     padding-top: 16px;
     text-align: center;
@@ -89,49 +89,52 @@ main {
     flex-shrink: 0;
 }
 
-#rally-list-toggle:hover {
+.drawer-toggle:hover {
     background: #7c8fa2;
 }
 
-#rally-list #rally-list-toggle:after {
+#rally-drawer .drawer-toggle:after {
     content: "\00AB";
 }
 
-#rally-list.closed #rally-list-toggle:after {
+#rally-drawer.closed .drawer-toggle:after {
     content: "\00BB";
 }
 
-#rally-list > section {
+#rally-drawer > section {
     padding: 15px;
     min-width: calc(20vw - 50px);
 }
 
-#rally-list h2 {
+#rally-drawer h2 {
     margin: 0;
 }
 
-#rally-list ul {
+#rally-drawer ul {
     padding-left: 0;
-    border-top: 1px solid #ccc;
 }
 
-#rally-list li {
+#rally-drawer li {
     list-style: none;
     border-bottom: 1px solid #ccc;
     font-weight: 600;
 }
 
-#rally-list li > a {
+#rally-drawer li:first-child {
+    border-top: 1px solid #ccc;
+}
+
+#rally-drawer li > a {
     display: block;
     text-decoration: none;
     padding: 8px 0 8px 4px;
 }
 
-#rally-list li > a:hover {
+#rally-drawer li > a:hover {
     background: #eee;
 }
 
-#rally-list li > a img {
+#rally-drawer li > a img {
     border-radius: 100%;
     border: 1px solid #ddd;
     background: #fff;

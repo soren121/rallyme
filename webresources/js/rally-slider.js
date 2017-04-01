@@ -2,7 +2,7 @@
 
 function RallySlider(element) {
     this.element = element;
-    this.toggleEle = element.querySelector("#rally-list-toggle");
+    this.toggleEle = element.querySelector(".drawer-toggle");
     this.list = element.querySelector("ul");
 
     this.toggleEle.addEventListener("click", function(e) {
