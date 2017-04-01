@@ -19,7 +19,7 @@ RallySlider.prototype.add = function(id, title, handle) {
     var data = {
         id: id,
         url: '#',
-        avatar: 'https://twitter.com/' + handle + '/profile_image',
+        avatar: (handle !== null && handle.trim().length > 0) ? 'https://twitter.com/' + handle + '/profile_image' : '',
         name: title
     };
 

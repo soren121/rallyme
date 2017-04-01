@@ -14,7 +14,7 @@ function initMap() {
         var rallyList = document.querySelector("#rally-list ul");
 
         $.each(data, function(index, item) { 
-            if(item.latitude != null && item.longitude != null) {
+            if(item.latitude !== null && item.longitude !== null) {
                 var marker = new google.maps.Marker({
                     position: {
                         lat: item.latitude, 
@@ -53,14 +53,14 @@ document.getElementById('location-search').addEventListener('submit', function(e
 
     // Get search query from input box
     var searchQuery = e.target.elements[0].value.trim();
-    if(searchQuery.length == 0) {
+    if(searchQuery.length === 0) {
         return true;
     }
 
     // Lookup location using the Google Maps Geocoder API
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({address: searchQuery}, function(results, status) {
-        if(status == 'OK') {
+        if(status === 'OK') {
             // Center the map on the found location
             window.map.setCenter(results[0].geometry.location);
             // Zoom in
