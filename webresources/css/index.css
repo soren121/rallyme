@@ -103,7 +103,7 @@ main {
 
 #rally-list > section {
     padding: 15px;
-    width: calc(20vw - 50px);
+    min-width: calc(20vw - 50px);
 }
 
 #rally-list h2 {
@@ -117,7 +117,26 @@ main {
 
 #rally-list li {
     list-style: none;
-    padding: 15px 0;
     border-bottom: 1px solid #ccc;
     font-weight: 600;
+}
+
+#rally-list li > a {
+    display: block;
+    text-decoration: none;
+    padding: 8px 0 8px 4px;
+}
+
+#rally-list li > a:hover {
+    background: #eee;
+}
+
+#rally-list li > a img {
+    border-radius: 100%;
+    border: 1px solid #ddd;
+    background: #fff;
+    margin-right: 8px;
+    width: 40px;
+    height: 40px;
+    vertical-align: -70%;
 }

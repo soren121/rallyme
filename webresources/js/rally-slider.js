@@ -14,12 +14,14 @@ RallySlider.prototype.toggle = function() {
     this.element.classList.toggle("closed");
 };
 
-RallySlider.prototype.add = function(title) {
-    var listItem = document.createElement("li");
-    var listItemLink = document.createElement("a");
-    listItemLink.href = "#";
-    listItemLink.textContent = title;
+RallySlider.prototype.add = function(id, title, handle) {
+    var pagefn = doT.template(document.getElementById('rally-list-tpl').text);
+    var data = {
+        id: id,
+        url: '#',
+        avatar: 'https://twitter.com/' + handle + '/profile_image',
+        name: title
+    };
 
-    listItem.appendChild(listItemLink);
-    this.list.appendChild(listItem);
+    this.list.insertAdjacentHTML('beforeend', pagefn(data));
 };

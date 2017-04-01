@@ -35,12 +35,22 @@
         </div>
     </main>
 
-    <script type="text/javascript" async src="js/jquery-3.2.0.min.js"></script>
+    <script type="text/javascript" async src="js/lib/jquery-3.2.0.min.js"></script>
+    <script type="text/javascript" async src="js/lib/doT.min.js"></script>
     <script type="text/javascript" async src="js/rally-slider.js"></script>
     <script type="text/javascript">
         window.rallySlider = new RallySlider(document.getElementById("rally-list"));
     </script>
     <script type="text/javascript" async src="js/google-map.js"></script>
     <script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&callback=initMap"></script>
+
+    <script id="rally-list-tpl" type="text/x-dot-template">
+        <li data-id="{{=it.id}}">
+            <a href="{{=it.url}}">
+                <img src="{{=it.avatar}}" />
+                <span>{{=it.name}}</span>
+            </a>
+        </li>
+    </script>
 </body>
 </html>

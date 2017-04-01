@@ -14,7 +14,7 @@ function initMap() {
         var rallyList = document.querySelector("#rally-list ul");
 
         $.each(data, function(index, item) { 
-            if(item.latitude != null && item.longitude != null && item.name != null) {
+            if(item.latitude != null && item.longitude != null) {
                 var marker = new google.maps.Marker({
                     position: {
                         lat: item.latitude, 
@@ -25,7 +25,7 @@ function initMap() {
                     title: item.name
                 });
 
-                window.rallySlider.add(item.name);
+                window.rallySlider.add(item.id, item.name, item.twitterHandle);
             }
         });
     });
