@@ -25,13 +25,21 @@
         <div id="google-map"></div>
 
         <div id="rally-list">
-            <h2>National rallies</h2>
-            <ul></ul>
+            <div id="rally-list-toggle"></div>
+
+            <section>
+                <h2>National rallies</h2>
+                <ul></ul>
+            </section>
         </div>
     </main>
 
-    <script type="text/javascript" async defer src="js/jquery-3.2.0.min.js"></script>
-    <script type="text/javascript" async defer src="js/google-map.js"></script>
+    <script type="text/javascript" async src="js/jquery-3.2.0.min.js"></script>
+    <script type="text/javascript" async src="js/rally-slider.js"></script>
+    <script type="text/javascript">
+        window.rallySlider = new RallySlider(document.getElementById("rally-list"));
+    </script>
+    <script type="text/javascript" async src="js/google-map.js"></script>
     <script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&callback=initMap"></script>
 </body>
 </html>

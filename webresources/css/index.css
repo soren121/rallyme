@@ -55,13 +55,55 @@ main {
 }
 
 #rally-list {
-    width: 20vw;
+    max-width: 20vw;
+    max-height: calc(100% - 50px);
+
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: stretch;
+    align-content: stretch;
+
     position: absolute;
     z-index: 5;
     top: 20px;
+
     background: #fff;
     box-shadow: 0 0 5px #ccc;
+
+    overflow-x: hidden;
+    transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+#rally-list.closed {
+	max-width: 20px;
+}
+
+#rally-list-toggle {
+    width: 20px;
+    padding-top: 16px;
+    text-align: center;
+    color: #08232f;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+#rally-list-toggle:hover {
+    background: #7c8fa2;
+}
+
+#rally-list #rally-list-toggle:after {
+    content: "\00AB";
+}
+
+#rally-list.closed #rally-list-toggle:after {
+    content: "\00BB";
+}
+
+#rally-list > section {
     padding: 15px;
+    width: calc(20vw - 50px);
 }
 
 #rally-list h2 {

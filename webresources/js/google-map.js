@@ -25,13 +25,7 @@ function initMap() {
                     title: item.name
                 });
 
-                var listItem = document.createElement("li");
-                var listItemLink = document.createElement("a");
-                listItemLink.href = "#";
-                listItemLink.textContent = item.name;
-
-                listItem.appendChild(listItemLink);
-                rallyList.appendChild(listItem);
+                window.rallySlider.add(item.name);
             }
         });
     });
