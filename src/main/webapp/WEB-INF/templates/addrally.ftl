@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Add Rally Page</title>
+    <meta charset="utf-8" />
     <link rel="stylesheet" type="text/css" href="css/pure-min.css" />
 	<link rel="stylesheet" type="text/css" href="css/dashboard.css" />
-    <title>Add Rally Page</title>
 </head>
 
 <body>
