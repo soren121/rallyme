@@ -1,7 +1,7 @@
 package rallyme.model;
 
-import rallyme.core.Database;
 import rallyme.exception.UserException;
+import rallyme.core.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,6 +28,30 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public String getUserName() {
+        return this.userName;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public String getDisplayName() {
+        return this.firstName + " " + this.lastName;
     }
 
     /**
@@ -135,28 +159,32 @@ public class User {
         }
     }
 
-    public int getId() {
-        return this.id;
-    }
+    public static User getUserById(int id) {
+        Connection conn = Database.getConnection();
+        String userName, firstName, lastName, email;
 
-    public String getUserName() {
-        return this.userName;
-    }
+        // Attempt to get user
+        try {
+            PreparedStatement stmt = conn.prepareStatement(
+                "SELECT * FROM users WHERE id = ?");
+            stmt.setInt(1, id);
+    
+            // Execute query
+            ResultSet rs = stmt.executeQuery();
+            //iterate through results and add to list
+            if(rs.next()) {
+                userName = rs.getString("username");
+                firstName = rs.getString("first_name");
+                lastName = rs.getString("last_name");
+                email = rs.getString("email");
 
-    public String getEmail() {
-        return this.email;
-    }
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public String getDisplayName() {
-        return this.firstName + " " + this.lastName;
+                return new User(id, userName, email, firstName, lastName);
+            } else {
+                return null;
+            }
+        } catch(SQLException ex) {
+        	return null;
+        }
     }
 
 }
