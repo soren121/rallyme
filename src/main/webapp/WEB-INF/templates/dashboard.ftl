@@ -11,6 +11,7 @@
 	<header>
         <a id="logo" href="."><img src="images/logo.svg" alt="RallyMe" /></a>
         <h1>Organizer Dashboard</h1>
+        <a href="Login?logout=true" class="pure-button pure-button-primary">Logout</a>
 	</header>
 
     <main>

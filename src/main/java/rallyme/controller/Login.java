@@ -27,6 +27,18 @@ public class Login extends TemplateServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> root = new HashMap<>();
 
+        // If ?logout is specified, invalidate the session
+        // If user is already logged in, send them to the dashboard
+        String logout = request.getParameter("logout");
+        if(logout != null && logout.equals("true")) {
+            request.getSession().invalidate();
+            response.sendRedirect(".");
+            return;
+        } else if(request.getSession().getAttribute("user") != null) {
+            response.sendRedirect("Dashboard");
+            return;
+        }
+
         try {
             freemarker.getTemplate("login.ftl").process(root, response.getWriter());
         } catch(TemplateException ex) {
@@ -45,7 +57,9 @@ public class Login extends TemplateServlet {
             // Attempt to log user in
             User user = User.login(userName, password);
             // Store User object in session
-            request.getSession().setAttribute("user", user);
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            session.setMaxInactiveInterval(60 * 30);
             // Redirect to dashboard
             response.sendRedirect("Dashboard");
         } catch(UserException ex) {
