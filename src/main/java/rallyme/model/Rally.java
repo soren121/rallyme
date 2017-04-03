@@ -131,9 +131,9 @@ public class Rally {
         // Attempt to insert user
         try {
             PreparedStatement stmt = conn.prepareStatement(
-                        "INSERT INTO rallies (user_id, name, description, twitter_handle, url, start_time, location, latitude, longitude, event_capacity)" +
-                        "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                        Statement.RETURN_GENERATED_KEYS);
+                "INSERT INTO rallies (creator_id, name, description, twitter_handle, url, start_time, location, latitude, longitude, event_capacity)" +
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS);
             stmt.setInt(1, this.creator.getId());
             stmt.setString(2, this.name);
             stmt.setString(3, this.description);
@@ -221,7 +221,7 @@ public class Rally {
                     results.getString("location"),
                     results.getFloat("latitude"),
                     results.getFloat("longitude"), 
-                    User.getUserById(results.getInt("user_id"))
+                    User.getUserById(results.getInt("creator_id"))
                 );
 
                 rally.setDescription(results.getString("description"));

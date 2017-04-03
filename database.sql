@@ -18,27 +18,29 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 CREATE TABLE IF NOT EXISTS `rallies` (
     `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `creator_id` int(11) unsigned NOT NULL,
+    `parent_id` int(11) unsigned,
     `name` varchar(100) NOT NULL,
-    `description` TEXT NOT NULL DEFAULT '',
+    `description` TEXT,
     `twitter_handle` varchar(100),
     `url` varchar(255),
     `start_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `location` varchar(100) NOT NULL,
     `latitude` float(11) NOT NULL,
     `longitude` float(11) NOT NULL,
-    `user_id` int(11) unsigned NOT NULL,
     `event_capacity` int(7) unsigned NOT NULL DEFAULT 100,
 
     PRIMARY KEY (`id`),
     KEY `location` (`latitude`, `longitude`),
-    CONSTRAINT `rallies_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+    KEY `sister` (`parent_id`),
+    CONSTRAINT `rallies_ibfk_1` FOREIGN KEY (`creator_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 # Create admin user (password is "rallyme")
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `first_name`, `last_name`) VALUES
-(1, 'admin', '$2a$10$7KuZRPvizaIrI5GsRkdtXOXRLi7evQ75j/oystWFyBta0eE8X6qtm', 'RallyMe', 'Admin', 'admin@example.com');
+(1, 'admin', '$2a$10$7KuZRPvizaIrI5GsRkdtXOXRLi7evQ75j/oystWFyBta0eE8X6qtm', 'admin@example.com', 'RallyMe', 'Admin');
 
 # Insert default rallies
-INSERT INTO `rallies` (`id`, `name`, `description`, `twitter_handle`, `start_time`, `location`, `latitude`, `longitude`, `user_id`) VALUES
-(1,	'Tax March', 'wayo wayo', 'taxmarch', '2017-04-15 16:00:00', 'Washington, DC', 38.8892,	-77.0523, 1),
-(2,	'March for Science', 'wayo wayo', 'ScienceMarchDC', '2017-04-22 16:00:00', 'Washington, DC', 38.8892, -77.0523, 1);
+INSERT INTO `rallies` (`id`, `creator_id`, `name`, `description`, `twitter_handle`, `start_time`, `location`, `latitude`, `longitude`) VALUES
+(1, 1, 'Tax March', 'wayo wayo', 'taxmarch', '2017-04-15 16:00:00', 'Washington, DC', 38.8892, -77.0523),
+(2, 1, 'March for Science', 'wayo wayo', 'ScienceMarchDC', '2017-04-22 16:00:00', 'Washington, DC', 38.8892, -77.0523);

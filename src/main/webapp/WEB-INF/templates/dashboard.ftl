@@ -20,7 +20,6 @@
             <thead>
                 <tr>
                     <th>Rally name</th>
-                    <th>Description</th>
                     <th>Twitter handle</th>
                     <th>Start time</th>
                     <th>Latitude</th>
@@ -33,7 +32,6 @@
               <#list rallylist as rally>
                 	<tr>
                     <td>${rally.getName()}</td>
-                    <td>${rally.getDescription()}</td>
                     <td>${rally.getTwitterHandle()}</td>
                     <td>${rally.getstartTime()}</td>
                     <td>${rally.getLatitude()}</td>

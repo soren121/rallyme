@@ -22,11 +22,11 @@
 
             <form class="pure-form pure-form-stacked" action="Register" method="post">
                 <fieldset>
-                    <input class="pure-input-1" id="username" type="text" name="username" placeholder="Username" required /> 
+                    <input class="pure-input-1" id="username" type="text" name="username" placeholder="Username" maxlength="50" required /> 
                     <input class="pure-input-1" id="password" type="password" name="password" placeholder="Password" required /> 
-                    <input class="pure-input-1" id="fname" type="text" name="firstname" placeholder="First Name" required /> 
-                    <input class="pure-input-1" id="lname" type="text" name="lastname" placeholder="Last Name" required /> 
-                    <input class="pure-input-1" id="email" type="email" name="email" placeholder="Email Address" required /> 
+                    <input class="pure-input-1" id="email" type="email" name="email" placeholder="Email Address" maxlength="120" required /> 
+                    <input class="pure-input-1" id="fname" type="text" name="firstname" placeholder="First Name" maxlength="50" required /> 
+                    <input class="pure-input-1" id="lname" type="text" name="lastname" placeholder="Last Name" maxlength="50" required /> 
 
                     <input class="pure-input-1 pure-button pure-button-primary" type="submit" value="Sign up" />
                 </fieldset>
