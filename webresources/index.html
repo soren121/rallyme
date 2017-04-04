@@ -71,15 +71,29 @@
             <p>{{=it.description}}</p>
         </div>
 
-        <p>
-            Place: {{=it.location}}<br />
-            Time: {{=it.startTime}}</br>
-            Capacity: {{=it.capacity}}<br />
-            Organizer: {{=it.organizerName}}
-        </p>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Place</td>
+                    <td>{{=it.location}}</td>
+                </tr>
+                <tr>
+                    <td>Time</td>
+                    <td>{{=it.startTime}}</td>
+                </tr>
+                <tr>
+                    <td>Capacity</td>
+                    <td>{{=it.capacity}}</td>
+                </tr>
+                <tr>
+                    <td>Organizer</td>
+                    <td>{{=it.organizerName}}</td>
+                </tr>
+            </tbody>
+        </table>
 
         {{? it.twitterHandle !== null }}
-        <a class="twitter-timeline" data-lang="en" data-width="22vw" data-height="400" data-dnt="true" href="https://twitter.com/{{=it.twitterHandle}}">
+        <a class="twitter-timeline" data-lang="en" data-width="320" data-height="400" data-dnt="true" href="https://twitter.com/{{=it.twitterHandle}}">
             Tweets by {{=it.twitterHandle}}
         </a> 
         {{?}}

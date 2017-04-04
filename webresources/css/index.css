@@ -55,8 +55,8 @@ main {
 }
 
 #rally-drawer {
-    max-width: 25vw;
-    max-height: calc(100% - 50px);
+    max-width: 360px;
+    max-height: calc(100% - 20px);
 
     display: flex;
     flex-flow: row nowrap;
@@ -77,7 +77,7 @@ main {
 }
 
 #rally-drawer.hold-open {
-    width: 25vw !important;
+    width: 360px !important;
 }
 
 #rally-drawer.closed {
@@ -107,7 +107,7 @@ main {
 
 .drawer-container {
     padding: 15px;
-    min-width: calc(25vw - 50px);
+    min-width: 310px; /* 350px - (15*2)px padding - 20px drawer toggle */
 }
 
 #rally-drawer h2 {
@@ -149,7 +149,7 @@ main {
 }
 
 #rally-detail {
-    max-width: calc(25vw - 20px);
+    max-width: 340px; /* 360px - 20px drawer toggle */
     z-index: 6;
     background: #fff;
 
@@ -187,4 +187,18 @@ main {
     text-transform: uppercase;
     text-decoration: none;
     margin-bottom: 20px;
+}
+
+#rally-detail table {
+    margin: 20px 0;
+}
+
+#rally-detail table td {
+    padding: .25em .5em;
+}
+
+#rally-detail table td:first-child {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.9em;
 }
