@@ -22,6 +22,7 @@
                     <th>Rally name</th>
                     <th>Twitter handle</th>
                     <th>Start time</th>
+                    <th>Location</th>
                     <th>Latitude</th>
                     <th>Longitude</th>
                     <th>&nbsp;</th>
@@ -33,7 +34,8 @@
                 	<tr>
                     <td>${rally.getName()}</td>
                     <td>${rally.getTwitterHandle()}</td>
-                    <td>${rally.getstartTime()}</td>
+                    <td>${rally.getStartTime()}</td>
+                    <td>${rally.getLocation()}</td>
                     <td>${rally.getLatitude()}</td>
                     <td>${rally.getLongitude()}</td>
                    
