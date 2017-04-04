@@ -8,6 +8,8 @@ function initMap() {
         streetViewControl: false,
         fullscreenControl: false
     });
+
+    window.rallySlider = new RallySlider(document.getElementById("rally-drawer"));
     
     // call servlet Get for Json and place all markers on map
     $.getJSON("AjaxRally", function(data) {
@@ -23,7 +25,7 @@ function initMap() {
                     title: item.name
                 });
 
-                window.rallySlider.add(item.id, item.name, item.twitterHandle);
+                window.rallySlider.add(item);
             }
         });
     });

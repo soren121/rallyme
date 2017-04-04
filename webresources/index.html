@@ -28,7 +28,7 @@
         <div id="rally-drawer">
             <div class="drawer-toggle"></div>
 
-            <section>
+            <section class="drawer-container">
                 <h2>National rallies</h2>
                 <ul id="national-rallies"></ul>
 
@@ -37,25 +37,53 @@
                     Set your location to see rallies near you.
                 </ul>
             </section>
+
+            <div id="rally-detail" class="closed">
+                <section class="drawer-container">
+
+                </section>
+            </div>
         </div>
     </main>
 
     <script type="text/javascript" async src="js/lib/jquery-3.2.0.min.js"></script>
     <script type="text/javascript" async src="js/lib/doT.min.js"></script>
     <script type="text/javascript" async src="js/rally-slider.js"></script>
-    <script type="text/javascript">
-        window.rallySlider = new RallySlider(document.getElementById("rally-drawer"));
-    </script>
-    <script type="text/javascript" async src="js/google-map.js"></script>
+    <script type="text/javascript" async src="js/index.js"></script>
     <script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&callback=initMap"></script>
+    <script type="text/javascript" async defer src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
     <script id="rally-list-tpl" type="text/x-dot-template">
         <li data-id="{{=it.id}}">
             <a href="{{=it.url}}">
-                <img src="{{=it.avatar}}" />
+                <img class="avatar" src="{{=it.avatar}}" />
                 <span>{{=it.name}}</span>
             </a>
         </li>
+    </script>
+
+    <script id="rally-detail-tpl" type="text/x-dot-template">
+        <a class="pure-button back-button" href="javascript:window.rallySlider.destroyDetailPane();">Back</a>
+
+        <div class="rally-detail-desc">
+            <img class="avatar" src="{{=it.avatar}}" />
+            <h2>{{=it.name}}</h2>
+            <p>{{=it.description}}</p>
+        </div>
+
+        <p>
+            Place: {{=it.location}}<br />
+            Time: {{=it.startTime}}</br>
+            Capacity: {{=it.capacity}}<br />
+            Organizer: {{=it.organizerName}}
+        </p>
+
+        {{? it.twitterHandle !== null }}
+        <a class="twitter-timeline" data-lang="en" data-width="16vw" data-height="400" data-dnt="true" href="https://twitter.com/{{=it.twitterHandle}}">
+            Tweets by {{=it.twitterHandle}}
+        </a> 
+        {{?}}
+        
     </script>
 </body>
 </html>

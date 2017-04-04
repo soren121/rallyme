@@ -72,8 +72,12 @@ main {
 
     overflow-x: hidden;
     transition-property: all;
-	transition-duration: .5s;
-	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+	transition-duration: .2s;
+	transition-timing-function: ease-out;
+}
+
+#rally-drawer.hold-open {
+    width: 20vw !important;
 }
 
 #rally-drawer.closed {
@@ -93,15 +97,15 @@ main {
     background: #7c8fa2;
 }
 
-#rally-drawer .drawer-toggle:after {
+.drawer-toggle:after {
     content: "\00AB";
 }
 
-#rally-drawer.closed .drawer-toggle:after {
+.closed:not(.hold-open) > .drawer-toggle:after {
     content: "\00BB";
 }
 
-#rally-drawer > section {
+.drawer-container {
     padding: 15px;
     min-width: calc(20vw - 50px);
 }
@@ -142,4 +146,45 @@ main {
     width: 40px;
     height: 40px;
     vertical-align: -70%;
+}
+
+#rally-detail {
+    max-width: calc(20vw - 20px);
+    z-index: 6;
+    background: #fff;
+
+    overflow-x: hidden;
+    transition-property: all;
+	transition-duration: .2s;
+	transition-timing-function: ease-out;
+}
+
+#rally-detail.closed {
+    max-width: 0;
+}
+
+#rally-detail .rally-detail-desc::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+#rally-detail .rally-detail-desc p {
+    margin: 4px 0;
+}
+
+#rally-detail .avatar {
+    float: left;
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    border: 1px solid #ddd;
+    margin-right: 15px;
+}
+
+#rally-detail .back-button {
+    display: block;
+    text-transform: uppercase;
+    text-decoration: none;
+    margin-bottom: 20px;
 }
