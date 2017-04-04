@@ -94,7 +94,7 @@ RallySlider.prototype.showDetailPane = function(id) {
     });
 
     // Zoom in
-    window.map.setZoom(16);
+    window.map.setZoom(15);
 
     // Load Twitter timeline
     twttr.widgets.load(this.detailPaneEle);
