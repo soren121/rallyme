@@ -41,10 +41,10 @@ RallySlider.prototype.destroyDetailPane = function() {
     this.element.classList.add("hold-open");
     this.detailPaneEle.classList.add("closed");
     setTimeout(function() {
+        this.detailPaneId = -1;
         this.element.querySelector(".drawer-container").style.display = "block";
         $(this.detailPaneEle.querySelector(".drawer-container")).empty();
         this.element.classList.remove("hold-open");
-        this.detailPaneId = -1;
     }.bind(this), 200);
 };
 

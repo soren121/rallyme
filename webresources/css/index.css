@@ -55,7 +55,7 @@ main {
 }
 
 #rally-drawer {
-    max-width: 20vw;
+    max-width: 25vw;
     max-height: calc(100% - 50px);
 
     display: flex;
@@ -77,7 +77,7 @@ main {
 }
 
 #rally-drawer.hold-open {
-    width: 20vw !important;
+    width: 25vw !important;
 }
 
 #rally-drawer.closed {
@@ -107,7 +107,7 @@ main {
 
 .drawer-container {
     padding: 15px;
-    min-width: calc(20vw - 50px);
+    min-width: calc(25vw - 50px);
 }
 
 #rally-drawer h2 {
@@ -149,7 +149,7 @@ main {
 }
 
 #rally-detail {
-    max-width: calc(20vw - 20px);
+    max-width: calc(25vw - 20px);
     z-index: 6;
     background: #fff;
 
