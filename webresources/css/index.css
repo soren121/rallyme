@@ -163,14 +163,14 @@ main {
     max-width: 0;
 }
 
-#rally-detail .rally-detail-desc::after {
-    content: "";
-    display: block;
-    clear: both;
+#rally-detail .rally-detail-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
-#rally-detail .rally-detail-desc p {
-    margin: 4px 0;
+#rally-detail .rally-detail-desc {
+    font-size: 0.9em;
 }
 
 #rally-detail .avatar {

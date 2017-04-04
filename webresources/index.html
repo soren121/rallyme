@@ -65,11 +65,12 @@
     <script id="rally-detail-tpl" type="text/x-dot-template">
         <a class="pure-button back-button" href="javascript:window.rallySlider.destroyDetailPane();">Back</a>
 
-        <div class="rally-detail-desc">
+        <div class="rally-detail-header">
             <img class="avatar" src="{{=it.avatar}}" />
             <h2>{{=it.name}}</h2>
-            <p>{{=it.description}}</p>
         </div>
+
+        <p class="rally-detail-desc">{{=it.description}}</p>
 
         <table>
             <tbody>

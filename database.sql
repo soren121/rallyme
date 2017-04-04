@@ -42,5 +42,5 @@ INSERT INTO `users` (`id`, `username`, `password`, `email`, `first_name`, `last_
 
 # Insert default rallies
 INSERT INTO `rallies` (`id`, `creator_id`, `name`, `description`, `twitter_handle`, `start_time`, `location`, `latitude`, `longitude`) VALUES
-(1, 1, 'Tax March', 'wayo wayo', 'taxmarch', '2017-04-15 16:00:00', 'Washington, DC', 38.8892, -77.0523),
-(2, 1, 'March for Science', 'wayo wayo', 'ScienceMarchDC', '2017-04-22 16:00:00', 'Washington, DC', 38.8892, -77.0523);
+(1, 1, 'Tax March', 'Tell Trump to release his tax returns. What\'s he hiding?', 'taxmarch', '2017-04-15 16:00:00', 'The National Mall', 38.8892, -77.0523),
+(2, 1, 'March for Science', 'We are political. We value diversity. We won\'t put up with harassment.', 'ScienceMarchDC', '2017-04-22 16:00:00', 'The National Mall', 38.8892, -77.0523);
