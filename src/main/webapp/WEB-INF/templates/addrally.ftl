@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/pure-min.css" />
 	<link rel="stylesheet" type="text/css" href="css/dashboard.css" />
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
  	 
 </head>
 
@@ -52,9 +53,22 @@
     </main>
 				<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   				<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  			<script>
+  				<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+  			    <script>
  				
     			 $( "#datepicker" ).datepicker();
+    			 $('#startTime').timepicker({
+			    	timeFormat: 'h:mm p',
+			   		interval: 60,
+			    	minTime: '10',
+			    	maxTime: '6:00pm',
+			   		defaultTime: '11',
+			    	startTime: '10:00',
+			    	dynamic: false,
+			    	dropdown: true,
+			    	scrollbar: true
+                    });
+    			 
   								
  			 </script>
 </body>
