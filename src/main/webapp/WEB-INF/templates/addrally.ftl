@@ -3,8 +3,11 @@
 <head>
     <title>Add Rally Page</title>
     <meta charset="utf-8" />
+ 
     <link rel="stylesheet" type="text/css" href="css/pure-min.css" />
 	<link rel="stylesheet" type="text/css" href="css/dashboard.css" />
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ 	 
 </head>
 
 <body>
@@ -28,6 +31,9 @@
                     TwitterHandle:<br>
                     <input class="pure-input-1" id="twitterHandle" type="text" name="twitterHandle" placeholder="twitterHandle" required /> 
                     
+                    Date:<br>
+                    <input class="pure-input-1" id="datepicker" type="text" name="datepicker" placeholder="datepicker" required /> 
+                    
                     Event Start Time:<br>
                     <input class="pure-input-1" id="startTime" type="text" name="startTime" placeholder="startTime" required /> 
                     
@@ -44,5 +50,12 @@
             <a id="organizer-button" class="pure-button pure-button-primary" href="submitRally">Submit</a>
         </p>
     </main>
+				<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  				<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  			<script>
+ 				
+    			 $( "#datepicker" ).datepicker();
+  								
+ 			 </script>
 </body>
 </html>
