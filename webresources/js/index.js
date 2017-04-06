@@ -33,7 +33,7 @@ function initMap() {
 
 document.getElementById('location-search-submit').addEventListener('click', geocodeLookup);
 document.getElementById('location-search-field').addEventListener('keyup', function(e) {
-    if(event.keyCode == 13) geocodeLookup(e);
+    if(e.keyCode == 13) geocodeLookup(e);
 });
 
 function geocodeLookup(e) {
