@@ -1,6 +1,7 @@
 package rallyme.controller;
 
 import rallyme.core.TemplateServlet;
+import rallyme.model.Rally;
 import rallyme.model.User;
 import rallyme.exception.UserException;
 
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -37,8 +39,25 @@ public class AddRally extends TemplateServlet {
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+        
+        String name = request.getParameter("name");
+        Timestamp startTime = new Timestamp((new java.util.Date()).getTime());
+        String location = request.getParameter("location");
+        float latitude = Float.parseFloat(request.getParameter("latitude"));
+        float longitude = Float.parseFloat(request.getParameter("longitude"));
+        User creator = (rallyme.model.User) request.getSession().getAttribute("user");
+        
+        Rally newRally = new Rally(name, startTime, location, latitude, longitude, creator);
+        
+        newRally.setDescription(request.getParameter("description"));
+        newRally.setTwitterHandle(request.getParameter("twitterHandle"));
+       //newRally.setEventCapacity(Integer.parseInt(request.getParameter("eventCapacity")));
+        newRally.setUrl(request.getParameter("url"));
+        newRally.save();
+        
     }
 
 }
