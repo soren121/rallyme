@@ -31,3 +31,11 @@ main {
 table {
     width: 100%;
 }
+
+.l-box {
+    padding: 1em;
+}
+
+.pure-form-stacked label {
+    margin-top: 20px;
+}
