@@ -6,6 +6,20 @@ html, body, #google-map {
     font-family: "Open Sans", sans-serif;
 }
 
+.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    stroke-width: 0;
+    stroke: currentColor;
+    fill: currentColor;
+}
+
+.pure-button .icon {
+    vertical-align: -10%;
+    padding-right: .25em;
+}
+
 header {
     /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f9f9f9+100 */
     background: #ffffff; /* Old browsers */
@@ -16,6 +30,7 @@ header {
     padding: 15px;
     color: #333;
     width: calc(100% - 30px);
+    min-width: 840px;
     height: 50px;
     display: flex;
     flex-flow: row nowrap;
@@ -34,7 +49,7 @@ header {
     padding: 0 30px;
 }
 
-#location-search input, #organizer-login {
+#location-search input {
     font-size: 1.25em;
     line-height: 1.4em;
 }
@@ -45,8 +60,18 @@ header {
     color: #333;
 }
 
+#location-search button {
+    height: 100%;
+}
+
+#location-search button svg {
+    width: 1.5em;
+    height: 1.5em;
+}
+
 #organizer-login {
-    margin-right: 30px;
+    height: 100%;
+    padding-top: .75em;
 }
 
 main {

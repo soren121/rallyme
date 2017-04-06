@@ -15,14 +15,32 @@
 <body>
 	<header>
         <a id="logo" href="."><img src="images/logo.svg" alt="RallyMe" /></a>
-        <h1>Add Rally</h1>
-        <a href="Login?logout=true" class="pure-button pure-button-primary">Logout</a>
+
+        <nav class="pure-menu pure-menu-horizontal">
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item"><a href="Dashboard" class="pure-menu-link">View your rallies</a></li>
+                <li class="pure-menu-item pure-menu-selected"><a href="AddRally" class="pure-menu-link">Add new rally</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-buttons">
+            <a href="Profile" class="pure-button">
+                <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-user"></use></svg>
+                Your Profile
+            </a>
+            <a href="Login?logout=true" class="pure-button pure-button-primary">
+                <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-exit"></use></svg>
+                Logout
+            </a>
+        </div>
 	</header>
 
     <main>
+        <h2>Add a new rally</h2>
+
         <form class="pure-form pure-form-stacked pure-g" action="AddRally" method="post">
             <fieldset class="pure-u-1 pure-u-md-1-2">
-                <div class="l-box">
+                <div class="w-box">
                     <label for="name">Event name</label>
                     <input class="pure-input-1" id="name" type="text" name="name" required /> 
                     
@@ -50,7 +68,7 @@
             </fieldset>
 
             <fieldset class="pure-u-1 pure-u-md-1-2">
-                <div class="l-box">
+                <div class="w-box">
                     <label for="us3-address">Event location</label>
                     <input class="pure-input-1" type="text" id="us3-address" required />
 
@@ -68,6 +86,7 @@
 	<script type="text/javascript" src="js/lib/jquery.timepicker.min.js"></script>
 	<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&sensor=false&libraries=places"></script>
     <script type="text/javascript" src="js/lib/locationpicker.jquery.min.js"></script>
+    <script type="text/javascript" async src="js/lib/svgxuse.min.js"></script>
     <script type="text/javascript">
         $('#date').datepicker();
 

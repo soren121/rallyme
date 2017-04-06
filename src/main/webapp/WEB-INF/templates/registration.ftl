@@ -33,5 +33,7 @@
             </form>
         </main>
     </div>
+
+    <script type="text/javascript" async src="js/lib/svgxuse.min.js"></script>
 </body>
 </html>

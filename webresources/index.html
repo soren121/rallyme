@@ -10,16 +10,21 @@
     <header>
         <img id="logo" src="images/logo.svg" alt="RallyMe" />
 
-        <form id="location-search" class="pure-form pure-g" action="" method="POST">
+        <div id="location-search" class="pure-form pure-g">
             <div class="pure-u-7-8">
-                <input type="text" name="search-text" autocomplete="off" placeholder="Enter your location..." />
+                <input type="text" id="location-search-field" name="search-text" autocomplete="off" placeholder="Enter your location..." />
             </div>
             <div class="pure-u-1-8">
-                <input type="submit" name="search-submit" class="pure-button" value="Search" />
+                <button class="pure-button" id="location-search-submit">
+                    <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-search"></use></svg>
+                </button>
             </div>
-        </form>
+        </div>
 
-        <a id="organizer-login" class="pure-button pure-button-primary" href="Login">Organizer login</a>
+        <a id="organizer-login" class="pure-button pure-button-primary" href="Login">
+            <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-key"></use></svg>
+            Organizer login
+        </a>
     </header>
 
     <main>
@@ -34,7 +39,12 @@
 
                 <h2>Local rallies</h2>
                 <ul id="local-rallies">
-                    Set your location to see rallies near you.
+                    <p>Set your location to see rallies near you.</p>
+
+                    <button class="pure-button" id="request-geolocation">
+                        <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-location2"></use></svg>
+                        Get location
+                    </button>
                 </ul>
             </section>
 
@@ -48,6 +58,7 @@
 
     <script type="text/javascript" async src="js/lib/jquery-3.2.0.min.js"></script>
     <script type="text/javascript" async src="js/lib/doT.min.js"></script>
+    <script type="text/javascript" async src="js/lib/svgxuse.min.js"></script>
     <script type="text/javascript" async src="js/rally-slider.js"></script>
     <script type="text/javascript" async src="js/index.js"></script>
     <script type="text/javascript" async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&callback=initMap"></script>

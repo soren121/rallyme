@@ -20,7 +20,7 @@ function initMap() {
                         lat: item.latitude, 
                         lng: item.longitude
                     },
-                    map: map,
+                    map: window.map,
                     animation: google.maps.Animation.DROP,
                     title: item.name
                 });
@@ -29,7 +29,33 @@ function initMap() {
             }
         });
     });
+}
 
+document.getElementById('location-search-submit').addEventListener('click', geocodeLookup);
+document.getElementById('location-search-field').addEventListener('keyup', function(e) {
+    if(event.keyCode == 13) geocodeLookup(e);
+});
+
+function geocodeLookup(e) {
+    // Get search query from input box
+    var searchQuery = document.getElementById('location-search-field').value.trim();
+    if(searchQuery.length === 0) {
+        return true;
+    }
+
+    // Lookup location using the Google Maps Geocoder API
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({address: searchQuery}, function(results, status) {
+        if(status === 'OK') {
+            // Center the map on the found location
+            window.map.setCenter(results[0].geometry.location);
+            // Zoom in
+            window.map.setZoom(12);
+        }
+    });
+}
+
+document.getElementById('request-geolocation').addEventListener('click', function(e) {
     // Ask user for their location automatically
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
@@ -45,26 +71,4 @@ function initMap() {
             alert('Geolocation failed :(');
         });
     }
-}
-
-document.getElementById('location-search').addEventListener('submit', function(e) {
-    // Disable normal form submission
-    e.preventDefault();
-
-    // Get search query from input box
-    var searchQuery = e.target.elements[0].value.trim();
-    if(searchQuery.length === 0) {
-        return true;
-    }
-
-    // Lookup location using the Google Maps Geocoder API
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({address: searchQuery}, function(results, status) {
-        if(status === 'OK') {
-            // Center the map on the found location
-            window.map.setCenter(results[0].geometry.location);
-            // Zoom in
-            window.map.setZoom(12);
-        }
-    });
 });
