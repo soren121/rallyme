@@ -5,7 +5,7 @@ html, body {
     height: 100%;
 }
 
-html, .pure-g {
+html, .pure-g, .pure-g [class*="pure-u"] {
     font-family: "Open Sans", sans-serif;
 }
 
@@ -72,6 +72,14 @@ table {
 
 .w-box {
     padding: 0 1em;
+}
+
+.w-box-left {
+    padding-right: 1em;
+}
+
+.w-box-right {
+    padding-left: 1em;
 }
 
 .pure-form-stacked label {

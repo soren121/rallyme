@@ -40,7 +40,7 @@
 
         <form class="pure-form pure-form-stacked pure-g" action="AddRally" method="post">
             <fieldset class="pure-u-1 pure-u-md-1-2">
-                <div class="w-box">
+                <div class="w-box-left">
                     <label for="name">Event name</label>
                     <input class="pure-input-1" id="name" type="text" name="name" required /> 
                     
@@ -52,13 +52,17 @@
                     
                     <div class="pure-g">
                         <div class="pure-u-1-2">
-                            <label for="date">Event date</label>
-                            <input class="pure-input-1" id="date" type="text" name="date" required /> 
+                            <div class="w-box-left">
+                                <label for="date">Event date</label>
+                                <input class="pure-input-1" id="date" type="text" name="date" required /> 
+                            </div>
                         </div>
 
                         <div class="pure-u-1-2">
-                            <label for="time">Event start time</label>
-                            <input class="pure-input-1" id="time" type="text" name="startTime" required />
+                            <div class="w-box-right">
+                                <label for="time">Event start time</label>
+                                <input class="pure-input-1" id="time" type="text" name="startTime" required />
+                            </div>
                         </div>
                     </div>
 
@@ -68,7 +72,7 @@
             </fieldset>
 
             <fieldset class="pure-u-1 pure-u-md-1-2">
-                <div class="w-box">
+                <div class="w-box-right">
                     <label for="us3-address">Event location</label>
                     <input class="pure-input-1" type="text" id="us3-address" required />
 
