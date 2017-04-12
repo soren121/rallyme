@@ -239,4 +239,49 @@ public class Rally {
         return (Rally[]) rallyList.toArray(new Rally[rallyList.size()]);
     }
     
+    /**
+	    Return 1 Rally from database and is retrieved with rally 'id'
+	
+	    @return A Rally object from database.
+	    @throws RallyException
+     */
+    public static Rally getRallyById(int rallyId) throws RallyException {
+    	Connection conn = Database.getConnection();
+        ResultSet result;
+        Rally rally = null;
+
+        // Attempt to get rally
+        try {
+            PreparedStatement stmt = conn.prepareStatement(
+                "SELECT * FROM rallies WHERE id='?';");
+            stmt.setInt(1, rallyId);
+    
+            // Execute query
+            result = stmt.executeQuery();
+            //will retrieve 1 rally with this id from database if exsists
+            while(result.next()) {
+                rally = new Rally(
+                    result.getInt("id"),
+                    result.getString("name"),
+                    result.getTimestamp("start_time"), 
+                    result.getString("location"),
+                    result.getFloat("latitude"),
+                    result.getFloat("longitude"), 
+                    User.getUserById(result.getInt("creator_id"))
+                );
+
+                rally.setDescription(result.getString("description"));
+                rally.setTwitterHandle(result.getString("twitter_handle"));
+                rally.setUrl(result.getString("url"));
+                rally.setEventCapacity(result.getInt("event_capacity"));
+
+            }
+        } catch(SQLException ex) {
+            throw new RallyException("SQL exception: " + ex.getMessage());
+        }
+
+        // return rally if found, otherwise return null
+        return rally;
+    }
+    
 }
