@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS `rallies` (
     `creator_id` int(11) unsigned NOT NULL,
     `parent_id` int(11) unsigned,
     `name` varchar(100) NOT NULL,
+    `type` ENUM('local', 'national') NOT NULL DEFAULT 'national',
     `description` TEXT,
     `twitter_handle` varchar(100),
     `url` varchar(255),

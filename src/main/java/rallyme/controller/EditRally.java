@@ -2,6 +2,7 @@ package rallyme.controller;
 
 import rallyme.core.TemplateServlet;
 import rallyme.model.Rally;
+import rallyme.model.RallyType;
 import rallyme.model.User;
 import rallyme.exception.UserException;
 
@@ -50,7 +51,7 @@ public class EditRally extends TemplateServlet {
         float longitude = Float.parseFloat(request.getParameter("longitude"));
         User creator = (rallyme.model.User) request.getSession().getAttribute("user");
         
-        Rally newRally = new Rally(name, startTime, location, latitude, longitude, creator);
+        Rally newRally = new Rally(name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
         
         newRally.setDescription(request.getParameter("description"));
         newRally.setTwitterHandle(request.getParameter("twitterHandle"));
