@@ -18,7 +18,8 @@
 
         <nav class="pure-menu pure-menu-horizontal">
             <ul class="pure-menu-list">
-                <li class="pure-menu-item"><a href="Dashboard" class="pure-menu-link">View your profile</a></li>
+                <li class="pure-menu-item pure-menu-selected"><a href="Dashboard" class="pure-menu-link">View your rallies</a></li>
+                <li class="pure-menu-item"><a href="AddRally" class="pure-menu-link">Add new rally</a></li>
             </ul>
         </nav>
 
