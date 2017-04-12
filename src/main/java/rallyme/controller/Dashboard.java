@@ -26,16 +26,18 @@ public class Dashboard extends TemplateServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+         User user = (User)request.getSession().getAttribute("user");
+
         Map<String, Object> root = new HashMap<>();
-        Rally[] rally;
+        Rally[] rallies;
 		try {
-			rally = Rally.getAllRallies();
+			rallies = Rally.getAllRallies((float)0, (float)0, user.getId());
 		} catch (RallyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return;
 		}
-        root.put("rallylist", rally);
+        root.put("rallylist", rallies);
         try {
             freemarker.getTemplate("dashboard.ftl").process(root, response.getWriter());
         } catch(TemplateException ex) {
