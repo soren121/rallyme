@@ -52,7 +52,7 @@
                     <td>${rally.getStartTime()}</td>
                     <td>${rally.getLocation()}</td>
                    
-                    <td><a id="organizer-button" class="pure-button" href="AddRally">Edit Rally</a></td>
+                    <td><a id="organizer-button" class="pure-button" href="EditRally">Edit Rally</a></td>
                 </tr>
                 
            	</#list>
