@@ -3,6 +3,7 @@ package rallyme.controller;
 import rallyme.core.TemplateServlet;
 import rallyme.model.Rally;
 import rallyme.model.User;
+import rallyme.exception.RallyException;
 import rallyme.exception.UserException;
 
 import java.io.IOException;
@@ -43,20 +44,23 @@ public class EditRally extends TemplateServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         
-        String name = request.getParameter("name");
-        Timestamp startTime = new Timestamp((new java.util.Date()).getTime());
-        String location = request.getParameter("location");
-        float latitude = Float.parseFloat(request.getParameter("latitude"));
-        float longitude = Float.parseFloat(request.getParameter("longitude"));
-        User creator = (rallyme.model.User) request.getSession().getAttribute("user");
+        Rally rally = null;
+        String rally_id = request.getParameter("rally_id");
         
-        Rally newRally = new Rally(name, startTime, location, latitude, longitude, creator);
+        try {
+			rally = Rally.getRallyById(rally_id);
+		} catch (NumberFormatException | RallyException e) {
+			e.printStackTrace();
+		}
         
-        newRally.setDescription(request.getParameter("description"));
-        newRally.setTwitterHandle(request.getParameter("twitterHandle"));
-       //newRally.setEventCapacity(Integer.parseInt(request.getParameter("eventCapacity")));
-        newRally.setUrl(request.getParameter("url"));
-        newRally.save();
+        Map<String, Object> root = new HashMap<>();
+        root.put("rally", rally);
+        
+        try {
+            freemarker.getTemplate("editrally.ftl").process(root, response.getWriter());
+        } catch(TemplateException ex) {
+            throw new RuntimeException(ex);
+        }
         
     }
 

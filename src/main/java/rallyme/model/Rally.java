@@ -13,10 +13,13 @@ import rallyme.exception.RallyException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Time;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Vector;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -79,6 +82,18 @@ public class Rally {
     
     public Timestamp getStartTime() {
         return this.startTime;
+    }
+    
+    public String getClockTime(){
+    	java.util.Date date = this.startTime;    	
+    	SimpleDateFormat timeformat = new SimpleDateFormat("h:mm a");
+    	return timeformat.format(date).toString();
+    }
+    
+    public String getDateTime(){
+    	java.util.Date date = this.startTime;    	
+    	SimpleDateFormat timeformat = new SimpleDateFormat("MM/dd/yyy");
+    	return timeformat.format(date).toString();
     }
 
     public String getLocation() {
@@ -245,36 +260,32 @@ public class Rally {
 	    @return A Rally object from database.
 	    @throws RallyException
      */
-    public static Rally getRallyById(int rallyId) throws RallyException {
+    public static Rally getRallyById(String rallyId) throws RallyException {
     	Connection conn = Database.getConnection();
         ResultSet result;
         Rally rally = null;
 
         // Attempt to get rally
         try {
-            PreparedStatement stmt = conn.prepareStatement(
-                "SELECT * FROM rallies WHERE id='?';");
-            stmt.setInt(1, rallyId);
-    
-            // Execute query
-            result = stmt.executeQuery();
-            //will retrieve 1 rally with this id from database if exsists
-            while(result.next()) {
+        	 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM rallies WHERE id = ? LIMIT 1");
+             stmt.setString(1, rallyId);
+             ResultSet rs = stmt.executeQuery();
+           
+            //will retrieve 1 rally with this id from database if exists
+            while(rs.next()) {
                 rally = new Rally(
-                    result.getInt("id"),
-                    result.getString("name"),
-                    result.getTimestamp("start_time"), 
-                    result.getString("location"),
-                    result.getFloat("latitude"),
-                    result.getFloat("longitude"), 
-                    User.getUserById(result.getInt("creator_id"))
+                		rs.getInt("id"),
+                		rs.getString("name"),
+                		rs.getTimestamp("start_time"), 
+                		rs.getString("location"),
+                		rs.getFloat("latitude"),
+                		rs.getFloat("longitude"), 
+                    User.getUserById(rs.getInt("creator_id"))
                 );
-
-                rally.setDescription(result.getString("description"));
-                rally.setTwitterHandle(result.getString("twitter_handle"));
-                rally.setUrl(result.getString("url"));
-                rally.setEventCapacity(result.getInt("event_capacity"));
-
+                rally.setDescription(rs.getString("description"));
+                rally.setTwitterHandle(rs.getString("twitter_handle"));
+                rally.setUrl(rs.getString("url"));
+                rally.setEventCapacity(rs.getInt("event_capacity"));
             }
         } catch(SQLException ex) {
             throw new RallyException("SQL exception: " + ex.getMessage());

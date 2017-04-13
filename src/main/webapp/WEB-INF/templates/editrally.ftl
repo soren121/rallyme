@@ -37,24 +37,23 @@
 
     <main>
         <h2>Edit Rally</h2>
-
         <form class="pure-form pure-form-stacked pure-g" action="AddRally" method="post">
             <fieldset class="pure-u-1 pure-u-md-1-2">
                 <div class="w-box-left">
                     <label for="name">Event name</label>
-                    <input class="pure-input-1" id="name" type="text" name="name" required /> 
+                    <input class="pure-input-1" id="name" type="text" value="${rally.getName()}" name="name"required /> 
                     
                     <label for="description">Description</label>
-                    <textarea class="pure-input-1" id="description" name="description" required></textarea> 
+                    <textarea class="pure-input-1" id="description" name="description" required>${rally.getDescription()}</textarea> 
                     
                     <label for="twitterHandle">Twitter username (optional)</label>
-                    <input class="pure-input-1" id="twitterHandle" type="text" name="twitterHandle" /> 
+                    <input class="pure-input-1" id="twitterHandle" value="${rally.getTwitterHandle()}" type="text" name="twitterHandle" /> 
                     
                     <div class="pure-g">
                         <div class="pure-u-1-2">
                             <div class="w-box-left">
                                 <label for="date">Event date</label>
-                                <input class="pure-input-1" id="date" type="text" name="date" required /> 
+                                <input class="pure-input-1" id="date" type="text" value="${rally.getDateTime()}" name="date" required /> 
                             </div>
                         </div>
 
@@ -76,7 +75,7 @@
                     <label for="us3-address">Event location</label>
                     <input class="pure-input-1" type="text" id="us3-address" required />
 
-                    <div id="us3" style="width: 100%; height: 350px;"></div>
+                <div id="us3" style="width: 100%; height: 350px;"></div>
 
                     <input type="hidden" id="latitude" name="latitude" required />
                     <input type="hidden" id="longitude" name="longitude" required />
@@ -96,14 +95,14 @@
 
         $('#time').timepicker({
             timeFormat: 'h:mm p',
-            defaultTime: '12:00 pm',
+            defaultTime: '${rally.getClockTime()}',
             dropdown: false
         });
 
         $('#us3').locationpicker({
             location: {
-                latitude: 38.9071923,
-                longitude: -77.03687070000001
+                latitude: ${rally.getLatitude()},
+                longitude: ${rally.getLongitude()}
             },
             radius: 0,
             inputBinding: {
