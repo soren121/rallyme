@@ -27,6 +27,7 @@ public class Rally {
     
     private int id = 0;
     private String name;
+    private RallyType type = RallyType.NATIONAL;
     private String description = "";
     private String twitterHandle;
     private String url;
@@ -40,9 +41,10 @@ public class Rally {
     /****************
      * Constructors
      ***************/
-    public Rally(int id, String name, Timestamp startTime, String location, float latitude, float longitude, User creator){
+    public Rally(int id, String name, RallyType type, Timestamp startTime, String location, float latitude, float longitude, User creator){
         this.id = id;
         this.name = name;
+        this.type = type;
         this.startTime = startTime;
         this.location = location;
         this.latitude = latitude;
@@ -50,8 +52,9 @@ public class Rally {
         this.creator = creator;
     }
     
-    public Rally(String name, Timestamp startTime, String location, float latitude, float longitude, User creator) {
+    public Rally(String name, RallyType type, Timestamp startTime, String location, float latitude, float longitude, User creator) {
         this.name = name;
+        this.type = type;
         this.startTime = startTime;
         this.location = location;
         this.latitude = latitude;
@@ -70,6 +73,10 @@ public class Rally {
     
     public String getDescription() {
         return this.description;
+    }
+
+    public RallyType getType() {
+        return this.type;
     }
     
     public String getTwitterHandle() {
@@ -215,7 +222,7 @@ public class Rally {
         @return An array of rally objects for all in database.
         @throws RallyException
     */
-    public static Rally[] getAllRallies() throws RallyException {
+    public static Rally[] getAllRallies(float latitude, float longitude, int creatorId) throws RallyException {
         Connection conn = Database.getConnection();
         ResultSet results;
         Vector<Rally> rallyList = new Vector<Rally>(); //used to create a String[] that is sent to next page and represented as table
@@ -223,15 +230,26 @@ public class Rally {
         // Attempt to delete rally
         try {
             PreparedStatement stmt = conn.prepareStatement(
-                "SELECT * FROM rallies;");
+                "SELECT *, " +
+                    "(3959 * acos(cos(radians(?)) * cos(radians(latitude)) *" + 
+                    "cos(radians(longitude) - radians(?)) +" +
+                    "sin(radians(?)) * sin(radians(latitude)))) AS distance" +
+                 " FROM rallies HAVING type = 'national' OR (distance <= 25 OR creator_id = ?);");
     
+            // Set variables
+            stmt.setFloat(1, latitude);
+            stmt.setFloat(2, longitude);
+            stmt.setFloat(3, latitude);
+            stmt.setInt(4, creatorId);
             // Execute query
             results = stmt.executeQuery();
+
             //iterate through results and add to list
             while(results.next()) {
                 Rally rally = new Rally(
                     results.getInt("id"),
                     results.getString("name"),
+                    RallyType.valueOf(results.getString("type").toUpperCase()),
                     results.getTimestamp("start_time"), 
                     results.getString("location"),
                     results.getFloat("latitude"),
@@ -262,30 +280,31 @@ public class Rally {
      */
     public static Rally getRallyById(String rallyId) throws RallyException {
     	Connection conn = Database.getConnection();
-        ResultSet result;
         Rally rally = null;
 
         // Attempt to get rally
         try {
         	 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM rallies WHERE id = ? LIMIT 1");
              stmt.setString(1, rallyId);
-             ResultSet rs = stmt.executeQuery();
+             ResultSet result = stmt.executeQuery();
            
             //will retrieve 1 rally with this id from database if exists
-            while(rs.next()) {
+            while(result.next()) {
                 rally = new Rally(
-                		rs.getInt("id"),
-                		rs.getString("name"),
-                		rs.getTimestamp("start_time"), 
-                		rs.getString("location"),
-                		rs.getFloat("latitude"),
-                		rs.getFloat("longitude"), 
-                    User.getUserById(rs.getInt("creator_id"))
+                    result.getInt("id"),
+                    result.getString("name"),
+                    RallyType.valueOf(result.getString("type").toUpperCase()),
+                    result.getTimestamp("start_time"), 
+                    result.getString("location"),
+                    result.getFloat("latitude"),
+                    result.getFloat("longitude"), 
+                    User.getUserById(result.getInt("creator_id"))
+
                 );
-                rally.setDescription(rs.getString("description"));
-                rally.setTwitterHandle(rs.getString("twitter_handle"));
-                rally.setUrl(rs.getString("url"));
-                rally.setEventCapacity(rs.getInt("event_capacity"));
+                rally.setDescription(result.getString("description"));
+                rally.setTwitterHandle(result.getString("twitter_handle"));
+                rally.setUrl(result.getString("url"));
+                rally.setEventCapacity(result.getInt("event_capacity"));
             }
         } catch(SQLException ex) {
             throw new RallyException("SQL exception: " + ex.getMessage());

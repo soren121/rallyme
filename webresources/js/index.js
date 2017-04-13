@@ -12,7 +12,7 @@ function initMap() {
     window.rallySlider = new RallySlider(document.getElementById("rally-drawer"));
     
     // call servlet Get for Json and place all markers on map
-    $.getJSON("AjaxRally", function(data) {
+    $.post("AjaxRally?action=listRallies", {latitude: 39.05, longitude: -94.34}, function(data) {
         $.each(data, function(index, item) { 
             if(item.latitude !== null && item.longitude !== null) {
                 var marker = new google.maps.Marker({
@@ -27,7 +27,7 @@ function initMap() {
 
                 window.rallySlider.add(item);
             }
-        });
+        }, "json");
     });
 }
 

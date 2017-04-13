@@ -2,6 +2,7 @@ package rallyme.controller;
 
 import rallyme.core.TemplateServlet;
 import rallyme.model.Rally;
+import rallyme.model.RallyType;
 import rallyme.model.User;
 import rallyme.exception.RallyException;
 import rallyme.exception.UserException;
