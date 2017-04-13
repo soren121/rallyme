@@ -58,7 +58,7 @@ function initMap() {
     var userLatitude = 0, userLongitude = 0;
     if(storageAvailable('localStorage')) {
         if(localStorage.getItem('latitude') !== null && localStorage.getItem('longitude') !== null) {
-            userLatiude = localStorage.latitude;
+            userLatitude = localStorage.latitude;
             userLongitude = localStorage.longitude;
             document.getElementById("location-prompt").style.display = "none";
         }
