@@ -142,8 +142,9 @@ main {
     margin: 0;
 }
 
-#rally-drawer ul {
+#rally-drawer ul, #location-prompt {
     padding-left: 0;
+    margin: 1em 0;
 }
 
 #rally-drawer li {

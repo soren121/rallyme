@@ -1,18 +1,27 @@
-function initMap() {
-    var mapEl = document.querySelector('#google-map');
-    // Show all of US in default view
-    window.map = new google.maps.Map(mapEl, {
-        center: {lat: 39.05, lng: -94.34}, // roughly the center of the US
-        zoom: 5,
-        mapTypeControl: false,
-        streetViewControl: false,
-        fullscreenControl: false
-    });
+// Check to see if local or session storage is available
+function storageAvailable(type) {
+	try {
+		var storage = window[type], x = '__storage_test__';
+		storage.setItem(x, x);
+		storage.removeItem(x);
+		return true;
+	} catch(e) {
+		return false;
+	}
+}
 
-    window.rallySlider = new RallySlider(document.getElementById("rally-drawer"));
-    
+function loadRallies(ajaxOptions) {
+    // Clear lists
+    $("#national-rallies, #local-rallies").empty();
+
+    // Clear existing map markers
+    for(var i = 0; i < window.mapMarkers.length; i++) {
+        window.mapMarkers[i].setMap(null);
+    }
+    window.mapMarkers.length = 0;
+
     // call servlet Get for Json and place all markers on map
-    $.post("AjaxRally?action=listRallies", {latitude: 39.05, longitude: -94.34}, function(data) {
+    $.post("AjaxRally?action=listRallies", ajaxOptions, function(data) {
         $.each(data, function(index, item) { 
             if(item.latitude !== null && item.longitude !== null) {
                 var marker = new google.maps.Marker({
@@ -25,10 +34,38 @@ function initMap() {
                     title: item.name
                 });
 
+                window.mapMarkers.push(marker);
                 window.rallySlider.add(item);
             }
         }, "json");
     });
+}
+
+function initMap() {
+    var mapEl = document.querySelector('#google-map');
+    // Show all of US in default view
+    window.map = new google.maps.Map(mapEl, {
+        center: {lat: 39.05, lng: -94.34}, // roughly the center of the US
+        zoom: 5,
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: false
+    });
+
+    window.mapMarkers = [];
+    window.rallySlider = new RallySlider(document.getElementById("rally-drawer"));
+
+    var userLatitude = 0, userLongitude = 0;
+    if(storageAvailable('localStorage')) {
+        if(localStorage.getItem('latitude') !== null && localStorage.getItem('longitude') !== null) {
+            userLatiude = localStorage.latitude;
+            userLongitude = localStorage.longitude;
+            document.getElementById("location-prompt").style.display = "none";
+        }
+    }
+
+    var ajaxOptions = {latitude: userLatitude, longitude: userLongitude, radius: 25};
+    loadRallies(ajaxOptions);
 }
 
 document.getElementById('location-search-submit').addEventListener('click', geocodeLookup);
@@ -67,6 +104,20 @@ document.getElementById('request-geolocation').addEventListener('click', functio
 
             // Zoom in
             window.map.setZoom(12);
+
+            // Save location in local storage
+            if(storageAvailable('localStorage')) {
+                localStorage.latitude = position.coords.latitude;
+                localStorage.longitude = position.coords.longitude;
+            }
+
+            var ajaxOptions = {
+                latitude: position.coords.latitude, 
+                longitude: position.coords.longitude, 
+                radius: 25
+            };
+
+            loadRallies(ajaxOptions);
         }, function() {
             alert('Geolocation failed :(');
         });

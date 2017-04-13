@@ -23,8 +23,7 @@ public class AjaxRally extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	
-        
+        return;
     }
 
     /**
@@ -35,22 +34,20 @@ public class AjaxRally extends HttpServlet {
 
         if(action != null && action.equals("listRallies")) {
             Rally[] ralliesArray;
-            String jsonString;
             
             try {
-                String latitude = request.getParameter("latitude");
-                String longitude = request.getParameter("longitude");
-                latitude = latitude != null ? latitude : "0.0";
-                longitude = longitude != null ? longitude : "0.0";
+                float latitude = Float.valueOf(request.getParameter("latitude")).floatValue();
+                float longitude = Float.valueOf(request.getParameter("longitude")).floatValue();
+                int radius = Integer.parseInt(request.getParameter("radius"));
 
-                ralliesArray = Rally.getAllRallies(Float.valueOf(latitude), Float.valueOf(longitude), 0);
+                ralliesArray = Rally.getRalliesByLocation(latitude, longitude, radius);
+
                 Gson gson = new Gson();
-                jsonString = gson.toJson(ralliesArray); //convert Obj[] array to json string
+                //convert Rally[] array to json string
+                String jsonString = gson.toJson(ralliesArray);
                 
                 response.setContentType("application/json");
-                PrintWriter out = response.getWriter();
-                out.print(jsonString);
-                out.flush();
+                response.getWriter().print(jsonString);
             } catch (RallyException ex) {
                 ex.printStackTrace();
             }	

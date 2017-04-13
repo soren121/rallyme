@@ -92,15 +92,15 @@ public class Rally {
     }
     
     public String getClockTime(){
-    	java.util.Date date = this.startTime;    	
-    	SimpleDateFormat timeformat = new SimpleDateFormat("h:mm a");
-    	return timeformat.format(date).toString();
+        java.util.Date date = this.startTime;        
+        SimpleDateFormat timeformat = new SimpleDateFormat("h:mm a");
+        return timeformat.format(date).toString();
     }
     
     public String getDateTime(){
-    	java.util.Date date = this.startTime;    	
-    	SimpleDateFormat timeformat = new SimpleDateFormat("MM/dd/yyy");
-    	return timeformat.format(date).toString();
+        java.util.Date date = this.startTime;        
+        SimpleDateFormat timeformat = new SimpleDateFormat("MM/dd/yyy");
+        return timeformat.format(date).toString();
     }
 
     public String getLocation() {
@@ -215,36 +215,16 @@ public class Rally {
             throw new RallyException("An unknown error adding new rally has occurred.");
         }
     }
-  
-    /**
-        Gets an array of all rallies in the database.
 
-        @return An array of rally objects for all in database.
-        @throws RallyException
-    */
-    public static Rally[] getAllRallies(float latitude, float longitude, int creatorId) throws RallyException {
-        Connection conn = Database.getConnection();
+    private static Rally[] getRallies(PreparedStatement pstmt) throws RallyException {
         ResultSet results;
         Vector<Rally> rallyList = new Vector<Rally>(); //used to create a String[] that is sent to next page and represented as table
 
-        // Attempt to delete rally
+        //iterate through results and add to list
         try {
-            PreparedStatement stmt = conn.prepareStatement(
-                "SELECT *, " +
-                    "(3959 * acos(cos(radians(?)) * cos(radians(latitude)) *" + 
-                    "cos(radians(longitude) - radians(?)) +" +
-                    "sin(radians(?)) * sin(radians(latitude)))) AS distance" +
-                 " FROM rallies HAVING type = 'national' OR (distance <= 25 OR creator_id = ?);");
-    
-            // Set variables
-            stmt.setFloat(1, latitude);
-            stmt.setFloat(2, longitude);
-            stmt.setFloat(3, latitude);
-            stmt.setInt(4, creatorId);
             // Execute query
-            results = stmt.executeQuery();
+            results = pstmt.executeQuery();
 
-            //iterate through results and add to list
             while(results.next()) {
                 Rally rally = new Rally(
                     results.getInt("id"),
@@ -271,47 +251,77 @@ public class Rally {
         // return list in array form
         return (Rally[]) rallyList.toArray(new Rally[rallyList.size()]);
     }
+
+    public static Rally[] getRalliesByUser(int creatorId) throws RallyException {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt;
+
+        try {
+            // Attempt to get rallies
+            stmt = conn.prepareStatement(
+                "SELECT * FROM rallies WHERE creator_id = ?;");
+
+            // Set variables
+            stmt.setInt(1, creatorId);
+        } catch(SQLException ex) {
+            throw new RallyException("SQL exception: " + ex.getMessage());
+        }
+
+        return Rally.getRallies(stmt);
+    }
+  
+    /**
+        Gets an array of all rallies in the database.
+
+        @return An array of rally objects for all in database.
+        @throws RallyException
+    */
+    public static Rally[] getRalliesByLocation(float latitude, float longitude, int radius) throws RallyException {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt;
+
+        try {
+            // Attempt to get rallies
+            stmt = conn.prepareStatement(
+                "SELECT *, " +
+                "(3959 * acos(cos(radians(?)) * cos(radians(latitude)) *" + 
+                "cos(radians(longitude) - radians(?)) +" +
+                "sin(radians(?)) * sin(radians(latitude)))) AS distance" +
+                " FROM rallies HAVING type = 'national' OR distance <= ?;");
+
+            // Set variables
+            stmt.setFloat(1, latitude);
+            stmt.setFloat(2, longitude);
+            stmt.setFloat(3, latitude);
+            stmt.setInt(4, radius);
+        } catch(SQLException ex) {
+            throw new RallyException("SQL exception: " + ex.getMessage());
+        }
+
+        return Rally.getRallies(stmt);
+    }
     
     /**
-	    Return 1 Rally from database and is retrieved with rally 'id'
-	
-	    @return A Rally object from database.
-	    @throws RallyException
+        Return 1 Rally from database and is retrieved with rally 'id'
+    
+        @return A Rally object from database.
+        @throws RallyException
      */
     public static Rally getRallyById(String rallyId) throws RallyException {
-    	Connection conn = Database.getConnection();
-        Rally rally = null;
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt;
 
         // Attempt to get rally
         try {
-        	 PreparedStatement stmt = conn.prepareStatement("SELECT * FROM rallies WHERE id = ? LIMIT 1");
-             stmt.setString(1, rallyId);
-             ResultSet result = stmt.executeQuery();
-           
-            //will retrieve 1 rally with this id from database if exists
-            while(result.next()) {
-                rally = new Rally(
-                    result.getInt("id"),
-                    result.getString("name"),
-                    RallyType.valueOf(result.getString("type").toUpperCase()),
-                    result.getTimestamp("start_time"), 
-                    result.getString("location"),
-                    result.getFloat("latitude"),
-                    result.getFloat("longitude"), 
-                    User.getUserById(result.getInt("creator_id"))
-
-                );
-                rally.setDescription(result.getString("description"));
-                rally.setTwitterHandle(result.getString("twitter_handle"));
-                rally.setUrl(result.getString("url"));
-                rally.setEventCapacity(result.getInt("event_capacity"));
-            }
+            stmt = conn.prepareStatement("SELECT * FROM rallies WHERE id = ? LIMIT 1");
+            stmt.setString(1, rallyId);
         } catch(SQLException ex) {
             throw new RallyException("SQL exception: " + ex.getMessage());
         }
 
         // return rally if found, otherwise return null
-        return rally;
+        Rally[] rallies = Rally.getRallies(stmt);
+        return rallies[0];
     }
     
 }

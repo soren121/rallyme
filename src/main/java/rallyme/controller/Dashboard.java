@@ -31,7 +31,7 @@ public class Dashboard extends TemplateServlet {
         Map<String, Object> root = new HashMap<>();
         Rally[] rallies;
 		try {
-			rallies = Rally.getAllRallies((float)0, (float)0, user.getId());
+			rallies = Rally.getRalliesByUser(user.getId());
 		} catch (RallyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
