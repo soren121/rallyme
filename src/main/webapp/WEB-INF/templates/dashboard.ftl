@@ -34,30 +34,28 @@
 
     <main>
         <h2>Your rallies</h2>
-        <form class="pure-form pure-form-stacked pure-g" action="EditRally" method="post">
-            <fieldset class="pure-u-1 pure-u-md-1-2">
-		        <table class="pure-table pure-table-striped">
-		            <thead>
-		                <tr>
-		                    <th>Rally name</th>
-		                    <th>Start time</th>
-		                    <th>Location</th>
-		                    <th>&nbsp;</th>
-		                </tr>
-		            </thead>
-		
-		            <tbody>
-		              <#list rallylist as rally>
-		                	<tr>
-		                    <td>${rally.getName()}</td>
-		                    <td>${rally.getStartTime()}</td>
-		                    <td>${rally.getLocation()}</td>
-		                    <td><button id="organizer-button" name="rally_id" class="pure-button" type="submit" value="${rally.getId()}">Edit</button></td>
-		                </tr>
-		           	</#list>
-		             </tbody>
-		        </table>
-        	</fieldset>
+        <form action="EditRally" method="post">
+            <table class="pure-table pure-table-striped">
+                <thead>
+                    <tr>
+                        <th>Rally name</th>
+                        <th>Start time</th>
+                        <th>Location</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <#list rallylist as rally>
+                        <tr>
+                        <td>${rally.getName()}</td>
+                        <td>${rally.getStartTime()}</td>
+                        <td>${rally.getLocation()}</td>
+                        <td><button id="organizer-button" name="rally_id" class="pure-button" type="submit" value="${rally.getId()}">Edit</button></td>
+                    </tr>
+                </#list>
+                    </tbody>
+            </table>
         </form>
         
         <p>
