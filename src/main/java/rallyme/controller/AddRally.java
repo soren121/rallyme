@@ -4,6 +4,7 @@ import rallyme.core.TemplateServlet;
 import rallyme.model.Rally;
 import rallyme.model.RallyType;
 import rallyme.model.User;
+import rallyme.exception.RallyException;
 import rallyme.exception.UserException;
 
 import java.io.IOException;
@@ -31,6 +32,18 @@ public class AddRally extends TemplateServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> root = new HashMap<>();
+        
+        Rally[] rallies;
+        
+		try {
+			rallies = Rally.getAllNationalRallies();
+		} catch (RallyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
+		
+        root.put("rallylist", rallies);
 
         try {
             freemarker.getTemplate("addrally.ftl").process(root, response.getWriter());
@@ -75,7 +88,8 @@ public class AddRally extends TemplateServlet {
         newRally.setDescription(request.getParameter("description"));
         newRally.setTwitterHandle(request.getParameter("twitterHandle"));
         //newRally.setEventCapacity(Integer.parseInt(request.getParameter("eventCapacity")));
-        newRally.setUrl(request.getParameter("url"));
+        newRally.setUrl(request.getParameter("url"));        
+        newRally.setParentId(Integer.parseInt(request.getParameter("parentRally")));
         newRally.save();
         
         response.sendRedirect("Dashboard");

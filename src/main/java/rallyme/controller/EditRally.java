@@ -47,6 +47,15 @@ public class EditRally extends TemplateServlet {
         
         Rally rally = null;
         String rally_id = request.getParameter("rally_id");
+        Rally[] rallies;
+        
+		try {
+			rallies = Rally.getAllNationalRallies();
+		} catch (RallyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return;
+		}
         
         try {
 			rally = Rally.getRallyById(rally_id);
@@ -56,6 +65,7 @@ public class EditRally extends TemplateServlet {
         
         Map<String, Object> root = new HashMap<>();
         root.put("rally", rally);
+        root.put("rallylist", rallies);
         
         try {
             freemarker.getTemplate("editrally.ftl").process(root, response.getWriter());
