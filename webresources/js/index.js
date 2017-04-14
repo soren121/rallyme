@@ -93,6 +93,14 @@ function geocodeLookup(e) {
             window.map.setCenter(results[0].geometry.location);
             // Zoom in
             window.map.setZoom(12);
+
+            var ajaxOptions = {
+                latitude: results[0].geometry.location.lat(), 
+                longitude: results[0].geometry.location.lng(), 
+                radius: 25
+            };
+
+            loadRallies(ajaxOptions);
         }
     });
 }
