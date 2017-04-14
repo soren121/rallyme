@@ -55,14 +55,22 @@ public class AddRally extends TemplateServlet {
             return;
         }
 
+        String id = request.getParameter("id");
+        
         String name = request.getParameter("name");
         Timestamp startTime = new Timestamp(parsedStartTime);
         String location = request.getParameter("location");
         float latitude = Float.parseFloat(request.getParameter("latitude"));
         float longitude = Float.parseFloat(request.getParameter("longitude"));
         User creator = (rallyme.model.User) request.getSession().getAttribute("user");
+                        
+        Rally newRally;
         
-        Rally newRally = new Rally(name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
+        if(id != null){
+        	newRally = new Rally(Integer.parseInt(id), name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
+        } else {
+        	newRally = new Rally(name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
+        }
         
         newRally.setDescription(request.getParameter("description"));
         newRally.setTwitterHandle(request.getParameter("twitterHandle"));
