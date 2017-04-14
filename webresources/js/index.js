@@ -35,10 +35,15 @@ function loadRallies(ajaxOptions) {
                 });
 
                 window.mapMarkers.push(marker);
-                window.rallySlider.add(item);
+                window.rallySlider.add(item.type.toLowerCase(), item);
             }
-        }, "json");
-    });
+        });
+
+        // Add empty message if no local rallies were found
+        if(window.rallySlider.lists.local.childNodes.length === 0) {
+            window.rallySlider.lists.local.textContent = "We couldn't find any rallies found in your area.";
+        }
+    }, "json");
 }
 
 function initMap() {

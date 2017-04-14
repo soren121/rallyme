@@ -3,8 +3,11 @@
 function RallySlider(element) {
     this.element = element;
     this.toggleEle = element.querySelector(".drawer-toggle");
-    this.list = element.querySelector("ul");
     this.detailPaneEle = element.querySelector("#rally-detail");
+    this.lists = {
+        national: element.querySelector("#national-rallies"),
+        local: element.querySelector("#local-rallies")
+    };
 
     this.items = {};
     this.detailPaneId = -1;
@@ -18,7 +21,7 @@ RallySlider.prototype.toggle = function() {
     this.element.classList.toggle("closed");
 };
 
-RallySlider.prototype.add = function(item) {
+RallySlider.prototype.add = function(type, item) {
     this.items[item.id] = item;
 
     var pagefn = doT.template(document.getElementById('rally-list-tpl').text);
@@ -30,7 +33,7 @@ RallySlider.prototype.add = function(item) {
         name: item.name
     };
 
-    this.list.insertAdjacentHTML('beforeend', pagefn(data));
+    this.lists[type].insertAdjacentHTML('beforeend', pagefn(data));
 };
 
 RallySlider.prototype.destroyDetailPane = function() {
