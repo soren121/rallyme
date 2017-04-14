@@ -339,7 +339,7 @@ public class Rally {
                 "(3959 * acos(cos(radians(?)) * cos(radians(latitude)) *" + 
                 "cos(radians(longitude) - radians(?)) +" +
                 "sin(radians(?)) * sin(radians(latitude)))) AS distance" +
-                " FROM rallies WHERE start_time > NOW() HAVING type = 'national' OR distance <= ?;");
+                " FROM rallies WHERE start_time >= CURDATE() HAVING type = 'national' OR distance <= ?;");
 
             // Set variables
             stmt.setFloat(1, latitude);
