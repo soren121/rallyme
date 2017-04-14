@@ -39,10 +39,24 @@
         <h2>Edit Rally</h2>
         <form class="pure-form pure-form-stacked pure-g" action="AddRally" method="post">
             <fieldset class="pure-u-1 pure-u-md-1-2">
-            		<input 	type="hidden" name="id" value="${rally.getId()}">
+            	<input 	type="hidden" name="id" value="${rally.getId()}">
                 <div class="w-box-left">
+                	
                     <label for="name">Event name</label>
                     <input class="pure-input-1" id="name" type="text" value="${rally.getName()}" name="name"required /> 
+                    
+                    <label for="name">Parent Rally</label>
+               		
+               		<select id="parentRally" name="parentRally" style="width:100%;">
+               		 <option  value="0">No Parent</option>
+               		 <#list rallylist as rallyfromlist>
+               		 	<#if rallyfromlist.getId() == rally.getParentId()>
+               		 		<option selected="selected" value="${rallyfromlist.getId()}">${rallyfromlist.getName()}</option>
+              			<#else>
+              			    <option value="${rallyfromlist.getId()}">${rallyfromlist.getName()}</option>
+              			</#if>
+              		  </#list>
+					</select>
                     
                     <label for="description">Description</label>
                     <textarea class="pure-input-1" id="description" name="description" required>${rally.getDescription()}</textarea> 

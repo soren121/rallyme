@@ -40,8 +40,18 @@
         <form class="pure-form pure-form-stacked pure-g" action="AddRally" method="post">
             <fieldset class="pure-u-1 pure-u-md-1-2">
                 <div class="w-box-left">
+               		
                     <label for="name">Event name</label>
                     <input class="pure-input-1" id="name" type="text" name="name" required /> 
+                    
+                    <label for="name">Parent Rally</label>
+               		
+               		<select id="parentRally" name="parentRally" style="width:100%;">
+               		 	<option value="0" >No Parent</option>
+               		 <#list rallylist as rallyfromlist>
+               		 	<option value="${rallyfromlist.getId()}" >${rallyfromlist.getName()}</option>
+              		 </#list>
+					</select>
                     
                     <label for="description">Description</label>
                     <textarea class="pure-input-1" id="description" name="description" required></textarea> 

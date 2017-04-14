@@ -37,6 +37,7 @@ public class Rally {
     private float longitude;
     private User creator; // owner of rally
     private int eventCapacity = 100;
+    private int parent_id = 0;
     
     /****************
      * Constructors
@@ -122,6 +123,10 @@ public class Rally {
     public int getEventCapacity() {
         return this.eventCapacity;
     }
+    
+    public int getParentId(){
+    	return this.parent_id;
+    }
 
     /* Setters */
     public void setDescription(String description) {
@@ -140,6 +145,10 @@ public class Rally {
         this.eventCapacity = eventCapacity;
     }
     
+    public void setParentId(int parentId){
+    	this.parent_id = parentId;
+    }
+    
     /**
         Saves a rally instance to the database.
 
@@ -155,11 +164,11 @@ public class Rally {
         try {
             if(this.id > 0) {
                 	stmt = conn.prepareStatement(
-                    "INSERT INTO rallies (id, creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity)" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
+                    "INSERT INTO rallies (id, creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity, parent_id)" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
                     "ON DUPLICATE KEY UPDATE creator_id = VALUES(creator_id), name = VALUES(name), start_time = VALUES(start_time), location = VALUES(location), " +
                     "latitude = VALUES(latitude), longitude = VALUES(longitude), description = VALUES(description), twitter_handle = VALUES(twitter_handle), " +
-                    "url = VALUES(url), event_capacity = VALUES(event_capacity)",
+                    "url = VALUES(url), event_capacity = VALUES(event_capacity), parent_id = VALUES(parent_id)",
                     Statement.RETURN_GENERATED_KEYS);
                
                 // Set required parameters
@@ -187,11 +196,15 @@ public class Rally {
                     stmt.setInt(11, this.eventCapacity);
                 else 
                     stmt.setInt(11, 0);
+                if(this.parent_id > 0)
+                	stmt.setInt(12, this.parent_id);
+                else
+                	stmt.setNull(12, java.sql.Types.VARCHAR);
             
             } else {
                 stmt = conn.prepareStatement(
-                    "INSERT INTO rallies (creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity)" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO rallies (creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity, parent_id)" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
                 
                 // Set required parameters
@@ -219,6 +232,10 @@ public class Rally {
                     stmt.setInt(10, this.eventCapacity);
                 else 
                     stmt.setInt(10, 0);
+                if(this.parent_id > 0)
+                	stmt.setInt(11, this.parent_id);
+                else
+                	stmt.setNull(11, java.sql.Types.VARCHAR);
                
             }
             
@@ -297,7 +314,7 @@ public class Rally {
                 rally.setTwitterHandle(results.getString("twitter_handle"));
                 rally.setUrl(results.getString("url"));
                 rally.setEventCapacity(results.getInt("event_capacity"));
-
+                rally.setParentId(results.getInt("parent_id"));
                 rallyList.add(rally);
             }
         } catch(SQLException ex) {
@@ -378,6 +395,20 @@ public class Rally {
         // return rally if found, otherwise return null
         Rally[] rallies = Rally.getRallies(stmt);
         return rallies[0];
+    }
+    
+    public static Rally[] getAllNationalRallies() throws RallyException{
+    	 Connection conn = Database.getConnection();
+         PreparedStatement stmt;
+
+         try {
+             // Attempt to get rallies
+             stmt = conn.prepareStatement("SELECT * FROM rallies WHERE type='national';");
+ 
+         } catch(SQLException ex) {
+             throw new RallyException("SQL exception: " + ex.getMessage());
+         }
+         return Rally.getRallies(stmt);
     }
     
 }
