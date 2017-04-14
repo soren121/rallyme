@@ -149,20 +149,19 @@ public class Rally {
     public boolean save() { 
         Connection conn = Database.getConnection();
         int result = -1;
+        PreparedStatement stmt;
 
         // Attempt to insert rally
         try {
             if(this.id > 0) {
-            	System.out.println(this.id);
-            	
-                PreparedStatement stmt = conn.prepareStatement(
+                	stmt = conn.prepareStatement(
                     "INSERT INTO rallies (id, creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity)" +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
                     "ON DUPLICATE KEY UPDATE creator_id = VALUES(creator_id), name = VALUES(name), start_time = VALUES(start_time), location = VALUES(location), " +
                     "latitude = VALUES(latitude), longitude = VALUES(longitude), description = VALUES(description), twitter_handle = VALUES(twitter_handle), " +
                     "url = VALUES(url), event_capacity = VALUES(event_capacity)",
                     Statement.RETURN_GENERATED_KEYS);
-                
+               
                 // Set required parameters
                 stmt.setInt(1, this.id);
                 stmt.setInt(2, this.creator.getId());
@@ -188,8 +187,9 @@ public class Rally {
                     stmt.setInt(11, this.eventCapacity);
                 else 
                     stmt.setInt(11, 0);
+            
             } else {
-                PreparedStatement stmt = conn.prepareStatement(
+                stmt = conn.prepareStatement(
                     "INSERT INTO rallies (creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity)" +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
@@ -219,16 +219,18 @@ public class Rally {
                     stmt.setInt(10, this.eventCapacity);
                 else 
                     stmt.setInt(10, 0);
-                
-                // Execute query
-                result = stmt.executeUpdate();
-                // Request auto-increment column
-                ResultSet rs = stmt.getGeneratedKeys();
-                // Get auto-increment ID
-                if(rs.next()) {
-                    this.id = rs.getInt(1);
-                }
+               
             }
+            
+            // Execute query
+            result = stmt.executeUpdate();
+            // Request auto-increment column
+            ResultSet rs = stmt.getGeneratedKeys();
+            // Get auto-increment ID
+            if(rs.next()) {
+                this.id = rs.getInt(1);
+            }
+            
         } catch(SQLException ex) {
             //print error
             throw new RuntimeException("SQL exception: " + ex.getMessage());
