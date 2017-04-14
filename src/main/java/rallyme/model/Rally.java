@@ -152,7 +152,9 @@ public class Rally {
 
         // Attempt to insert rally
         try {
-            if(id > 0) {
+            if(this.id > 0) {
+            	System.out.println(this.id);
+            	
                 PreparedStatement stmt = conn.prepareStatement(
                     "INSERT INTO rallies (id, creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity)" +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +

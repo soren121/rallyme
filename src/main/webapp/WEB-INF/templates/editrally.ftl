@@ -39,6 +39,7 @@
         <h2>Edit Rally</h2>
         <form class="pure-form pure-form-stacked pure-g" action="AddRally" method="post">
             <fieldset class="pure-u-1 pure-u-md-1-2">
+            		<input 	type="hidden" name="id" value="${rally.getId()}">
                 <div class="w-box-left">
                     <label for="name">Event name</label>
                     <input class="pure-input-1" id="name" type="text" value="${rally.getName()}" name="name"required /> 
@@ -60,7 +61,7 @@
                         <div class="pure-u-1-2">
                             <div class="w-box-right">
                                 <label for="time">Event start time</label>
-                                <input class="pure-input-1" id="time" type="text" name="startTime" required />
+                                <input class="pure-input-1" id="time" type="text" name="time" required />
                             </div>
                         </div>
                     </div>
@@ -73,7 +74,7 @@
             <fieldset class="pure-u-1 pure-u-md-1-2">
                 <div class="w-box-right">
                     <label for="us3-address">Event location</label>
-                    <input class="pure-input-1" type="text" id="us3-address" required />
+                    <input class="pure-input-1" type="text" id="location" value="${rally.getLocation()}" name="location" required />
 
                 <div id="us3" style="width: 100%; height: 350px;"></div>
 
@@ -106,10 +107,9 @@
             },
             radius: 0,
             inputBinding: {
-                latitudeInput: $('#us3-lat'),
-                longitudeInput: $('#us3-lon'),
-                radiusInput: $('#us3-radius'),
-                locationNameInput: $('#us3-address')
+                latitudeInput: $('#latitude'),
+                longitudeInput: $('#longitude'),
+                locationNameInput: $('#location')
             },
             enableAutocomplete: true,
             onchanged: function(currentLocation, radius, isMarkerDropped) {
