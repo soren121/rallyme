@@ -149,31 +149,83 @@ public class Rally {
     public boolean save() { 
         Connection conn = Database.getConnection();
         int result = -1;
-        
-        // Attempt to insert user
+
+        // Attempt to insert rally
         try {
-            PreparedStatement stmt = conn.prepareStatement(
-                "INSERT INTO rallies (creator_id, name, description, twitter_handle, url, start_time, location, latitude, longitude, event_capacity)" +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                Statement.RETURN_GENERATED_KEYS);
-            stmt.setInt(1, this.creator.getId());
-            stmt.setString(2, this.name);
-            stmt.setString(3, this.description);
-            stmt.setString(4, this.twitterHandle);
-            stmt.setString(5, this.url);
-            stmt.setTimestamp(6, this.startTime);
-            stmt.setString(7, this.location);
-            stmt.setFloat(8, this.latitude);
-            stmt.setFloat(9, this.longitude);
-            stmt.setInt(10, this.eventCapacity);
-            
-            // Execute query
-            result = stmt.executeUpdate();
-            // Request auto-increment column
-            ResultSet rs = stmt.getGeneratedKeys();
-             // Get auto-increment ID
-            if(rs.next()) {
-                this.id = rs.getInt(1);
+            if(id > 0) {
+                PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO rallies (id, creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity)" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
+                    "ON DUPLICATE KEY UPDATE creator_id = VALUES(creator_id), name = VALUES(name), start_time = VALUES(start_time), location = VALUES(location), " +
+                    "latitude = VALUES(latitude), longitude = VALUES(longitude), description = VALUES(description), twitter_handle = VALUES(twitter_handle), " +
+                    "url = VALUES(url), event_capacity = VALUES(event_capacity)",
+                    Statement.RETURN_GENERATED_KEYS);
+                
+                // Set required parameters
+                stmt.setInt(1, this.id);
+                stmt.setInt(2, this.creator.getId());
+                stmt.setString(3, this.name);
+                stmt.setTimestamp(4, this.startTime);
+                stmt.setString(5, this.location);
+                stmt.setFloat(6, this.latitude);
+                stmt.setFloat(7, this.longitude);
+                // Set optional parameters
+                if(this.description != null) 
+                    stmt.setString(8, this.description); 
+                else 
+                    stmt.setString(8, "");
+                if(this.twitterHandle != null) 
+                    stmt.setString(9, this.twitterHandle); 
+                else 
+                    stmt.setNull(9, java.sql.Types.VARCHAR);
+                if(this.url != null) 
+                    stmt.setString(10, this.url); 
+                else 
+                    stmt.setNull(10, java.sql.Types.VARCHAR);
+                if(this.eventCapacity > 0) 
+                    stmt.setInt(11, this.eventCapacity);
+                else 
+                    stmt.setInt(11, 0);
+            } else {
+                PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO rallies (creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity)" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+                
+                // Set required parameters
+                stmt.setInt(1, this.creator.getId());
+                stmt.setString(2, this.name);
+                stmt.setTimestamp(3, this.startTime);
+                stmt.setString(4, this.location);
+                stmt.setFloat(5, this.latitude);
+                stmt.setFloat(6, this.longitude);
+                // Set optional parameters
+                // Set optional parameters
+                if(this.description != null) 
+                    stmt.setString(7, this.description); 
+                else 
+                    stmt.setString(7, "");
+                if(this.twitterHandle != null) 
+                    stmt.setString(8, this.twitterHandle); 
+                else 
+                    stmt.setNull(8, java.sql.Types.VARCHAR);
+                if(this.url != null) 
+                    stmt.setString(9, this.url); 
+                else 
+                    stmt.setNull(9, java.sql.Types.VARCHAR);
+                if(this.eventCapacity > 0) 
+                    stmt.setInt(10, this.eventCapacity);
+                else 
+                    stmt.setInt(10, 0);
+                
+                // Execute query
+                result = stmt.executeUpdate();
+                // Request auto-increment column
+                ResultSet rs = stmt.getGeneratedKeys();
+                // Get auto-increment ID
+                if(rs.next()) {
+                    this.id = rs.getInt(1);
+                }
             }
         } catch(SQLException ex) {
             //print error

@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -42,10 +44,19 @@ public class AddRally extends TemplateServlet {
      */
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-        
+        String date = request.getParameter("date").trim();
+        String time = request.getParameter("time").trim();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
+        long parsedStartTime = 0;
+        try {
+            parsedStartTime = dateFormatter.parse(date + " " + time).getTime();
+        } catch(ParseException ex) {
+            response.getWriter().println("Error parsing event time.");
+            return;
+        }
+
         String name = request.getParameter("name");
-        Timestamp startTime = new Timestamp((new java.util.Date()).getTime());
+        Timestamp startTime = new Timestamp(parsedStartTime);
         String location = request.getParameter("location");
         float latitude = Float.parseFloat(request.getParameter("latitude"));
         float longitude = Float.parseFloat(request.getParameter("longitude"));
@@ -55,10 +66,11 @@ public class AddRally extends TemplateServlet {
         
         newRally.setDescription(request.getParameter("description"));
         newRally.setTwitterHandle(request.getParameter("twitterHandle"));
-       //newRally.setEventCapacity(Integer.parseInt(request.getParameter("eventCapacity")));
+        //newRally.setEventCapacity(Integer.parseInt(request.getParameter("eventCapacity")));
         newRally.setUrl(request.getParameter("url"));
         newRally.save();
         
+        response.sendRedirect("Dashboard");
     }
 
 }

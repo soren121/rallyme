@@ -159,6 +159,12 @@ public class User {
         }
     }
 
+    /**
+        Get a user object for a specific user by their ID.
+
+        @param id The ID of the user to retrieve.
+        @return A User object for that user.
+     */
     public static User getUserById(int id) {
         Connection conn = Database.getConnection();
         String userName, firstName, lastName, email;
@@ -185,6 +191,37 @@ public class User {
         } catch(SQLException ex) {
         	return null;
         }
+    }
+
+    /**
+        Validates the password of a specific user, given their ID and a plaintext password to check.
+
+        @param id The ID of the user to check.
+        @param password The plaintext password to validate.
+        @return True if the password is correct, false if not.
+     */
+    public static boolean validatePassword(int id, String password) {
+        Connection conn = Database.getConnection();
+        String existingPasswordHash = null;
+
+        try {
+            // Find user in database, search by username
+            PreparedStatement stmt = conn.prepareStatement("SELECT password FROM users WHERE id = ?");
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            // Get user info
+            if(rs.next()) {
+                existingPasswordHash = rs.getString("password");
+            } else {
+                return false;
+            }
+        } catch(SQLException | NullPointerException ex) {
+            throw new RuntimeException("SQL exception: " + ex.getMessage());
+        }
+
+        // Validate password using the hash stored in the database
+        return BCrypt.checkpw(password, existingPasswordHash);
     }
 
 }

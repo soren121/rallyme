@@ -61,7 +61,7 @@
                         <div class="pure-u-1-2">
                             <div class="w-box-right">
                                 <label for="time">Event start time</label>
-                                <input class="pure-input-1" id="time" type="text" name="startTime" required />
+                                <input class="pure-input-1" id="time" type="text" name="time" required />
                             </div>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
             <fieldset class="pure-u-1 pure-u-md-1-2">
                 <div class="w-box-right">
                     <label for="us3-address">Event location</label>
-                    <input class="pure-input-1" type="text" id="us3-address" required />
+                    <input class="pure-input-1" type="text" id="location" name="location" required />
 
                     <div id="us3" style="width: 100%; height: 350px;"></div>
 
@@ -107,10 +107,9 @@
             },
             radius: 0,
             inputBinding: {
-                latitudeInput: $('#us3-lat'),
-                longitudeInput: $('#us3-lon'),
-                radiusInput: $('#us3-radius'),
-                locationNameInput: $('#us3-address')
+                latitudeInput: $('#latitude'),
+                longitudeInput: $('#longitude'),
+                locationNameInput: $('#location')
             },
             enableAutocomplete: true,
             onchanged: function(currentLocation, radius, isMarkerDropped) {
