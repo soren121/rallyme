@@ -38,26 +38,43 @@
 
     <main>
         <h2>Edit Profile</h2>
+        <#if error??>
+            <p class="error">
+                ${error}
+            </p>
+        </#if>
 
         <form class="pure-form pure-form-stacked pure-g" action="EditProfile" method="post">
             <fieldset class="pure-u-1 pure-u-md-1-2">
                 <div class="w-box-left">
-                    <label for="name">Username: </label> 
-                    <input class="pure-input-1" id="name" type="text" name="name" value="${user.getUserName()}"
+                    <label for="Username">Username: </label> 
+                    <input class="pure-input-1" id="Username" type="text" name="Uname" value="${user.getUserName()}"
                     	required /> 
                     
-                    <label for="name">First name: </label> 
-                    <input class="pure-input-1" id="name" name="name" value="${user.getFirstName()}"
+                    <label for="Firstname">First name: </label> 
+                    <input class="pure-input-1" id="Firstname" name="Fname" value="${user.getFirstName()}"
                     required /></textarea> 
                     
-                    <label for="name">Last name: </label> 
-                    <input class="pure-input-1" id="name" type="text" name="name" value="${user.getLastName()}"
+                    <label for="Lastname">Last name: </label> 
+                    <input class="pure-input-1" id="Lastname" type="text" name="Lname" value="${user.getLastName()}"
                     required /> 
                     
-                    <label for="name">Email Address: </label> 
-                    <input class="pure-input-1" id="name" type="email" name="name" value="${user.getEmail()}"
+                    <label for="EmailAddress">Email Address: </label> 
+                    <input class="pure-input-1" id="EmailAddress" type="email" name="Ename" value="${user.getEmail()}"
                     required /> 
-               
+                    
+                    <label for="NewPassword">New Password: </label> 
+                    <input class="pure-input-1" id="NewPassword" type="password" name="NewP" 
+                    required /> 
+                    
+                    <label for="ConfirmNewPassword">Confirm New Password: </label> 
+                    <input class="pure-input-1" id="CNewPassword" type="password" name="CNewP" 
+                    required /> 
+                    
+                    <label for="CurrentPassword">Current Password: </label> 
+                    <input class="pure-input-1" id="CurrentPassword" type="password" name="CurP"
+                    required /> 
+               		
                     <br />
                     <input class="pure-button pure-button-primary" type="submit" value="Submit" />
                 </div>
