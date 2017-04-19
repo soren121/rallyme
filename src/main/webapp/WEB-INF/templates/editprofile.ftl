@@ -44,11 +44,11 @@
             </p>
         </#if>
 
-        <form class="pure-form pure-form-stacked pure-g" action="EditProfile" method="post">
+        <form class="pure-form pure-form-stacked pure-g" action="Profile" method="post">
             <fieldset class="pure-u-1 pure-u-md-1-2">
                 <div class="w-box-left">
-                    <label for="Username">Username: </label> 
-                    <input class="pure-input-1" id="Username" type="text" name="Uname" value="${user.getUserName()}"
+                    <label for="username">Username: </label> 
+                    <input class="pure-input-1" id="username" type="text" name="Uname" value="${user.getUserName()}"
                     	required /> 
                     
                     <label for="Firstname">First name: </label> 
@@ -64,12 +64,10 @@
                     required /> 
                     
                     <label for="NewPassword">New Password: </label> 
-                    <input class="pure-input-1" id="NewPassword" type="password" name="NewP" 
-                    required /> 
+                    <input class="pure-input-1" id="NewPassword" type="password" name="NewP"> 
                     
                     <label for="ConfirmNewPassword">Confirm New Password: </label> 
-                    <input class="pure-input-1" id="CNewPassword" type="password" name="CNewP" 
-                    required /> 
+                    <input class="pure-input-1" id="CNewPassword" type="password" name="CNewP"> 
                     
                     <label for="CurrentPassword">Current Password: </label> 
                     <input class="pure-input-1" id="CurrentPassword" type="password" name="CurP"

@@ -38,10 +38,6 @@ public class Profile extends TemplateServlet {
     	Map<String, Object> root = new HashMap<>();
 
         User user = (User) request.getSession().getAttribute("user");
-        /*String firstname = user.getFirstName();
-        String lastname = user.getLastName();
-        String email = user.getEmail();
-        */
         
         root.put("user", user);
         
@@ -54,15 +50,14 @@ public class Profile extends TemplateServlet {
     }
         	
     	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
             
+    		Map<String, Object> root = new HashMap<>();
             User user = (User) request.getSession().getAttribute("user");
+            root.put("user", user);
             
-        	boolean isMatch = User.validatePassword(user.getId(), request.getParameter("CurrentPassword"));
+        	boolean isMatch = User.validatePassword(user.getId(), request.getParameter("CurP"));
         	if(!isMatch){
-        		Map<String, Object> root = new HashMap<>();
-                root.put("error", "Current Password doesn't match.");
-                
+        		root.put("error", "Current Password doesn't match.");
                 //print out template
                 try {
                     freemarker.getTemplate("editprofile.ftl").process(root, response.getWriter());
@@ -70,26 +65,24 @@ public class Profile extends TemplateServlet {
                     throw new RuntimeException(ex2);
                 }
                 //add return
-                return ;
+                return;
         	}
         	
             Connection conn = Database.getConnection();
             
-            //for password
-        	if(request.getParameter("NewP").equals(""))
+            //comparing the NewPassword with Current New Password
+            if((!request.getParameter("NewP").equals(request.getParameter("CNewP"))))
         	{
-        		//Skip the checking step, DO nothing
-        	}
-        	else if((!request.getParameter("NewP").equals(request.getParameter("CNewP"))))
-        	{
-                Map<String, Object> root = new HashMap<>();
+        		//doesn't match
                 root.put("error", "New Password doesn't match the Comfirm New Password.");
-        	}else if(request.getParameter("NewP").equals(request.getParameter("CNewP"))){
+        	}else if(!request.getParameter("NewP").equals("") && request.getParameter("NewP").equals(request.getParameter("CNewP"))){
         		try{
-            		String query = "update users set password = ? where id = ?";
-            		PreparedStatement preparedStmt = conn.prepareStatement(query);  
+        			//matching success
+            		PreparedStatement preparedStmt = conn.prepareStatement(
+            				"UPDATE users SET password = ? where id = ?;");  
                     String passwordHash = BCrypt.hashpw(request.getParameter("NewP"), BCrypt.gensalt());            		
                     preparedStmt.setString(1, passwordHash);
+                    preparedStmt.setInt(2, user.getId());
                  // execute the java preparedstatement
                     preparedStmt.executeUpdate();
         		}catch (SQLException e)
@@ -99,20 +92,21 @@ public class Profile extends TemplateServlet {
                   }	
         	}
         	
+        	//the edition that without the change of user's password
             try
             {
               // create the java mysql update preparedstatement
-              String query = "update users set first_name = ?, last_name = ?, email = ? username = ? where id = ?";
-              PreparedStatement preparedStmt = conn.prepareStatement(query);
+              PreparedStatement preparedStmt = conn.prepareStatement(
+            		  "UPDATE users SET first_name = ?, last_name = ?, email = ?, username = ? where id = ?;");
               preparedStmt.setString(1, request.getParameter("Fname"));
               preparedStmt.setString(2, request.getParameter("Lname"));
               preparedStmt.setString(3, request.getParameter("Ename"));
               preparedStmt.setString(4, request.getParameter("Uname"));
+              preparedStmt.setInt(5, user.getId());
 
               // execute the java preparedstatement
               preparedStmt.executeUpdate();
               
-              conn.close();
             }
             catch (SQLException e)
             {
@@ -121,29 +115,36 @@ public class Profile extends TemplateServlet {
             }	
             
             //login
-            String userName = request.getParameter("username");
-            String password = request.getParameter("password");
-
+            String userName = request.getParameter("Uname");
+            String password;
+            if(request.getParameter("NewP").equals(""))
+        	{
+                password = request.getParameter("CurP");
+        	}else{
+                password = request.getParameter("NewP");
+        	}
+            
             try {
-                // Attempt to log user in
-                User user = User.login(userName, password);
+                // Attempt to log user in again
+                user = User.login(userName, password);
+                root.put("user", user);
                 // Store User object in session
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
                 session.setMaxInactiveInterval(60 * 30);
-                // Redirect to dashboard
-                response.sendRedirect("Dashboard");
             } catch(UserException ex) {
-                Map<String, Object> root = new HashMap<>();
                 root.put("error", ex.getMessage());
-
                 try {
-                    freemarker.getTemplate("login.ftl").process(root, response.getWriter());
+                    freemarker.getTemplate("editprofile.ftl").process(root, response.getWriter());
                 } catch(TemplateException ex2) {
                     throw new RuntimeException(ex2);
                 }
             }
-            
-            
+            try {
+                freemarker.getTemplate("editprofile.ftl").process(root, response.getWriter());
+            } catch(TemplateException ex2) {
+                throw new RuntimeException(ex2);
+            }
+           
         }   
 }
