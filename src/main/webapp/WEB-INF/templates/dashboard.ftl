@@ -7,6 +7,9 @@
     <link rel="stylesheet" type="text/css" href="css/pure-min.css" />
     <link rel="stylesheet" type="text/css" href="css/pure-grids-responsive-min.css" />
 	<link rel="stylesheet" type="text/css" href="css/dashboard.css" />
+	<link rel="stylesheet" href="https://i.icomoon.io/public/temp/da68616b0d/UntitledProject/style-svg.css">
+	<script defer src="https://i.icomoon.io/public/temp/da68616b0d/UntitledProject/svgxuse.js"></script>
+
 </head>
 
 <body>
@@ -51,8 +54,9 @@
                         <td>${rally.getName()}</td>
                         <td>${rally.getStartTime()}</td>
                         <td>${rally.getLocation()}</td>
-                        <td><button id="organizer-button" name="rally_id" class="pure-button" type="submit" value="${rally.getId()}">Edit</button></td>
-                    </tr>
+                        <td><button id="organizer-button" name="rally_id" class="pure-button" type="submit" value="${rally.getId()}"><svg class="icon icon-pencil2"><use xlink:href="#icon-pencil2"></use></svg> Edit</button>&nbsp
+                        <button id="organizer-button" onclick="return confirm('Are you sure you want to delete this item?');" name="rally_id_delete" class="pure-button" type="submit" value="${rally.getId()}"><svg class="icon icon-bin"><use xlink:href="#icon-bin"></use></svg> Delete</button></td>
+                   </tr>
                 </#list>
                     </tbody>
             </table>
