@@ -53,8 +53,10 @@ RallySlider.prototype.destroyDetailPane = function() {
 
 RallySlider.prototype.showDetailPane = function(id) {
     if(this.detailPaneId !== -1) {
-        this.destroyDetailPane();
-        alert('detail pane already exists!');
+        this.destroyDetailPane();   
+        setTimeout( function() {
+        	this.showDetailPane(id);
+        }.bind(this), 200);      
         return;
     }
     
@@ -76,7 +78,9 @@ RallySlider.prototype.showDetailPane = function(id) {
         location: item.location,
         startTime: item.startTime,
         capacity: item.eventCapacity,
-        organizerName: item.creator.firstName + ' ' + item.creator.lastName
+        organizerName: item.creator.firstName + ' ' + item.creator.lastName,
+        parentRally: 'javascript:window.rallySlider.showDetailPane(' + item.parent_id + ');',
+        parentRallyName: item.parent_name
     };
 
     this.detailPaneEle.querySelector(".drawer-container").innerHTML = pagefn(data);

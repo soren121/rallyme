@@ -38,6 +38,7 @@ public class Rally {
     private User creator; // owner of rally
     private int eventCapacity = 100;
     private int parent_id = 0;
+    private String parent_name = "";
     
     /****************
      * Constructors
@@ -147,6 +148,47 @@ public class Rally {
     
     public void setParentId(int parentId){
     	this.parent_id = parentId;
+    	try {
+    		setParentNameById(parentId);
+		} catch (RallyException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    /**
+    Set Rally parent name similar to other setters but works with input id
+    and searches database
+
+    @throws RallyException if there is a fatal error.
+     */
+    public void setParentNameById(int parent_id) throws RallyException{
+    	 Connection conn = Database.getConnection();
+         PreparedStatement stmt = null;
+         
+    	 try {
+			stmt = conn.prepareStatement("SELECT * FROM rallies WHERE id = ? LIMIT 1",
+			         Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, parent_id);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}   
+            
+    	ResultSet results;
+        Vector<Rally> rallyList = new Vector<Rally>(); //used to create a String[] that is sent to next page and represented as table
+
+        //iterate through results and add to list
+        try {
+            // Execute query
+            results = stmt.executeQuery();
+
+            while(results.next()) {
+            	this.parent_name = results.getString("name");
+            }
+        } catch(SQLException ex) {
+            throw new RallyException("SQL exception: " + ex.getMessage());
+        }
+         
     }
     
     /**

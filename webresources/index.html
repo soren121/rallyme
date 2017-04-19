@@ -97,6 +97,12 @@
                     <td>Organizer</td>
                     <td>{{=it.organizerName}}</td>
                 </tr>
+				{{? it.parentRally !== ""}}
+				<tr>
+					<td>Parent Rally</td>
+					<td><a href="{{=it.parentRally}}">{{=it.parentRallyName}}</a></td>
+				</tr>
+				{{?}}
             </tbody>
         </table>
 
