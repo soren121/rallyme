@@ -80,7 +80,12 @@ RallySlider.prototype.showDetailPane = function(id) {
         capacity: item.eventCapacity,
         organizerName: item.creator.firstName + ' ' + item.creator.lastName,
         parentRally: 'javascript:window.rallySlider.showDetailPane(' + item.parent_id + ');',
-        parentRallyName: item.parent_name
+        parentRallyId: item.parent_id,
+        parentRallyName: item.parent_name,
+        sisterRalliesId: 'javascript:window.rallySlider.showDetailPane(' + item.sister_rallies_id + ');',
+        sisterRalliesName: item.sister_rallies_name,
+        sisterRalliesJavascript: item.javascript_sister_rallies,
+        numbersisterRallies: item.number_of_sister_rallies
     };
 
     this.detailPaneEle.querySelector(".drawer-container").innerHTML = pagefn(data);

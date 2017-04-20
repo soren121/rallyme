@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
 import org.mindrot.jbcrypt.BCrypt;
@@ -39,6 +40,10 @@ public class Rally {
     private int eventCapacity = 100;
     private int parent_id = 0;
     private String parent_name = "";
+    private int[] sister_rallies_id;
+    private String[] sister_rallies_name;
+    private String[] javascript_sister_rallies;
+    private int number_of_sister_rallies = 0;
     
     /****************
      * Constructors
@@ -153,6 +158,62 @@ public class Rally {
 		} catch (RallyException e) {
 			e.printStackTrace();
 		}
+    	try {
+			setSisterRallies(this.id);
+		} catch (RallyException e) {
+			e.printStackTrace();
+		}
+
+    }
+    
+    public void setSisterRallies(int parentId) throws RallyException{
+    	 Connection conn = Database.getConnection();
+         PreparedStatement stmt = null;
+         
+    	 try {
+			stmt = conn.prepareStatement("SELECT * FROM rallies WHERE parent_id = ?",
+			         Statement.RETURN_GENERATED_KEYS);
+            stmt.setInt(1, parentId);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}   
+            
+    	ArrayList sisterRallyListId = new ArrayList();
+    	ArrayList sisterRallyListName = new ArrayList();
+    	ArrayList sisterRallyListJavascript = new ArrayList();
+
+    	ResultSet results;
+       
+        //iterate through results and add to list
+        try {
+            // Execute query
+            results = stmt.executeQuery();
+
+            while(results.next()) {
+            	sisterRallyListId.add(results.getInt("id"));
+            	sisterRallyListName.add(results.getString("name"));
+            	sisterRallyListJavascript.add("<a href=\"javascript:window.rallySlider.showDetailPane('"+results.getInt("id")+"');\">"+results.getString("name")+"</a>");            	
+            }
+        } catch(SQLException ex) {
+            throw new RallyException("SQL exception: " + ex.getMessage());
+        }
+        
+        this.sister_rallies_id = new int[sisterRallyListId.size()];
+        for(int i = 0; i < this.sister_rallies_id.length; i++){
+        	this.sister_rallies_id[i] = (int) sisterRallyListId.get(i);
+        }
+        
+        this.sister_rallies_name = new String[sisterRallyListName.size()];
+        for(int i = 0; i < this.sister_rallies_name.length; i++){
+        	this.sister_rallies_name[i] = (String) sisterRallyListName.get(i);
+        }
+        
+        this.javascript_sister_rallies = new String[sisterRallyListJavascript.size()];
+        for(int i = 0; i < this.javascript_sister_rallies.length; i++){
+        	this.javascript_sister_rallies[i] = (String) sisterRallyListJavascript.get(i);
+        }
+        this.number_of_sister_rallies = this.sister_rallies_id.length;
     }
     
     /**
@@ -175,7 +236,6 @@ public class Rally {
 		}   
             
     	ResultSet results;
-        Vector<Rally> rallyList = new Vector<Rally>(); //used to create a String[] that is sent to next page and represented as table
 
         //iterate through results and add to list
         try {

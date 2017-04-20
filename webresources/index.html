@@ -77,6 +77,12 @@
             <h2>{{=it.name}}</h2>
         </div>
 
+Array iterators<br>
+{{~ it.sisterRallies :p }}
+	{{=p}}<br>
+	
+{{~}}
+
         <p class="rally-detail-desc">{{=it.description}}</p>
 
         <table>
@@ -97,10 +103,20 @@
                     <td>Organizer</td>
                     <td>{{=it.organizerName}}</td>
                 </tr>
-				{{? it.parentRally !== ""}}
+				{{? it.parentRallyId !== 0}}
 				<tr>
 					<td>Parent Rally</td>
 					<td><a href="{{=it.parentRally}}">{{=it.parentRallyName}}</a></td>
+				</tr>
+				{{?}}
+				{{? it.numbersisterRallies !== 0}}
+				<tr>
+					<td>Sister Rallies</td>
+					<td>
+					{{~ it.sisterRalliesJavascript :p }} 
+						{{=p}}<br>
+					{{~}}
+					</td>
 				</tr>
 				{{?}}
             </tbody>
