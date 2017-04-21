@@ -23,6 +23,7 @@
             </ul>
         </nav>
 
+		Welcome ${user.getFirstName()}
         <div class="header-buttons">
             <a href="Profile" class="pure-button">
                 <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-user"></use></svg>

@@ -1,5 +1,10 @@
 package rallyme.controller;
 
+/* Profile page that allows user to view and edit their profile 
+ * 	and will refresh the page with all new information
+ * without sign the user out
+ */
+
 import rallyme.core.Database;
 import rallyme.core.TemplateServlet;
 import rallyme.model.Rally;
@@ -35,12 +40,12 @@ public class Profile extends TemplateServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+    	//create a new user object
     	Map<String, Object> root = new HashMap<>();
-
         User user = (User) request.getSession().getAttribute("user");
+        root.put("user", user);//for getting user information
         
-        root.put("user", user);
-        
+        //bring up the template file for profile page
         try {
             freemarker.getTemplate("editprofile.ftl").process(root, response.getWriter());
         } catch(TemplateException ex) {
@@ -51,10 +56,14 @@ public class Profile extends TemplateServlet {
         	
     	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             
+    		//over world user object
     		Map<String, Object> root = new HashMap<>();
             User user = (User) request.getSession().getAttribute("user");
             root.put("user", user);
             
+            //call the password checking function in User.java file
+            //if the input value of current password doesn't match the database's password, 
+            //reload the profile page without submitting any change and print the message
         	boolean isMatch = User.validatePassword(user.getId(), request.getParameter("CurP"));
         	if(!isMatch){
         		root.put("error", "Current Password doesn't match.");
@@ -68,22 +77,28 @@ public class Profile extends TemplateServlet {
                 return;
         	}
         	
+        	//open the connection and won't close it until all of the changes are submitted.
             Connection conn = Database.getConnection();
             
-            //comparing the NewPassword with Current New Password
+            //comparing the NewPassword with Confirmed New Password
             if((!request.getParameter("NewP").equals(request.getParameter("CNewP"))))
         	{
-        		//doesn't match
+            	//these two inputs have to be exactly the same, else 
                 root.put("error", "New Password doesn't match the Comfirm New Password.");
+                //if the current password is correct but the NewPassword is not equals to ComfirmNewPassword, reload the profile page
+                try {
+                    freemarker.getTemplate("editprofile.ftl").process(root, response.getWriter());
+                } catch(TemplateException ex2) {
+                    throw new RuntimeException(ex2);
+                }
         	}else if(!request.getParameter("NewP").equals("") && request.getParameter("NewP").equals(request.getParameter("CNewP"))){
+        		//only update the password if user has the input in the NewPassword text field, keep connection opening
         		try{
-        			//matching success
             		PreparedStatement preparedStmt = conn.prepareStatement(
             				"UPDATE users SET password = ? where id = ?;");  
                     String passwordHash = BCrypt.hashpw(request.getParameter("NewP"), BCrypt.gensalt());            		
                     preparedStmt.setString(1, passwordHash);
                     preparedStmt.setInt(2, user.getId());
-                 // execute the java preparedstatement
                     preparedStmt.executeUpdate();
         		}catch (SQLException e)
                 {
@@ -114,9 +129,11 @@ public class Profile extends TemplateServlet {
               System.err.println(e.getMessage());
             }	
             
-            //login
+            //automatically log user in again with new profile information
+            //doing the login without sign the user out
             String userName = request.getParameter("Uname");
             String password;
+            //check if the user had update the password
             if(request.getParameter("NewP").equals(""))
         	{
                 password = request.getParameter("CurP");
@@ -140,6 +157,8 @@ public class Profile extends TemplateServlet {
                     throw new RuntimeException(ex2);
                 }
             }
+            
+            //succeed with log use in again with new profile information, direct user to the profile page.
             try {
                 freemarker.getTemplate("editprofile.ftl").process(root, response.getWriter());
             } catch(TemplateException ex2) {

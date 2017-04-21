@@ -32,6 +32,7 @@ public class AddRally extends TemplateServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> root = new HashMap<>();
+        User user = (User) request.getSession().getAttribute("user");
         
         Rally[] rallies;
         
@@ -44,7 +45,7 @@ public class AddRally extends TemplateServlet {
 		}
 		
         root.put("rallylist", rallies);
-
+        root.put("user", user);//for getting user firstname
         try {
             freemarker.getTemplate("addrally.ftl").process(root, response.getWriter());
         } catch(TemplateException ex) {
