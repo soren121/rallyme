@@ -30,7 +30,9 @@ public class EditRally extends TemplateServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> root = new HashMap<>();
-
+        User user = (User) request.getSession().getAttribute("user");
+        
+        root.put("user", user);
         try {
             freemarker.getTemplate("editrally.ftl").process(root, response.getWriter());
         } catch(TemplateException ex) {
@@ -82,6 +84,8 @@ public class EditRally extends TemplateServlet {
 	        root.put("rally", rally);
 	        root.put("rallylist", rallies);
 	        
+	        User user = (User) request.getSession().getAttribute("user");
+	        root.put("user", user);//for getting user firstname
 	        try {
 	            freemarker.getTemplate("editrally.ftl").process(root, response.getWriter());
 	        } catch(TemplateException ex) {

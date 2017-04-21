@@ -38,6 +38,7 @@ public class Dashboard extends TemplateServlet {
 			return;
 		}
         root.put("rallylist", rallies);
+        root.put("user", user);//for getting user firstname
         try {
             freemarker.getTemplate("dashboard.ftl").process(root, response.getWriter());
         } catch(TemplateException ex) {

@@ -21,7 +21,7 @@ function loadRallies(ajaxOptions) {
     window.mapMarkers.length = 0;
 
     // call servlet Get for Json and place all markers on map
-    $.getJSON("AjaxRally", ajaxOptions, function(data) {
+    return $.getJSON("AjaxRally", ajaxOptions).done(function(data) {
         $.each(data, function(index, item) { 
             if(item.latitude !== null && item.longitude !== null) {
                 var marker = new google.maps.Marker({
@@ -70,8 +70,18 @@ function initMap() {
     }
 
     var ajaxOptions = {latitude: userLatitude, longitude: userLongitude, radius: 25};
-    loadRallies(ajaxOptions);
-}
+    
+    loadRallies(ajaxOptions).done(function(){
+    	  var currentUrl = window.location.pathname;
+    	    //check for matched deep url
+    	    if(currentUrl.search(/\/Rally\/\d+$/i) > -1){
+    	    	 var urlarray = currentUrl.split('/');
+    	    	 alert(urlarray[urlarray.length - 1]);
+    	    	 window.rallySlider.showDetailPane(parseInt(urlarray[urlarray.length - 1]));
+    	    }
+    });
+ 
+} //end of initMap
 
 document.getElementById('location-search-submit').addEventListener('click', geocodeLookup);
 document.getElementById('location-search-field').addEventListener('keyup', function(e) {
