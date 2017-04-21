@@ -54,13 +54,11 @@ public class Router implements Filter {
         } else if(resRwMatcher.find()) {
             String newUri = resRwMatcher.replaceFirst("");
             request.getRequestDispatcher(newUri).forward(request, response);
-            return;
         } else if(spaMatcher.find()) {
             request.getRequestDispatcher("/").forward(request, response);
-            return;
+        } else {
+            fc.doFilter(request, response);
         }
-
-        fc.doFilter(request, response);
     }
 
     @Override
