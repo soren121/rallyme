@@ -52,14 +52,6 @@
         </div>
     </main>
 
-    <script type="text/javascript" src="js/lib/jquery-3.2.0.min.js"></script>
-    <script type="text/javascript" src="js/lib/doT.min.js"></script>
-    <script type="text/javascript" async src="js/lib/svgxuse.min.js"></script>
-    <script type="text/javascript" src="js/rally-slider.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&callback=initMap"></script>
-    <script type="text/javascript" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
     <script id="rally-list-tpl" type="text/x-dot-template">
         <li data-id="{{=it.id}}">
             <a href="{{=it.url}}">
@@ -76,12 +68,6 @@
             <img class="avatar" src="{{=it.avatar}}" />
             <h2>{{=it.name}}</h2>
         </div>
-
-Array iterators<br>
-{{~ it.sisterRallies :p }}
-	{{=p}}<br>
-	
-{{~}}
 
         <p class="rally-detail-desc">{{=it.description}}</p>
 
@@ -103,21 +89,23 @@ Array iterators<br>
                     <td>Organizer</td>
                     <td>{{=it.organizerName}}</td>
                 </tr>
+
 				{{? it.parentRallyId !== 0}}
-				<tr>
-					<td>Parent Rally</td>
-					<td><a href="{{=it.parentRally}}">{{=it.parentRallyName}}</a></td>
-				</tr>
+                    <tr>
+                        <td>Parent Rally</td>
+                        <td><a href="{{=it.parentRally}}">{{=it.parentRallyName}}</a></td>
+                    </tr>
 				{{?}}
+
 				{{? it.numbersisterRallies !== 0}}
-				<tr>
-					<td>Sister Rallies</td>
-					<td>
-					{{~ it.sisterRalliesJavascript :p }} 
-						{{=p}}<br>
-					{{~}}
-					</td>
-				</tr>
+                    <tr>
+                        <td>Sister Rallies</td>
+                        <td>
+                        {{~ it.sisterRalliesJavascript :p }} 
+                            {{=p}}<br>
+                        {{~}}
+                        </td>
+                    </tr>
 				{{?}}
             </tbody>
         </table>
@@ -129,5 +117,13 @@ Array iterators<br>
         {{?}}
         
     </script>
+
+    <script type="text/javascript" src="js/lib/jquery-3.2.0.min.js"></script>
+    <script type="text/javascript" src="js/lib/doT.min.js"></script>
+    <script type="text/javascript" async src="js/lib/svgxuse.min.js"></script>
+    <script type="text/javascript" src="js/rally-slider.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&callback=initMap"></script>
+    <script type="text/javascript" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
