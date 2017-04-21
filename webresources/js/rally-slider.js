@@ -1,5 +1,4 @@
 'use strict';
-
 function RallySlider(element) {
     this.element = element;
     this.toggleEle = element.querySelector(".drawer-toggle");

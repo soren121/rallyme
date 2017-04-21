@@ -71,13 +71,7 @@ function initMap() {
 
     var ajaxOptions = {latitude: userLatitude, longitude: userLongitude, radius: 25};
     
-    loadRallies(ajaxOptions).done(function(){
-	    var currentUrl = window.location.pathname;
-	    if(currentUrl.search(/\/Rally\/\d+$/i) > -1){
-	    	 var urlarray = currentUrl.split('/');
-	    	 window.rallySlider.showDetailPane(parseInt(urlarray[urlarray.length - 1]));
-	    }
-    });
+    loadRallies(ajaxOptions).done(loadFromURL);	
  
 } //end of initMap
 
@@ -85,6 +79,19 @@ document.getElementById('location-search-submit').addEventListener('click', geoc
 document.getElementById('location-search-field').addEventListener('keyup', function(e) {
     if(e.keyCode == 13) geocodeLookup(e);
 });
+
+
+function loadFromURL(){
+	var currentUrl = window.location.pathname;
+    if(currentUrl.search(/\/Rally\/\d+$/i) > -1){
+    	 var urlarray = currentUrl.split('/');
+    	 window.rallySlider.showDetailPane(parseInt(urlarray[urlarray.length - 1]));
+    } else {
+    	window.rallySlider.destroyDetailPane();
+    }
+}
+
+window.addEventListener("popstate", loadFromURL);
 
 function geocodeLookup(e) {
     // Get search query from input box
