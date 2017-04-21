@@ -21,7 +21,7 @@ function loadRallies(ajaxOptions) {
     window.mapMarkers.length = 0;
 
     // call servlet Get for Json and place all markers on map
-    $.post("AjaxRally?action=listRallies", ajaxOptions, function(data) {
+    $.getJSON("AjaxRally", ajaxOptions, function(data) {
         $.each(data, function(index, item) { 
             if(item.latitude !== null && item.longitude !== null) {
                 var marker = new google.maps.Marker({
@@ -43,7 +43,7 @@ function loadRallies(ajaxOptions) {
         if(window.rallySlider.lists.local.childNodes.length === 0) {
             window.rallySlider.lists.local.textContent = "We couldn't find any rallies found in your area.";
         }
-    }, "json");
+    });
 }
 
 function initMap() {

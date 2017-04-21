@@ -40,14 +40,19 @@ public class Router implements Filter {
         Matcher spaMatcher = spaRegex.matcher(uri);
 
         // Define regex for resources
-        Pattern resRegex = Pattern.compile("^.+/(?=js|images|css|AjaxRally$)");
-        Matcher resMatcher = resRegex.matcher(uri);
+        Pattern resRwRegex = Pattern.compile("^.+(?=/(js|images|css|AjaxRally$))");
+        Matcher resRwMatcher = resRwRegex.matcher(uri);
+        Pattern resRdRegex = Pattern.compile("/Rally(?=/Login)");
+        Matcher resRdMatcher = resRdRegex.matcher(uri);
 
         // Process URI filters
         if(authMatcher.find() && noAuth) {
             httpResponse.sendRedirect("Login");
-        } else if(resMatcher.find()) {
-            String newUri = "/" + resMatcher.replaceFirst("");
+        } else if(resRdMatcher.find()) {
+            String newUri = resRdMatcher.replaceFirst("");
+            httpResponse.sendRedirect(newUri);
+        } else if(resRwMatcher.find()) {
+            String newUri = resRwMatcher.replaceFirst("");
             request.getRequestDispatcher(newUri).forward(request, response);
             return;
         } else if(spaMatcher.find()) {

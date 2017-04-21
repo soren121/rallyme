@@ -23,35 +23,31 @@ public class AjaxRally extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        return;
+        Rally[] ralliesArray;
+            
+        try {
+            float latitude = Float.valueOf(request.getParameter("latitude")).floatValue();
+            float longitude = Float.valueOf(request.getParameter("longitude")).floatValue();
+            int radius = Integer.parseInt(request.getParameter("radius"));
+
+            ralliesArray = Rally.getRalliesByLocation(latitude, longitude, radius);
+
+            Gson gson = new Gson();
+            //convert Rally[] array to json string
+            String jsonString = gson.toJson(ralliesArray);
+            
+            response.setContentType("application/json");
+            response.getWriter().print(jsonString);
+        } catch (RallyException ex) {
+            ex.printStackTrace();
+        }	
     }
 
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-
-        if(action != null && action.equals("listRallies")) {
-            Rally[] ralliesArray;
-            
-            try {
-                float latitude = Float.valueOf(request.getParameter("latitude")).floatValue();
-                float longitude = Float.valueOf(request.getParameter("longitude")).floatValue();
-                int radius = Integer.parseInt(request.getParameter("radius"));
-
-                ralliesArray = Rally.getRalliesByLocation(latitude, longitude, radius);
-
-                Gson gson = new Gson();
-                //convert Rally[] array to json string
-                String jsonString = gson.toJson(ralliesArray);
-                
-                response.setContentType("application/json");
-                response.getWriter().print(jsonString);
-            } catch (RallyException ex) {
-                ex.printStackTrace();
-            }	
-        }
+        response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
     }
 
 }
