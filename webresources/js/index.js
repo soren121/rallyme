@@ -72,13 +72,11 @@ function initMap() {
     var ajaxOptions = {latitude: userLatitude, longitude: userLongitude, radius: 25};
     
     loadRallies(ajaxOptions).done(function(){
-    	  var currentUrl = window.location.pathname;
-    	    //check for matched deep url
-    	    if(currentUrl.search(/\/Rally\/\d+$/i) > -1){
-    	    	 var urlarray = currentUrl.split('/');
-    	    	 alert(urlarray[urlarray.length - 1]);
-    	    	 window.rallySlider.showDetailPane(parseInt(urlarray[urlarray.length - 1]));
-    	    }
+	    var currentUrl = window.location.pathname;
+	    if(currentUrl.search(/\/Rally\/\d+$/i) > -1){
+	    	 var urlarray = currentUrl.split('/');
+	    	 window.rallySlider.showDetailPane(parseInt(urlarray[urlarray.length - 1]));
+	    }
     });
  
 } //end of initMap

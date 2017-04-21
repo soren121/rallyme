@@ -49,6 +49,9 @@ RallySlider.prototype.destroyDetailPane = function() {
         $(this.detailPaneEle.querySelector(".drawer-container")).empty();
         this.element.classList.remove("hold-open");
     }.bind(this), 200);
+        
+    var stateObj = { state: "okey" };
+    history.pushState(stateObj, "page 2", "/rallyme/");
 };
 
 RallySlider.prototype.showDetailPane = function(id) {
@@ -110,4 +113,8 @@ RallySlider.prototype.showDetailPane = function(id) {
 
     // Load Twitter timeline
     twttr.widgets.load(this.detailPaneEle);
+    
+    var stateObj = { state: "okey" };
+    history.pushState(stateObj, "page 2", "/rallyme/Rally/" + id);
+    
 };
