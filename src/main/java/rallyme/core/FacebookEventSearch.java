@@ -5,11 +5,13 @@ import java.net.URLEncoder;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.List;
 import org.apache.http.client.fluent.Request;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
+import com.google.common.collect.Lists;
 
 import rallyme.model.Rally;
 
@@ -87,6 +89,7 @@ public class FacebookEventSearch {
         }
 
         ArrayList<Long> places = getPlaces(url);
+        List<List<Long>> placesChunked = Lists.partition(places, 50);
     }
 
 }
