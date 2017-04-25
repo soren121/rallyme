@@ -1,9 +1,11 @@
-package rallyme.controller;
+/**
+    RallyMe
+    CSCI 4300, CRN 41126, Group 5
 
-/* Profile page that allows user to view and edit their profile 
- * 	and will refresh the page with all new information
- * without sign the user out
+    rallyme.controller.Profile
  */
+
+package rallyme.controller;
 
 import rallyme.core.Database;
 import rallyme.core.TemplateServlet;
@@ -32,6 +34,11 @@ import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
 
+/** 
+   Profile page that allows user to view and edit their profile 
+   and will refresh the page with all new information
+   without sign the user out
+ */
 @WebServlet(name="Profile", urlPatterns={"/Profile"})
 public class Profile extends TemplateServlet {
 

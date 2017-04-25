@@ -1,3 +1,10 @@
+/**
+    RallyMe
+    CSCI 4300, CRN 41126, Group 5
+
+    rallyme.controller.Dashboard
+ */
+
 package rallyme.controller;
 
 import rallyme.core.TemplateServlet;
