@@ -277,9 +277,9 @@ public class Rally {
         try {
             if(this.id > 0) {
                 	stmt = conn.prepareStatement(
-                    "INSERT INTO rallies (id, creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity, parent_id)" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
-                    "ON DUPLICATE KEY UPDATE creator_id = VALUES(creator_id), name = VALUES(name), start_time = VALUES(start_time), location = VALUES(location), " +
+                    "INSERT INTO rallies (id, creator_id, name, type, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity, parent_id)" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
+                    "ON DUPLICATE KEY UPDATE creator_id = VALUES(creator_id), name = VALUES(name), type = VALUES(type), start_time = VALUES(start_time), location = VALUES(location), " +
                     "latitude = VALUES(latitude), longitude = VALUES(longitude), description = VALUES(description), twitter_handle = VALUES(twitter_handle), " +
                     "url = VALUES(url), event_capacity = VALUES(event_capacity), parent_id = VALUES(parent_id)",
                     Statement.RETURN_GENERATED_KEYS);
@@ -288,10 +288,48 @@ public class Rally {
                 stmt.setInt(1, this.id);
                 stmt.setInt(2, this.creator != null ? this.creator.getId() : 0);
                 stmt.setString(3, this.name);
+                stmt.setString(4, this.type.name().toLowerCase());
+                stmt.setTimestamp(5, this.startTime);
+                stmt.setString(6, this.location);
+                stmt.setFloat(7, this.latitude);
+                stmt.setFloat(8, this.longitude);
+                // Set optional parameters
+                if(this.description != null) 
+                    stmt.setString(9, this.description); 
+                else 
+                    stmt.setString(9, "");
+                if(this.twitterHandle != null) 
+                    stmt.setString(10, this.twitterHandle); 
+                else 
+                    stmt.setNull(10, java.sql.Types.VARCHAR);
+                if(this.url != null) 
+                    stmt.setString(11, this.url); 
+                else 
+                    stmt.setNull(11, java.sql.Types.VARCHAR);
+                if(this.eventCapacity > 0) 
+                    stmt.setInt(12, this.eventCapacity);
+                else 
+                    stmt.setInt(12, 0);
+                if(this.parent_id > 0)
+                	stmt.setInt(13, this.parent_id);
+                else
+                	stmt.setNull(13, java.sql.Types.VARCHAR);
+            
+            } else {
+                stmt = conn.prepareStatement(
+                    "INSERT INTO rallies (creator_id, name, type, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity, parent_id)" +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+                
+                // Set required parameters
+                stmt.setInt(1, this.creator != null ? this.creator.getId() : 0);
+                stmt.setString(2, this.name);
+                stmt.setString(3, this.type.name().toLowerCase());
                 stmt.setTimestamp(4, this.startTime);
                 stmt.setString(5, this.location);
                 stmt.setFloat(6, this.latitude);
                 stmt.setFloat(7, this.longitude);
+                // Set optional parameters
                 // Set optional parameters
                 if(this.description != null) 
                     stmt.setString(8, this.description); 
@@ -313,42 +351,6 @@ public class Rally {
                 	stmt.setInt(12, this.parent_id);
                 else
                 	stmt.setNull(12, java.sql.Types.VARCHAR);
-            
-            } else {
-                stmt = conn.prepareStatement(
-                    "INSERT INTO rallies (creator_id, name, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity, parent_id)" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS);
-                
-                // Set required parameters
-                stmt.setInt(1, this.creator != null ? this.creator.getId() : 0);
-                stmt.setString(2, this.name);
-                stmt.setTimestamp(3, this.startTime);
-                stmt.setString(4, this.location);
-                stmt.setFloat(5, this.latitude);
-                stmt.setFloat(6, this.longitude);
-                // Set optional parameters
-                // Set optional parameters
-                if(this.description != null) 
-                    stmt.setString(7, this.description); 
-                else 
-                    stmt.setString(7, "");
-                if(this.twitterHandle != null) 
-                    stmt.setString(8, this.twitterHandle); 
-                else 
-                    stmt.setNull(8, java.sql.Types.VARCHAR);
-                if(this.url != null) 
-                    stmt.setString(9, this.url); 
-                else 
-                    stmt.setNull(9, java.sql.Types.VARCHAR);
-                if(this.eventCapacity > 0) 
-                    stmt.setInt(10, this.eventCapacity);
-                else 
-                    stmt.setInt(10, 0);
-                if(this.parent_id > 0)
-                	stmt.setInt(11, this.parent_id);
-                else
-                	stmt.setNull(11, java.sql.Types.VARCHAR);
                
             }
             
