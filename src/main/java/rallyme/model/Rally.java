@@ -68,6 +68,16 @@ public class Rally {
         this.longitude = longitude;
         this.creator = creator;
     }
+
+    public Rally(String name, RallyType type, Timestamp startTime, String location, float latitude, float longitude) {
+        this.name = name;
+        this.type = type;
+        this.startTime = startTime;
+        this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.creator = null;
+    }
     
     /* Getters */
     public int getId(){
@@ -275,7 +285,7 @@ public class Rally {
                
                 // Set required parameters
                 stmt.setInt(1, this.id);
-                stmt.setInt(2, this.creator.getId());
+                stmt.setInt(2, this.creator != null ? this.creator.getId() : 0);
                 stmt.setString(3, this.name);
                 stmt.setTimestamp(4, this.startTime);
                 stmt.setString(5, this.location);
@@ -310,7 +320,7 @@ public class Rally {
                     Statement.RETURN_GENERATED_KEYS);
                 
                 // Set required parameters
-                stmt.setInt(1, this.creator.getId());
+                stmt.setInt(1, this.creator != null ? this.creator.getId() : 0);
                 stmt.setString(2, this.name);
                 stmt.setTimestamp(3, this.startTime);
                 stmt.setString(4, this.location);
@@ -409,7 +419,9 @@ public class Rally {
                     results.getString("location"),
                     results.getFloat("latitude"),
                     results.getFloat("longitude"), 
-                    User.getUserById(results.getInt("creator_id"))
+                    results.getInt("creator_id") > 0 ? 
+                        User.getUserById(results.getInt("creator_id")) : 
+                        null
                 );
 
                 rally.setDescription(results.getString("description"));
