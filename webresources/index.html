@@ -101,9 +101,11 @@
 
 				{{? it.sisters.length > 0}}
                     <tr>
-                        <td>Sister Rallies</td>
-                        <td>
-                            <ul>
+                        <td colspan="2" class="sister-rallies-header">Sister Rallies</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <ul class="sister-rallies">
                                 {{~ it.sisters :n }} 
                                     <li><a href="javascript:window.rallySlider.showDetailPane({{=n.id}});">{{=n.name}}</a></li>
                                 {{~}}

@@ -247,3 +247,13 @@ main {
     font-weight: bold;
     font-size: 0.9em;
 }
+
+#rally-detail .sister-rallies-header {
+    padding-top: 20px;
+}
+
+#rally-detail .sister-rallies {
+    margin: 0;
+    text-transform: none;
+    font-weight: normal;
+}
