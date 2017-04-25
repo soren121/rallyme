@@ -49,11 +49,24 @@ function loadRallies(ajaxOptions, clear) {
 }
 
 function initMap() {
+    // roughly the center of the US
+    var userLatitude = 39.05, userLongitude = -94.34; 
+    var userLocationIsSet = false;
+    if(storageAvailable('localStorage')) {
+        if(localStorage.getItem('latitude') !== null && localStorage.getItem('longitude') !== null) {
+            userLatitude = parseFloat(localStorage.latitude);
+            userLongitude = parseFloat(localStorage.longitude);
+            userLocationIsSet = true;
+            document.getElementById("location-prompt").style.display = "none";
+            document.getElementById("facebook-button").style.display = "inline-block";
+        }
+    }
+
     var mapEl = document.querySelector('#google-map');
     // Show all of US in default view
     window.map = new google.maps.Map(mapEl, {
-        center: {lat: 39.05, lng: -94.34}, // roughly the center of the US
-        zoom: 5,
+        center: {lat: userLatitude, lng: userLongitude}, 
+        zoom: userLocationIsSet ? 12 : 5,
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false
@@ -61,16 +74,6 @@ function initMap() {
 
     window.mapMarkers = [];
     window.rallySlider = new RallySlider(document.getElementById("rally-drawer"));
-
-    var userLatitude = 0, userLongitude = 0;
-    if(storageAvailable('localStorage')) {
-        if(localStorage.getItem('latitude') !== null && localStorage.getItem('longitude') !== null) {
-            userLatitude = localStorage.latitude;
-            userLongitude = localStorage.longitude;
-            document.getElementById("location-prompt").style.display = "none";
-            document.getElementById("facebook-button").style.display = "inline-block";
-        }
-    }
 
     var ajaxOptions = {
         latitude: userLatitude, 

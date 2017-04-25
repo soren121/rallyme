@@ -39,7 +39,8 @@ RallySlider.prototype.add = function(type, item) {
     var data = {
         id: item.id,
         avatar: (item.twitterHandle !== null && item.twitterHandle.length > 0) ? 
-            'https://twitter.com/' + item.twitterHandle + '/profile_image' : '',
+            'https://twitter.com/' + item.twitterHandle + '/profile_image' : 
+            'images/generic-rally.png',
         name: item.name
     };
 
@@ -87,7 +88,8 @@ RallySlider.prototype.showDetailPane = function(id, noPush) {
         url: item.url,
         twitterHandle: item.twitterHandle,
         avatar: (item.twitterHandle !== null && item.twitterHandle.length > 0) ? 
-            'https://twitter.com/' + item.twitterHandle + '/profile_image?size=original' : '',
+            'https://twitter.com/' + item.twitterHandle + '/profile_image?size=original' : 
+            'images/generic-rally.png',
         name: item.name,
         description: item.description,
         location: item.location,
