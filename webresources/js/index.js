@@ -69,7 +69,12 @@ function initMap() {
         }
     }
 
-    var ajaxOptions = {latitude: userLatitude, longitude: userLongitude, radius: 25};
+    var ajaxOptions = {
+        latitude: userLatitude, 
+        longitude: userLongitude, 
+        radius: 25, 
+        source: "database"
+    };
     
     loadRallies(ajaxOptions).done(loadFromURL);	
  
@@ -112,7 +117,8 @@ function geocodeLookup(e) {
             var ajaxOptions = {
                 latitude: results[0].geometry.location.lat(), 
                 longitude: results[0].geometry.location.lng(), 
-                radius: 25
+                radius: 25,
+                source: "database"
             };
 
             loadRallies(ajaxOptions);
@@ -142,7 +148,8 @@ document.getElementById('request-geolocation').addEventListener('click', functio
             var ajaxOptions = {
                 latitude: position.coords.latitude, 
                 longitude: position.coords.longitude, 
-                radius: 25
+                radius: 25,
+                source: "database"
             };
 
             loadRallies(ajaxOptions);
