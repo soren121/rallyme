@@ -1,7 +1,16 @@
+/**
+    RallyMe
+    CSCI 4300, CRN 41126, Group 5
+
+    rallyme.controller.AjaxRally
+ */
+
 package rallyme.controller;
 
+import rallyme.core.FacebookEventSearch;
 import rallyme.model.Rally;
 import rallyme.model.User;
+import rallyme.exception.FacebookEventException;
 import rallyme.exception.RallyException;
 
 import java.io.IOException;
@@ -23,24 +32,41 @@ public class AjaxRally extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Rally[] ralliesArray;
-            
-        try {
+        String source = request.getParameter("source");
+
+        if(source != null) {
+            Rally[] ralliesArray;
+            String jsonString = "{}";
+            Gson gson = new Gson();
+
             float latitude = Float.valueOf(request.getParameter("latitude")).floatValue();
             float longitude = Float.valueOf(request.getParameter("longitude")).floatValue();
             int radius = Integer.parseInt(request.getParameter("radius"));
 
-            ralliesArray = Rally.getRalliesByLocation(latitude, longitude, radius);
+            if(source.equals("database")) {
+                try {
+                    ralliesArray = Rally.getRalliesByLocation(latitude, longitude, radius);
+                    jsonString = gson.toJson(ralliesArray);
+                } catch (RallyException ex) {
+                    ex.printStackTrace();
+                }	
+            } else if(source.equals("facebook")) {
+                try {
+                    FacebookEventSearch fbevents = new FacebookEventSearch(latitude, longitude, radius);
+                    ralliesArray = fbevents.search();
+                    jsonString = gson.toJson(ralliesArray);
+                } catch(FacebookEventException ex) {
+                    ex.printStackTrace();
+                }
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
 
-            Gson gson = new Gson();
-            //convert Rally[] array to json string
-            String jsonString = gson.toJson(ralliesArray);
-            
             response.setContentType("application/json");
             response.getWriter().print(jsonString);
-        } catch (RallyException ex) {
-            ex.printStackTrace();
-        }	
+        }
+        
     }
 
     /**
