@@ -43,7 +43,7 @@ function loadRallies(ajaxOptions, clear) {
 
         // Add empty message if no local rallies were found
         if(window.rallySlider.lists.local.childNodes.length === 0) {
-            window.rallySlider.lists.local.textContent = "We couldn't find any rallies found in your area.";
+            window.rallySlider.lists.local.textContent = "We couldn't find any rallies in your area.";
         }
     });
 }
