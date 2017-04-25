@@ -20,6 +20,18 @@ RallySlider.prototype.toggle = function() {
     this.element.classList.toggle("closed");
 };
 
+RallySlider.prototype._parsePathname = function(appendStr) {
+    var pathRe = /^(\/.+\/)(?=Rally\/\d+)/;
+    var pathTest = pathRe.exec(window.location.pathname);
+    var newPath = (pathTest !== null) ? pathTest[1] : window.location.pathname;
+
+    if(newPath.slice(-1) !== '/') {
+        newPath += '/';
+    }
+
+    return newPath + (appendStr || '');
+};
+
 RallySlider.prototype.add = function(type, item) {
     this.items[item.id] = item;
 
@@ -34,7 +46,7 @@ RallySlider.prototype.add = function(type, item) {
     this.lists[type].insertAdjacentHTML('beforeend', pagefn(data));
 };
 
-RallySlider.prototype.destroyDetailPane = function() {
+RallySlider.prototype.destroyDetailPane = function(noPush) {
     if(this.detailPaneId === -1) {
         return;
     }
@@ -47,16 +59,18 @@ RallySlider.prototype.destroyDetailPane = function() {
         $(this.detailPaneEle.querySelector(".drawer-container")).empty();
         this.element.classList.remove("hold-open");
     }.bind(this), 200);
-        
-    var stateObj = { state: "okey" };
-    history.pushState(stateObj, "page 2", "/rallyme/");
+    
+    if(noPush !== true) {
+        var stateObj = { state: "okey" };
+        history.pushState(stateObj, "page 2", this._parsePathname());
+    }
 };
 
-RallySlider.prototype.showDetailPane = function(id) {
+RallySlider.prototype.showDetailPane = function(id, noPush) {
     if(this.detailPaneId !== -1) {
-        this.destroyDetailPane();   
+        this.destroyDetailPane(true);   
         setTimeout( function() {
-        	this.showDetailPane(id);
+        	this.showDetailPane(id, noPush);
         }.bind(this), 200);      
         return;
     }
@@ -107,7 +121,8 @@ RallySlider.prototype.showDetailPane = function(id) {
     // Load Twitter timeline
     twttr.widgets.load(this.detailPaneEle);
     
-    var stateObj = { state: "okey" };
-    history.pushState(stateObj, "page 2", "/rallyme/Rally/" + id);
-    
+    if(noPush !== true) {
+        var stateObj = { state: "okey" };
+        history.pushState(stateObj, "page 2", this._parsePathname("Rally/" + id));
+    }
 };

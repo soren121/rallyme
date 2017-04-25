@@ -86,11 +86,12 @@ document.getElementById('location-search-field').addEventListener('keyup', funct
 });
 
 
-function loadFromURL(){
+function loadFromURL(e){
 	var currentUrl = window.location.pathname;
-    if(currentUrl.search(/\/Rally\/\d+$/i) > -1){
+    var deeplinkRe = /\/Rally\/\d+$/;
+    if(deeplinkRe.test(currentUrl)){
     	 var urlarray = currentUrl.split('/');
-    	 window.rallySlider.showDetailPane(parseInt(urlarray[urlarray.length - 1]));
+    	 window.rallySlider.showDetailPane(parseInt(urlarray[urlarray.length - 1]), true);
     } else {
     	window.rallySlider.destroyDetailPane();
     }
