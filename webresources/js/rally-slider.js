@@ -26,7 +26,6 @@ RallySlider.prototype.add = function(type, item) {
     var pagefn = doT.template(document.getElementById('rally-list-tpl').text);
     var data = {
         id: item.id,
-        url: 'javascript:window.rallySlider.showDetailPane(' + item.id + ');',
         avatar: (item.twitterHandle !== null && item.twitterHandle.length > 0) ? 
             'https://twitter.com/' + item.twitterHandle + '/profile_image' : '',
         name: item.name
@@ -81,13 +80,8 @@ RallySlider.prototype.showDetailPane = function(id) {
         startTime: item.startTime,
         capacity: item.eventCapacity,
         organizerName: item.creator.firstName + ' ' + item.creator.lastName,
-        parentRally: 'javascript:window.rallySlider.showDetailPane(' + item.parent_id + ');',
-        parentRallyId: item.parent_id,
-        parentRallyName: item.parent_name,
-        sisterRalliesId: 'javascript:window.rallySlider.showDetailPane(' + item.sister_rallies_id + ');',
-        sisterRalliesName: item.sister_rallies_name,
-        sisterRalliesJavascript: item.javascript_sister_rallies,
-        numbersisterRallies: item.number_of_sister_rallies
+        parent: item.parent || null,
+        sisters: item.sisters || []
     };
 
     this.detailPaneEle.querySelector(".drawer-container").innerHTML = pagefn(data);

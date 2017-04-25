@@ -8,7 +8,6 @@
 package rallyme.model;
 
 import rallyme.core.Database;
-import rallyme.model.User;
 import rallyme.exception.RallyException;
 
 import java.sql.Connection;
@@ -39,12 +38,8 @@ public class Rally {
     private float longitude;
     private User creator; // owner of rally
     private int eventCapacity = 100;
-    private int parent_id = 0;
-    private String parent_name = "";
-    private int[] sister_rallies_id;
-    private String[] sister_rallies_name;
-    private String[] javascript_sister_rallies;
-    private int number_of_sister_rallies = 0;
+    private RallyEntry parent = null;
+    private RallyEntry[] sisters = new RallyEntry[0];
     
     /****************
      * Constructors
@@ -141,8 +136,12 @@ public class Rally {
         return this.eventCapacity;
     }
     
-    public int getParentId(){
-    	return this.parent_id;
+    public RallyEntry getParent() {
+    	return this.parent;
+    }
+
+    public RallyEntry[] getSisters() {
+        return this.sisters;
     }
 
     /* Setters */
@@ -161,100 +160,34 @@ public class Rally {
     public void setEventCapacity(int eventCapacity) {
         this.eventCapacity = eventCapacity;
     }
-    
-    public void setParentId(int parentId){
-    	this.parent_id = parentId;
-    	try {
-    		setParentNameById(parentId);
-		} catch (RallyException e) {
-			e.printStackTrace();
-		}
-    	try {
-			setSisterRallies(this.id);
-		} catch (RallyException e) {
-			e.printStackTrace();
-		}
 
-    }
-    
-    public void setSisterRallies(int parentId) throws RallyException{
-    	 Connection conn = Database.getConnection();
-         PreparedStatement stmt = null;
-         
-    	 try {
-			stmt = conn.prepareStatement("SELECT * FROM rallies WHERE parent_id = ?",
-			         Statement.RETURN_GENERATED_KEYS);
-            stmt.setInt(1, parentId);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}   
-            
-    	ArrayList sisterRallyListId = new ArrayList();
-    	ArrayList sisterRallyListName = new ArrayList();
-    	ArrayList sisterRallyListJavascript = new ArrayList();
-
-    	ResultSet results;
-       
-        //iterate through results and add to list
-        try {
-            // Execute query
-            results = stmt.executeQuery();
-
-            while(results.next()) {
-            	sisterRallyListId.add(results.getInt("id"));
-            	sisterRallyListName.add(results.getString("name"));
-            	sisterRallyListJavascript.add("<a href=\"javascript:window.rallySlider.showDetailPane('"+results.getInt("id")+"');\">"+results.getString("name")+"</a>");            	
-            }
-        } catch(SQLException ex) {
-            throw new RallyException("SQL exception: " + ex.getMessage());
-        }
-        
-        this.sister_rallies_id = new int[sisterRallyListId.size()];
-        for(int i = 0; i < this.sister_rallies_id.length; i++){
-        	this.sister_rallies_id[i] = (int) sisterRallyListId.get(i);
-        }
-        
-        this.sister_rallies_name = new String[sisterRallyListName.size()];
-        for(int i = 0; i < this.sister_rallies_name.length; i++){
-        	this.sister_rallies_name[i] = (String) sisterRallyListName.get(i);
-        }
-        
-        this.javascript_sister_rallies = new String[sisterRallyListJavascript.size()];
-        for(int i = 0; i < this.javascript_sister_rallies.length; i++){
-        	this.javascript_sister_rallies[i] = (String) sisterRallyListJavascript.get(i);
-        }
-        this.number_of_sister_rallies = this.sister_rallies_id.length;
-    }
-    
     /**
-    Set Rally parent name similar to other setters but works with input id
-    and searches database
+        Set Rally parent name similar to other setters but works with input id
+        and searches database
 
-    @throws RallyException if there is a fatal error.
+        @throws RallyException if there is a fatal error.
      */
-    public void setParentNameById(int parent_id) throws RallyException{
+    public void setParent(int parentId) throws RallyException{
     	 Connection conn = Database.getConnection();
          PreparedStatement stmt = null;
          
     	 try {
-			stmt = conn.prepareStatement("SELECT * FROM rallies WHERE id = ? LIMIT 1",
-			         Statement.RETURN_GENERATED_KEYS);
-            stmt.setInt(1, parent_id);
-
-		} catch (SQLException e) {
+			stmt = conn.prepareStatement("SELECT name FROM rallies WHERE id = ?");
+            stmt.setInt(1, parentId);
+		} catch(SQLException e) {
 			e.printStackTrace();
-		}   
-            
-    	ResultSet results;
+		}
 
         //iterate through results and add to list
         try {
             // Execute query
-            results = stmt.executeQuery();
+            ResultSet results = stmt.executeQuery();
 
-            while(results.next()) {
-            	this.parent_name = results.getString("name");
+            if(results.next()) {
+            	this.parent = new RallyEntry(
+                    parentId,
+                    results.getString("name")
+                );
             }
         } catch(SQLException ex) {
             throw new RallyException("SQL exception: " + ex.getMessage());
@@ -310,8 +243,8 @@ public class Rally {
                     stmt.setInt(12, this.eventCapacity);
                 else 
                     stmt.setInt(12, 0);
-                if(this.parent_id > 0)
-                	stmt.setInt(13, this.parent_id);
+                if(this.parent != null && this.parent.getId() > 0)
+                	stmt.setInt(13, this.parent.getId());
                 else
                 	stmt.setNull(13, java.sql.Types.VARCHAR);
             
@@ -347,8 +280,8 @@ public class Rally {
                     stmt.setInt(11, this.eventCapacity);
                 else 
                     stmt.setInt(11, 0);
-                if(this.parent_id > 0)
-                	stmt.setInt(12, this.parent_id);
+                if(this.parent != null && this.parent.getId() > 0)
+                	stmt.setInt(12, this.parent.getId());
                 else
                 	stmt.setNull(12, java.sql.Types.VARCHAR);
                
@@ -431,7 +364,14 @@ public class Rally {
                 rally.setTwitterHandle(results.getString("twitter_handle"));
                 rally.setUrl(results.getString("url"));
                 rally.setEventCapacity(results.getInt("event_capacity"));
-                rally.setParentId(results.getInt("parent_id"));
+
+                int parentId = results.getInt("parent_id");
+                if(parentId == 0) {
+                    rally.setSisters(rally.getId());
+                } else {
+                    rally.setParent(parentId);
+                }
+                
                 rallyList.add(rally);
             }
         } catch(SQLException ex) {
@@ -526,6 +466,40 @@ public class Rally {
              throw new RallyException("SQL exception: " + ex.getMessage());
          }
          return Rally.getRallies(stmt);
+    }
+
+    private void setSisters(int parentId) throws RallyException{
+    	 Connection conn = Database.getConnection();
+         PreparedStatement stmt = null;
+         
+    	 try {
+			stmt = conn.prepareStatement("SELECT id, name FROM rallies WHERE parent_id = ?");
+            stmt.setInt(1, parentId);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+        ArrayList<RallyEntry> sisters = new ArrayList<RallyEntry>();
+    	ResultSet results;
+       
+        //iterate through results and add to list
+        try {
+            // Execute query
+            results = stmt.executeQuery();
+
+            while(results.next()) {
+                RallyEntry entry = new RallyEntry(
+                    results.getInt("id"),
+                    results.getString("name")
+                );
+                sisters.add(entry);
+            }
+        } catch(SQLException ex) {
+            throw new RallyException("SQL exception: " + ex.getMessage());
+        }
+        
+        this.sisters = (RallyEntry[]) sisters.toArray(new RallyEntry[sisters.size()]);
     }
     
 }

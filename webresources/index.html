@@ -54,7 +54,7 @@
 
     <script id="rally-list-tpl" type="text/x-dot-template">
         <li data-id="{{=it.id}}">
-            <a href="{{=it.url}}">
+            <a href="javascript:window.rallySlider.showDetailPane({{=it.id}});">
                 <img class="avatar" src="{{=it.avatar}}" />
                 <span>{{=it.name}}</span>
             </a>
@@ -81,29 +81,35 @@
                     <td>Time</td>
                     <td>{{=it.startTime}}</td>
                 </tr>
-                <tr>
-                    <td>Capacity</td>
-                    <td>{{=it.capacity}}</td>
-                </tr>
+
+                {{? it.capacity > 0 }}
+                    <tr>
+                        <td>Capacity</td>
+                        <td>{{=it.capacity}}</td>
+                    </tr>
+                {{?}}
+
                 <tr>
                     <td>Organizer</td>
                     <td>{{=it.organizerName}}</td>
                 </tr>
 
-				{{? it.parentRallyId !== 0}}
+				{{? it.parent !== null }}
                     <tr>
                         <td>Parent Rally</td>
-                        <td><a href="{{=it.parentRally}}">{{=it.parentRallyName}}</a></td>
+                        <td><a href="javascript:window.rallySlider.showDetailPane({{=it.parent.id}});">{{=it.parent.name}}</a></td>
                     </tr>
 				{{?}}
 
-				{{? it.numbersisterRallies !== 0}}
+				{{? it.sisters.length > 0}}
                     <tr>
                         <td>Sister Rallies</td>
                         <td>
-                        {{~ it.sisterRalliesJavascript :p }} 
-                            {{=p}}<br>
-                        {{~}}
+                            <ul>
+                                {{~ it.sisters :n }} 
+                                    <li><a href="javascript:window.rallySlider.showDetailPane({{=n.id}});">{{=n.name}}</a></li>
+                                {{~}}
+                            </ul>
                         </td>
                     </tr>
 				{{?}}

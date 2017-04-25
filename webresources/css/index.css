@@ -135,7 +135,7 @@ main {
 
 .drawer-container {
     padding: 15px;
-    min-width: 310px; /* 350px - (15*2)px padding - 20px drawer toggle */
+    min-width: 300px; /* 350px - (15*2)px padding - 20px drawer toggle - 10px scrollbar */
 }
 
 #rally-drawer h2 {

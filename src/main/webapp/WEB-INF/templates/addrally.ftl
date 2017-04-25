@@ -23,8 +23,9 @@
             </ul>
         </nav>
 
-		Welcome ${user.getFirstName()}
         <div class="header-buttons">
+            <span>Welcome ${user.getFirstName()}!</span>
+            
             <a href="Profile" class="pure-button">
                 <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-user"></use></svg>
                 Your Profile

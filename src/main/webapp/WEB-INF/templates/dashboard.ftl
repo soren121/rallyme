@@ -23,8 +23,9 @@
             </ul>
         </nav>
 		
-		Welcome ${user.getFirstName()}
         <div class="header-buttons">
+            <span>Welcome ${user.getFirstName()}!</span>
+
             <a href="Profile" class="pure-button">
                 <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-user"></use></svg>
                 Your Profile
@@ -52,14 +53,27 @@
                 <tbody>
                     <#list rallylist as rally>
                         <tr>
-                        <td>${rally.getName()}</td>
-                        <td>${rally.getStartTime()}</td>
-                        <td>${rally.getLocation()}</td>
-                        <td><button id="organizer-button" name="rally_id" class="pure-button" type="submit" value="${rally.getId()}"><svg class="icon icon-pencil2"><use xlink:href="#icon-pencil2"></use></svg> Edit</button>&nbsp
-                        <button id="organizer-button" onclick="return confirm('Are you sure you want to delete this item?');" name="rally_id_delete" class="pure-button" type="submit" value="${rally.getId()}"><svg class="icon icon-bin"><use xlink:href="#icon-bin"></use></svg> Delete</button></td>
-                   </tr>
-                </#list>
-                    </tbody>
+                            <td>
+                                <span><a href="Rally/${rally.getId()}">${rally.getName()}</a></span><br />
+                                <#if rally.getParent()??>
+                                    <span class="parent-name">&#8627; Parent: <a href="Rally/${rally.getParent().getId()}">${rally.getParent().getName()}</a></span>
+                                </#if>
+                            </td>
+                            <td>${rally.getStartTime()}</td>
+                            <td>${rally.getLocation()}</td>
+                            <td>
+                                <button id="organizer-button" name="rally_id" class="pure-button" type="submit" value="${rally.getId()}">
+                                    <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-pencil2"></use></svg> 
+                                    Edit
+                                </button>
+                                <button id="organizer-button" onclick="return confirm('Are you sure you want to delete this item?');" name="rally_id_delete" class="pure-button" type="submit" value="${rally.getId()}">
+                                    <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-bin"></use></svg> 
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </#list>
+                </tbody>
             </table>
         </form>
         

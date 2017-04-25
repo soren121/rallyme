@@ -96,8 +96,12 @@ public class AddRally extends TemplateServlet {
         newRally.setDescription(request.getParameter("description"));
         newRally.setTwitterHandle(request.getParameter("twitterHandle"));
         //newRally.setEventCapacity(Integer.parseInt(request.getParameter("eventCapacity")));
-        newRally.setUrl(request.getParameter("url"));        
-        newRally.setParentId(Integer.parseInt(request.getParameter("parentRally")));
+        newRally.setUrl(request.getParameter("url"));
+        
+        try {
+            newRally.setParent(Integer.parseInt(request.getParameter("parentRally")));
+        } catch(RallyException ex) {}
+        
         newRally.save();
         
         response.sendRedirect("Dashboard");
