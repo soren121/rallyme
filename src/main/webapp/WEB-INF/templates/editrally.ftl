@@ -52,7 +52,7 @@
                		<select id="parentRally" name="parentRally" style="width:100%;">
                		 <option  value="0">No Parent</option>
                		 <#list rallylist as rallyfromlist>
-               		 	<#if rallyfromlist.getId() == rally.getParentId()>
+               		 	<#if rally.getParent()?? && rallyfromlist.getId() == rally.getParent().getId()>
                		 		<option selected="selected" value="${rallyfromlist.getId()}">${rallyfromlist.getName()}</option>
               			<#else>
               			    <option value="${rallyfromlist.getId()}">${rallyfromlist.getName()}</option>

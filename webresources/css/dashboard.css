@@ -85,3 +85,7 @@ table {
 .pure-form-stacked label {
     margin-top: 20px;
 }
+
+.pure-form select {
+    height: 2.75em;
+}
