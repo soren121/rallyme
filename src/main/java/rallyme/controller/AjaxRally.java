@@ -43,9 +43,13 @@ public class AjaxRally extends HttpServlet {
             float longitude = Float.valueOf(request.getParameter("longitude")).floatValue();
             int radius = Integer.parseInt(request.getParameter("radius"));
 
+            User authUser = (User)request.getSession().getAttribute("user");
+
             if(source.equals("database")) {
                 try {
-                    ralliesArray = Rally.getRalliesByLocation(latitude, longitude, radius);
+                    ralliesArray = (authUser != null) ? 
+                        Rally.getRalliesByLocationAndUser(latitude, longitude, radius, authUser.getId()) :
+                        Rally.getRalliesByLocation(latitude, longitude, radius);
                     jsonString = gson.toJson(ralliesArray);
                 } catch (RallyException ex) {
                     ex.printStackTrace();

@@ -382,6 +382,12 @@ public class Rally {
         return (Rally[]) rallyList.toArray(new Rally[rallyList.size()]);
     }
 
+    /**
+        Gets an array of all rallies created by the given user.
+
+        @return An array of rally objects.
+        @throws RallyException
+    */
     public static Rally[] getRalliesByUser(int creatorId) throws RallyException {
         Connection conn = Database.getConnection();
         PreparedStatement stmt;
@@ -401,9 +407,9 @@ public class Rally {
     }
   
     /**
-        Gets an array of all rallies in the database.
+        Gets an array of all rallies near the given location.
 
-        @return An array of rally objects for all in database.
+        @return An array of rally objects.
         @throws RallyException
     */
     public static Rally[] getRalliesByLocation(float latitude, float longitude, int radius) throws RallyException {
@@ -424,6 +430,38 @@ public class Rally {
             stmt.setFloat(2, longitude);
             stmt.setFloat(3, latitude);
             stmt.setInt(4, radius);
+        } catch(SQLException ex) {
+            throw new RallyException("SQL exception: " + ex.getMessage());
+        }
+
+        return Rally.getRallies(stmt);
+    }
+
+    /**
+        Gets an array of rallies near the given location or created by the given user.
+
+        @return An array of rally objects.
+        @throws RallyException
+    */
+    public static Rally[] getRalliesByLocationAndUser(float latitude, float longitude, int radius, int creatorId) throws RallyException {
+        Connection conn = Database.getConnection();
+        PreparedStatement stmt;
+
+        try {
+            // Attempt to get rallies
+            stmt = conn.prepareStatement(
+                "SELECT *, " +
+                "(3959 * acos(cos(radians(?)) * cos(radians(latitude)) *" + 
+                "cos(radians(longitude) - radians(?)) +" +
+                "sin(radians(?)) * sin(radians(latitude)))) AS distance" +
+                " FROM rallies WHERE start_time >= CURDATE() HAVING type = 'national' OR distance <= ? OR creator_id = ?;");
+
+            // Set variables
+            stmt.setFloat(1, latitude);
+            stmt.setFloat(2, longitude);
+            stmt.setFloat(3, latitude);
+            stmt.setInt(4, radius);
+            stmt.setInt(5, creatorId);
         } catch(SQLException ex) {
             throw new RallyException("SQL exception: " + ex.getMessage());
         }
