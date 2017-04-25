@@ -95,7 +95,9 @@ RallySlider.prototype.showDetailPane = function(id, noPush) {
         location: item.location,
         startTime: item.startTime,
         capacity: item.eventCapacity,
-        organizerName: item.creator.firstName + ' ' + item.creator.lastName,
+        organizerName: (item.creator !== null) ? 
+            item.creator.firstName + ' ' + item.creator.lastName : 
+            'Imported from Facebook',
         parent: item.parent || null,
         sisters: item.sisters || []
     };
