@@ -280,7 +280,10 @@ public class FacebookEventSearch {
                         }
 
                         // Define regex to filter events
-                        Pattern catRegex = Pattern.compile("(FUNDRAISER|MEETUP|VOLUNTEERING)");
+                        Pattern catRegex = Pattern.compile(
+                            "(Fundrais\\w*\\b|Volunteer\\w*\\b|Rally|Cause|March of|March for)", 
+                            Pattern.CASE_INSENSITIVE
+                        );
                         // Parse response as JSON
                         JsonParser jsonParser = new JsonParser();
                         JsonObject json = jsonParser.parse(jsonString).getAsJsonObject();
@@ -300,8 +303,8 @@ public class FacebookEventSearch {
                                     for(JsonElement eventEle : events) {
                                         JsonObject event = eventEle.getAsJsonObject();
                                         JsonObject location = venue.get("location").getAsJsonObject();
-                                        JsonElement eventCategory = event.get("category");
-                                        if(eventCategory != null && catRegex.matcher(eventCategory.getAsString()).find()) {
+                                        JsonElement eventName = event.get("name");
+                                        if(eventName != null && catRegex.matcher(eventName.getAsString()).find()) {
                                             rallies.add(processEvent(location, event));
                                         }
                                     }
