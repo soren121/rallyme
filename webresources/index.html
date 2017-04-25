@@ -44,6 +44,11 @@
                         Get location
                     </button>
                 </div>
+
+                <button class="pure-button" id="facebook-button">
+                    <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-facebook"></use></svg>
+                    Find rallies through Facebook
+                </button>
             </section>
 
             <div id="rally-detail" class="closed">
@@ -82,13 +87,6 @@
                     <td>{{=it.startTime}}</td>
                 </tr>
 
-                {{? it.capacity > 0 }}
-                    <tr>
-                        <td>Capacity</td>
-                        <td>{{=it.capacity}}</td>
-                    </tr>
-                {{?}}
-
                 <tr>
                     <td>Organizer</td>
                     <td>{{=it.organizerName}}</td>
@@ -116,10 +114,10 @@
             </tbody>
         </table>
 
-        {{? it.twitterHandle !== null }}
-        <a class="twitter-timeline" data-lang="en" data-width="320" data-height="400" data-dnt="true" href="https://twitter.com/{{=it.twitterHandle}}">
-            Tweets by {{=it.twitterHandle}}
-        </a> 
+        {{? it.twitterHandle !== null && it.twitterHandle.length > 0 }}
+            <a class="twitter-timeline" data-lang="en" data-width="320" data-height="400" data-dnt="true" href="https://twitter.com/{{=it.twitterHandle}}">
+                Tweets by {{=it.twitterHandle}}
+            </a> 
         {{?}}
         
     </script>

@@ -167,6 +167,22 @@ main {
     background: #eee;
 }
 
+#request-geolocation {
+    width: 100%;
+}
+
+#facebook-button {
+    background: #3b5998;
+    color: #fff;
+    margin: 0.5em 0;
+    display: none;
+    width: 100%;
+}
+
+#facebook-button svg {
+    fill: #fff;
+}
+
 #rally-drawer li > a img {
     border-radius: 100%;
     border: 1px solid #ddd;

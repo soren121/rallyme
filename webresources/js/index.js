@@ -10,15 +10,17 @@ function storageAvailable(type) {
 	}
 }
 
-function loadRallies(ajaxOptions) {
-    // Clear lists
-    $("#national-rallies, #local-rallies").empty();
+function loadRallies(ajaxOptions, clear) {
+    if(clear === true) {
+        // Clear lists
+        $("#national-rallies, #local-rallies").empty();
 
-    // Clear existing map markers
-    for(var i = 0; i < window.mapMarkers.length; i++) {
-        window.mapMarkers[i].setMap(null);
+        // Clear existing map markers
+        for(var i = 0; i < window.mapMarkers.length; i++) {
+            window.mapMarkers[i].setMap(null);
+        }
+        window.mapMarkers.length = 0;
     }
-    window.mapMarkers.length = 0;
 
     // call servlet Get for Json and place all markers on map
     return $.getJSON("AjaxRally", ajaxOptions).done(function(data) {
@@ -66,6 +68,7 @@ function initMap() {
             userLatitude = localStorage.latitude;
             userLongitude = localStorage.longitude;
             document.getElementById("location-prompt").style.display = "none";
+            document.getElementById("facebook-button").style.display = "inline-block";
         }
     }
 
@@ -76,7 +79,7 @@ function initMap() {
         source: "database"
     };
     
-    loadRallies(ajaxOptions).done(loadFromURL);	
+    loadRallies(ajaxOptions, true).done(loadFromURL);	
  
 } //end of initMap
 
@@ -122,7 +125,8 @@ function geocodeLookup(e) {
                 source: "database"
             };
 
-            loadRallies(ajaxOptions);
+            loadRallies(ajaxOptions, true);
+            document.getElementById("facebook-button").style.display = "inline-block";
         }
     });
 }
@@ -144,6 +148,7 @@ document.getElementById('request-geolocation').addEventListener('click', functio
             if(storageAvailable('localStorage')) {
                 localStorage.latitude = position.coords.latitude;
                 localStorage.longitude = position.coords.longitude;
+                document.getElementById("facebook-button").style.display = "inline-block";
             }
 
             var ajaxOptions = {
@@ -153,9 +158,29 @@ document.getElementById('request-geolocation').addEventListener('click', functio
                 source: "database"
             };
 
-            loadRallies(ajaxOptions);
+            loadRallies(ajaxOptions, true);
+            e.target.parentNode.style.display = "none";
         }, function() {
             alert('Geolocation failed :(');
         });
     }
+});
+
+document.getElementById('facebook-button').addEventListener('click', function(e) {
+    var mapCenter = window.map.getCenter();
+
+    var ajaxOptions = {
+        latitude: mapCenter.lat, 
+        longitude: mapCenter.lng, 
+        radius: 75,
+        source: "facebook"
+    };
+
+    e.target.disabled = true;
+    var origContent = e.target.innerHTML;
+    e.target.textContent = "Loading...";
+    loadRallies(ajaxOptions, false).done(function() {
+        e.target.innerHTML = origContent;
+        e.target.disabled = false;
+    });
 });
