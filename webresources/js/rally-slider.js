@@ -61,7 +61,7 @@ RallySlider.prototype.destroyDetailPane = function(noPush) {
         this.element.classList.remove("hold-open");
     }.bind(this), 200);
     
-    if(noPush !== true) {
+    if(noPush !== true && this._parsePathname() !== window.location.pathname) {
         var stateObj = { state: "okey" };
         history.pushState(stateObj, "page 2", this._parsePathname());
     }

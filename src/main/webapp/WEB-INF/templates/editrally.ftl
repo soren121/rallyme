@@ -64,7 +64,7 @@
                     <textarea class="pure-input-1" id="description" name="description" required>${rally.getDescription()}</textarea> 
                     
                     <label for="twitterHandle">Twitter username (optional)</label>
-                    <input class="pure-input-1" id="twitterHandle" value="${rally.getTwitterHandle()}" type="text" name="twitterHandle" /> 
+                    <input class="pure-input-1" id="twitterHandle" value="${rally.getTwitterHandle()}" type="text" name="twitterHandle" placeholder="@username" /> 
                     
                     <div class="pure-g">
                         <div class="pure-u-1-2">
