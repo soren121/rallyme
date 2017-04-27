@@ -39,17 +39,29 @@ public class AjaxRally extends HttpServlet {
             String jsonString = "{}";
             Gson gson = new Gson();
 
-            float latitude = Float.valueOf(request.getParameter("latitude")).floatValue();
-            float longitude = Float.valueOf(request.getParameter("longitude")).floatValue();
-            int radius = Integer.parseInt(request.getParameter("radius"));
-
             User authUser = (User)request.getSession().getAttribute("user");
+            String rallyId = request.getParameter("rally_id");
+            float latitude = 0, longitude = 0;
+            int radius = 0;
+
+            if(rallyId == null) {
+                latitude = Float.valueOf(request.getParameter("latitude")).floatValue();
+                longitude = Float.valueOf(request.getParameter("longitude")).floatValue();
+                radius = Integer.parseInt(request.getParameter("radius"));
+            }
 
             if(source.equals("database")) {
                 try {
-                    ralliesArray = (authUser != null) ? 
-                        Rally.getRalliesByLocationAndUser(latitude, longitude, radius, authUser.getId()) :
-                        Rally.getRalliesByLocation(latitude, longitude, radius);
+                    if(rallyId == null) {
+                        ralliesArray = (authUser != null) ? 
+                            Rally.getRalliesByLocationAndUser(latitude, longitude, radius, authUser.getId()) :
+                            Rally.getRalliesByLocation(latitude, longitude, radius);
+                    } else {
+                        ralliesArray = new Rally[] { 
+                            Rally.getRallyById(Integer.parseInt(rallyId)) 
+                        };
+                    }
+                    
                     jsonString = gson.toJson(ralliesArray);
                 } catch (RallyException ex) {
                     ex.printStackTrace();

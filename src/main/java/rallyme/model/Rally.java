@@ -475,14 +475,14 @@ public class Rally {
         @return A Rally object from database.
         @throws RallyException
      */
-    public static Rally getRallyById(String rallyId) throws RallyException {
+    public static Rally getRallyById(int rallyId) throws RallyException {
         Connection conn = Database.getConnection();
         PreparedStatement stmt;
 
         // Attempt to get rally
         try {
             stmt = conn.prepareStatement("SELECT * FROM rallies WHERE id = ? LIMIT 1");
-            stmt.setString(1, rallyId);
+            stmt.setInt(1, rallyId);
         } catch(SQLException ex) {
             throw new RallyException("SQL exception: " + ex.getMessage());
         }

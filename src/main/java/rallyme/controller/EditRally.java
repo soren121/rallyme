@@ -70,7 +70,7 @@ public class EditRally extends TemplateServlet {
 	        //Edit Rally Button Pressed
         	
     	    Rally rally = null;
-            String rally_id = request.getParameter("rally_id");
+            int rally_id = Integer.parseInt(request.getParameter("rally_id"));
             Rally[] rallies;
         	
 			try {
