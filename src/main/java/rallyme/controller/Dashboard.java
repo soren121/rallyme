@@ -26,6 +26,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+    The page provided by this controller gives organizers an overview of their existing rallies.
+ */
 @WebServlet(name="Dashboard", urlPatterns={"/Dashboard"})
 public class Dashboard extends TemplateServlet {
 
@@ -33,7 +36,7 @@ public class Dashboard extends TemplateServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-         User user = (User)request.getSession().getAttribute("user");
+        User user = (User)request.getSession().getAttribute("user");
 
         Map<String, Object> root = new HashMap<>();
         Rally[] rallies;
@@ -44,8 +47,10 @@ public class Dashboard extends TemplateServlet {
             e.printStackTrace();
             return;
         }
+
         root.put("rallylist", rallies);
         root.put("user", user);//for getting user firstname
+
         try {
             freemarker.getTemplate("dashboard.ftl").process(root, response.getWriter());
         } catch(TemplateException ex) {

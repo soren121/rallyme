@@ -25,6 +25,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+    The page provided by this controller allows users to register accounts
+    as event organizers.
+ */
 @WebServlet(name="Register", urlPatterns={"/Register"})
 public class Register extends TemplateServlet {
 

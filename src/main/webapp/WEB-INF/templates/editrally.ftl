@@ -83,7 +83,7 @@
                     </div>
 
                     <br />
-                    <input class="pure-button pure-button-primary" type="submit" value="Submit Event" />
+                    <input class="pure-button pure-button-primary" type="submit" value="Submit Changes" />
                 </div>
             </fieldset>
 

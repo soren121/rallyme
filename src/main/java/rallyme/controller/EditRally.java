@@ -29,6 +29,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+    The page provided by this controller allows users to edit their own rallies.
+ */
 @WebServlet(name="EditRally", urlPatterns={"/EditRally"})
 public class EditRally extends TemplateServlet {
 
@@ -54,7 +57,7 @@ public class EditRally extends TemplateServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
     
-        if(request.getParameter("rally_id_delete") != null){
+        if(request.getParameter("rally_id_delete") != null) {
             //Delete Rally Button Pressed
             String rally_id = request.getParameter("rally_id_delete");
             
@@ -65,7 +68,6 @@ public class EditRally extends TemplateServlet {
             } 
             
             response.sendRedirect("Dashboard");
-            
         } else {
             //Edit Rally Button Pressed
             

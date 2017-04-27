@@ -65,8 +65,10 @@ public class AddRally extends TemplateServlet {
      */
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Retrieve date/time fields
         String date = request.getParameter("date").trim();
         String time = request.getParameter("time").trim();
+        // Parse date & time as a Date object
         SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm aa");
         long parsedStartTime = 0;
         try {
@@ -76,6 +78,7 @@ public class AddRally extends TemplateServlet {
             return;
         }
 
+        // Retrieve form fields
         String id = request.getParameter("id");
         
         String name = request.getParameter("name");
@@ -86,24 +89,29 @@ public class AddRally extends TemplateServlet {
         User creator = (rallyme.model.User) request.getSession().getAttribute("user");
                         
         Rally newRally;
-        
-        if(id != null){
+        // If we're editing a rally, update the data sent
+        // Otherwise we're creating a new rally, so the ID should be set via auto-increment
+        if(id != null) {
             newRally = new Rally(Integer.parseInt(id), name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
         } else {
             newRally = new Rally(name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
         }
         
+        // Set optional fields in Rally objecet
         newRally.setDescription(request.getParameter("description"));
         newRally.setTwitterHandle(request.getParameter("twitterHandle"));
         //newRally.setEventCapacity(Integer.parseInt(request.getParameter("eventCapacity")));
         newRally.setUrl(request.getParameter("url"));
         
+        // Set parent rally if specified
         try {
             newRally.setParent(Integer.parseInt(request.getParameter("parentRally")));
         } catch(RallyException ex) {}
         
+        // Save rally to database
         newRally.save();
         
+        // Redirect to the dashboard
         response.sendRedirect("Dashboard");
     }
 

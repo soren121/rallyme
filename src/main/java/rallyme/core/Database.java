@@ -11,6 +11,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+    Instantiates a database connection.
+ */
 public class Database {
 
     private static final String CONNECTION_URL = "jdbc:mysql://localhost:3306/rallyme?serverTimezone=UTC";
@@ -32,6 +35,4 @@ public class Database {
         return conn;
     }
     
-    
-        
 }

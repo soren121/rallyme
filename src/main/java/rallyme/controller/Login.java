@@ -25,6 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+    The page provided by this controller allows users to login.
+ */
 @WebServlet(name="Login", urlPatterns={"/Login"})
 public class Login extends TemplateServlet {
 

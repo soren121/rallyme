@@ -24,6 +24,9 @@ import java.util.Date;
 import java.util.Vector;
 import org.mindrot.jbcrypt.BCrypt;
 
+/**
+    Represents a Rally.
+ */
 public class Rally {
     
     private int id = 0;
@@ -337,6 +340,13 @@ public class Rally {
         }
     }
 
+    /**
+        Private method that retrieves fields and constructs an array of Rally objects,
+        given a PreparedStatement that fetches rows from the rallies table.
+
+        @param pstmt - An SQL query object that retrieves rally rows.
+        @return An array of constructed Rally objects.
+     */
     private static Rally[] getRallies(PreparedStatement pstmt) throws RallyException {
         ResultSet results;
         Vector<Rally> rallyList = new Vector<Rally>(); //used to create a String[] that is sent to next page and represented as table
@@ -346,6 +356,7 @@ public class Rally {
             // Execute query
             results = pstmt.executeQuery();
 
+            // Construct a new Rally for each row
             while(results.next()) {
                 Rally rally = new Rally(
                     results.getInt("id"),
@@ -365,6 +376,8 @@ public class Rally {
                 rally.setUrl(results.getString("url"));
                 rally.setEventCapacity(results.getInt("event_capacity"));
 
+                // If parent_id is null (=0), discover any sister rallies
+                // If not null, this is a sister rally, so set its parent
                 int parentId = results.getInt("parent_id");
                 if(parentId == 0) {
                     rally.setSisters(rally.getId());
@@ -372,6 +385,7 @@ public class Rally {
                     rally.setParent(parentId);
                 }
                 
+                // Add object to Vector
                 rallyList.add(rally);
             }
         } catch(SQLException ex) {
@@ -436,42 +450,11 @@ public class Rally {
 
         return Rally.getRallies(stmt);
     }
-
-    /**
-        Gets an array of rallies near the given location or created by the given user.
-
-        @return An array of rally objects.
-        @throws RallyException
-    */
-    public static Rally[] getRalliesByLocationAndUser(float latitude, float longitude, int radius, int creatorId) throws RallyException {
-        Connection conn = Database.getConnection();
-        PreparedStatement stmt;
-
-        try {
-            // Attempt to get rallies
-            stmt = conn.prepareStatement(
-                "SELECT *, " +
-                "(3959 * acos(cos(radians(?)) * cos(radians(latitude)) *" + 
-                "cos(radians(longitude) - radians(?)) +" +
-                "sin(radians(?)) * sin(radians(latitude)))) AS distance" +
-                " FROM rallies WHERE start_time >= CURDATE() HAVING type = 'national' OR distance <= ? OR creator_id = ?;");
-
-            // Set variables
-            stmt.setFloat(1, latitude);
-            stmt.setFloat(2, longitude);
-            stmt.setFloat(3, latitude);
-            stmt.setInt(4, radius);
-            stmt.setInt(5, creatorId);
-        } catch(SQLException ex) {
-            throw new RallyException("SQL exception: " + ex.getMessage());
-        }
-
-        return Rally.getRallies(stmt);
-    }
     
     /**
-        Return 1 Rally from database and is retrieved with rally 'id'
+        Return one Rally from database given its ID.
     
+        @param rallyId - The ID of the rally to fetch.
         @return A Rally object from database.
         @throws RallyException
      */
@@ -492,7 +475,13 @@ public class Rally {
         return rallies[0];
     }
     
-    public static Rally[] getAllNationalRallies() throws RallyException{
+    /**
+        Gets an array of all national rallies.
+
+        @return An array of rally objects.
+        @throws RallyException
+    */
+    public static Rally[] getAllNationalRallies() throws RallyException {
          Connection conn = Database.getConnection();
          PreparedStatement stmt;
 
@@ -506,7 +495,14 @@ public class Rally {
          return Rally.getRallies(stmt);
     }
 
-    private void setSisters(int parentId) throws RallyException{
+    /**
+        Attempts to discover sister rallies that may exist for this rally.
+        If any are found, they are added as RallyEntry objects to the class sisters variable.
+
+        @param parentId - The ID of the parent rally to check.
+        @throws RallyException
+    */
+    private void setSisters(int parentId) throws RallyException {
          Connection conn = Database.getConnection();
          PreparedStatement stmt = null;
          
@@ -526,6 +522,7 @@ public class Rally {
             // Execute query
             results = stmt.executeQuery();
 
+            // Create a RallyEntry object for each sister rally found
             while(results.next()) {
                 RallyEntry entry = new RallyEntry(
                     results.getInt("id"),
@@ -537,6 +534,7 @@ public class Rally {
             throw new RallyException("SQL exception: " + ex.getMessage());
         }
         
+        // Set as a static array
         this.sisters = (RallyEntry[]) sisters.toArray(new RallyEntry[sisters.size()]);
     }
     

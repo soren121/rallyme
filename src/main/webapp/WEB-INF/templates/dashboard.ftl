@@ -7,9 +7,6 @@
     <link rel="stylesheet" type="text/css" href="css/pure-min.css" />
     <link rel="stylesheet" type="text/css" href="css/pure-grids-responsive-min.css" />
     <link rel="stylesheet" type="text/css" href="css/dashboard.css" />
-    <link rel="stylesheet" href="https://i.icomoon.io/public/temp/da68616b0d/UntitledProject/style-svg.css">
-    <script defer src="https://i.icomoon.io/public/temp/da68616b0d/UntitledProject/svgxuse.js"></script>
-
 </head>
 
 <body>
@@ -39,43 +36,49 @@
 
     <main>
         <h2>Your rallies</h2>
-        <form action="EditRally" method="post">
-            <table class="pure-table pure-table-striped">
-                <thead>
-                    <tr>
-                        <th>Rally name</th>
-                        <th>Start time</th>
-                        <th>Location</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-    
-                <tbody>
-                    <#list rallylist as rally>
+
+        <#if rallylist?size gt 0>
+            <form action="EditRally" method="post">
+                <table class="pure-table pure-table-striped">
+                    <thead>
                         <tr>
-                            <td>
-                                <span><a href="Rally/${rally.getId()}">${rally.getName()}</a></span><br />
-                                <#if rally.getParent()??>
-                                    <span class="parent-name">&#8627; Parent: <a href="Rally/${rally.getParent().getId()}">${rally.getParent().getName()}</a></span>
-                                </#if>
-                            </td>
-                            <td>${rally.getStartTime()}</td>
-                            <td>${rally.getLocation()}</td>
-                            <td>
-                                <button id="organizer-button" name="rally_id" class="pure-button" type="submit" value="${rally.getId()}">
-                                    <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-pencil2"></use></svg> 
-                                    Edit
-                                </button>
-                                <button id="organizer-button" onclick="return confirm('Are you sure you want to delete this item?');" name="rally_id_delete" class="pure-button" type="submit" value="${rally.getId()}">
-                                    <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-bin"></use></svg> 
-                                    Delete
-                                </button>
-                            </td>
+                            <th>Rally name</th>
+                            <th>Start time</th>
+                            <th>Location</th>
+                            <th>&nbsp;</th>
                         </tr>
-                    </#list>
-                </tbody>
-            </table>
-        </form>
+                    </thead>
+        
+                    <tbody>
+                        <#list rallylist as rally>
+                            <tr>
+                                <td>
+                                    <span><a href="Rally/${rally.getId()}">${rally.getName()}</a></span><br />
+                                    <#if rally.getParent()??>
+                                        <span class="parent-name">&#8627; Parent: <a href="Rally/${rally.getParent().getId()}">${rally.getParent().getName()}</a></span>
+                                    </#if>
+                                </td>
+                                <td>${rally.getStartTime()}</td>
+                                <td>${rally.getLocation()}</td>
+                                <td>
+                                    <button id="organizer-button" name="rally_id" class="pure-button" type="submit" value="${rally.getId()}">
+                                        <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-pencil2"></use></svg> 
+                                        Edit
+                                    </button>
+                                    <button id="organizer-button" onclick="return confirm('Are you sure you want to delete this item?');" name="rally_id_delete" class="pure-button" type="submit" value="${rally.getId()}">
+                                        <svg class="icon"><use xlink:href="images/symbol-defs.svg#icon-bin"></use></svg> 
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        </#list>
+                        
+                    </tbody>
+                </table>
+            </form>
+        <#else>
+            You haven't created any rallies yet. Get started by clicking Add Rally!
+        </#if>
         
         <p>
             <a id="organizer-button" class="pure-button pure-button-primary" href="AddRally">Add Rally</a>

@@ -7,6 +7,10 @@
 
 package rallyme.model;
 
+/**
+    A simplified model of the Rally object, used to represent 
+    nested Rally objects (e.g. parent or sister rallies.)
+ */
 public class RallyEntry {
 
     private int id;

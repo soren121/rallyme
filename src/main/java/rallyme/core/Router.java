@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+    Routes web requests according to set filter rules.
+ */
 @WebFilter(filterName="Router", urlPatterns={"/*"})
 public class Router implements Filter {
 

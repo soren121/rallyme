@@ -48,6 +48,9 @@ import com.google.gson.JsonElement;
 import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
 
+/**
+    A tool that uses the Facebook Graph API to find events near a geolocation.
+ */
 public class FacebookEventSearch {
 
     private static final String FACEBOOK_APP_TOKEN = "603035693228441|KEVQ5aA2wr98kfQtjPysf1tAkao";
