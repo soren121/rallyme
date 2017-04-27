@@ -120,17 +120,17 @@ document.getElementById('location-search-field').addEventListener('keyup', funct
  * no rally is to be loaded.
  */
 function loadFromURL() {
-	var currentUrl = window.location.pathname;
+    var currentUrl = window.location.pathname;
     var deeplinkRe = /\/Rally\/\d+$/;
 
     // Test if current URL is a rally deeplink
     if(deeplinkRe.test(currentUrl)){
         // Grab the ID from the end of the URL and display the detail pane
-    	var urlarray = currentUrl.split('/');
-    	window.rallySlider.showDetailPane(parseInt(urlarray[urlarray.length - 1]), true);
+        var urlarray = currentUrl.split('/');
+        window.rallySlider.showDetailPane(parseInt(urlarray[urlarray.length - 1]), true);
     } else {
         // If no rally is specified, destroy the detail pane if it's shown
-    	window.rallySlider.destroyDetailPane();
+        window.rallySlider.destroyDetailPane();
     }
 }
 
@@ -238,12 +238,12 @@ document.getElementById('facebook-button').addEventListener('click', function(e)
  * @return {boolean} Status of the given storage API.
  */
 function storageAvailable(type) {
-	try {
-		var storage = window[type], x = '__storage_test__';
-		storage.setItem(x, x);
-		storage.removeItem(x);
-		return true;
-	} catch(e) {
-		return false;
-	}
+    try {
+        var storage = window[type], x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    } catch(e) {
+        return false;
+    }
 }

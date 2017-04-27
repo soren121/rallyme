@@ -43,14 +43,14 @@ public class AddRally extends TemplateServlet {
         
         Rally[] rallies;
         
-		try {
-			rallies = Rally.getAllNationalRallies();
-		} catch (RallyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return;
-		}
-		
+        try {
+            rallies = Rally.getAllNationalRallies();
+        } catch (RallyException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return;
+        }
+        
         root.put("rallylist", rallies);
         root.put("user", user);//for getting user firstname
         try {
@@ -88,9 +88,9 @@ public class AddRally extends TemplateServlet {
         Rally newRally;
         
         if(id != null){
-        	newRally = new Rally(Integer.parseInt(id), name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
+            newRally = new Rally(Integer.parseInt(id), name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
         } else {
-        	newRally = new Rally(name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
+            newRally = new Rally(name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
         }
         
         newRally.setDescription(request.getParameter("description"));

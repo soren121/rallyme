@@ -65,7 +65,7 @@ public class AjaxRally extends HttpServlet {
                     jsonString = gson.toJson(ralliesArray);
                 } catch (RallyException ex) {
                     ex.printStackTrace();
-                }	
+                }
             } else if(source.equals("facebook")) {
                 try {
                     FacebookEventSearch fbevents = new FacebookEventSearch(latitude, longitude, radius);

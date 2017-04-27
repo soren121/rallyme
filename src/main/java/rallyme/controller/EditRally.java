@@ -55,49 +55,49 @@ public class EditRally extends TemplateServlet {
         response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
     
         if(request.getParameter("rally_id_delete") != null){
-        	//Delete Rally Button Pressed
+            //Delete Rally Button Pressed
             String rally_id = request.getParameter("rally_id_delete");
             
             try {
-				Rally.deleteRally(Integer.parseInt(rally_id));
-			} catch (NumberFormatException | RallyException e) {
-				e.printStackTrace();
-			} 
+                Rally.deleteRally(Integer.parseInt(rally_id));
+            } catch (NumberFormatException | RallyException e) {
+                e.printStackTrace();
+            } 
             
             response.sendRedirect("Dashboard");
-        	
+            
         } else {
-	        //Edit Rally Button Pressed
-        	
-    	    Rally rally = null;
+            //Edit Rally Button Pressed
+            
+            Rally rally = null;
             int rally_id = Integer.parseInt(request.getParameter("rally_id"));
             Rally[] rallies;
-        	
-			try {
-				rallies = Rally.getAllNationalRallies();
-			} catch (RallyException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return;
-			}
-	        
-	        try {
-				rally = Rally.getRallyById(rally_id);
-			} catch (NumberFormatException | RallyException e) {
-				e.printStackTrace();
-			}
-	        
-	        Map<String, Object> root = new HashMap<>();
-	        root.put("rally", rally);
-	        root.put("rallylist", rallies);
-	        
-	        User user = (User) request.getSession().getAttribute("user");
-	        root.put("user", user);//for getting user firstname
-	        try {
-	            freemarker.getTemplate("editrally.ftl").process(root, response.getWriter());
-	        } catch(TemplateException ex) {
-	            throw new RuntimeException(ex);
-	        }
+            
+            try {
+                rallies = Rally.getAllNationalRallies();
+            } catch (RallyException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return;
+            }
+            
+            try {
+                rally = Rally.getRallyById(rally_id);
+            } catch (NumberFormatException | RallyException e) {
+                e.printStackTrace();
+            }
+            
+            Map<String, Object> root = new HashMap<>();
+            root.put("rally", rally);
+            root.put("rallylist", rallies);
+            
+            User user = (User) request.getSession().getAttribute("user");
+            root.put("user", user);//for getting user firstname
+            try {
+                freemarker.getTemplate("editrally.ftl").process(root, response.getWriter());
+            } catch(TemplateException ex) {
+                throw new RuntimeException(ex);
+            }
         
         }
         

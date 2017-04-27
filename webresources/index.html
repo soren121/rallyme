@@ -92,14 +92,14 @@
                     <td>{{=it.organizerName}}</td>
                 </tr>
 
-				{{? it.parent !== null }}
+                {{? it.parent !== null }}
                     <tr>
                         <td>Parent Rally</td>
                         <td><a href="javascript:window.rallySlider.showDetailPane({{=it.parent.id}});">{{=it.parent.name}}</a></td>
                     </tr>
-				{{?}}
+                {{?}}
 
-				{{? it.sisters.length > 0}}
+                {{? it.sisters.length > 0}}
                     <tr>
                         <td colspan="2" class="sister-rallies-header">Sister Rallies</td>
                     </tr>
@@ -112,7 +112,7 @@
                             </ul>
                         </td>
                     </tr>
-				{{?}}
+                {{?}}
             </tbody>
         </table>
 

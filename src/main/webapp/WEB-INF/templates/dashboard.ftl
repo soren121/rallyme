@@ -6,14 +6,14 @@
 
     <link rel="stylesheet" type="text/css" href="css/pure-min.css" />
     <link rel="stylesheet" type="text/css" href="css/pure-grids-responsive-min.css" />
-	<link rel="stylesheet" type="text/css" href="css/dashboard.css" />
-	<link rel="stylesheet" href="https://i.icomoon.io/public/temp/da68616b0d/UntitledProject/style-svg.css">
-	<script defer src="https://i.icomoon.io/public/temp/da68616b0d/UntitledProject/svgxuse.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css" />
+    <link rel="stylesheet" href="https://i.icomoon.io/public/temp/da68616b0d/UntitledProject/style-svg.css">
+    <script defer src="https://i.icomoon.io/public/temp/da68616b0d/UntitledProject/svgxuse.js"></script>
 
 </head>
 
 <body>
-	<header>
+    <header>
         <a id="logo" href="."><img src="images/logo.svg" alt="RallyMe" /></a>
 
         <nav class="pure-menu pure-menu-horizontal">
@@ -22,7 +22,7 @@
                 <li class="pure-menu-item"><a href="AddRally" class="pure-menu-link">Add new rally</a></li>
             </ul>
         </nav>
-		
+        
         <div class="header-buttons">
             <span>Welcome ${user.getFirstName()}!</span>
 
@@ -35,7 +35,7 @@
                 Logout
             </a>
         </div>
-	</header>
+    </header>
 
     <main>
         <h2>Your rallies</h2>

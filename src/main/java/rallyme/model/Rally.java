@@ -137,7 +137,7 @@ public class Rally {
     }
     
     public RallyEntry getParent() {
-    	return this.parent;
+        return this.parent;
     }
 
     public RallyEntry[] getSisters() {
@@ -168,15 +168,15 @@ public class Rally {
         @throws RallyException if there is a fatal error.
      */
     public void setParent(int parentId) throws RallyException{
-    	 Connection conn = Database.getConnection();
+         Connection conn = Database.getConnection();
          PreparedStatement stmt = null;
          
-    	 try {
-			stmt = conn.prepareStatement("SELECT name FROM rallies WHERE id = ?");
+         try {
+            stmt = conn.prepareStatement("SELECT name FROM rallies WHERE id = ?");
             stmt.setInt(1, parentId);
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
 
         //iterate through results and add to list
         try {
@@ -184,7 +184,7 @@ public class Rally {
             ResultSet results = stmt.executeQuery();
 
             if(results.next()) {
-            	this.parent = new RallyEntry(
+                this.parent = new RallyEntry(
                     parentId,
                     results.getString("name")
                 );
@@ -209,7 +209,7 @@ public class Rally {
         // Attempt to insert rally
         try {
             if(this.id > 0) {
-                	stmt = conn.prepareStatement(
+                    stmt = conn.prepareStatement(
                     "INSERT INTO rallies (id, creator_id, name, type, start_time, location, latitude, longitude, description, twitter_handle, url, event_capacity, parent_id)" +
                     "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" +
                     "ON DUPLICATE KEY UPDATE creator_id = VALUES(creator_id), name = VALUES(name), type = VALUES(type), start_time = VALUES(start_time), location = VALUES(location), " +
@@ -244,9 +244,9 @@ public class Rally {
                 else 
                     stmt.setInt(12, 0);
                 if(this.parent != null && this.parent.getId() > 0)
-                	stmt.setInt(13, this.parent.getId());
+                    stmt.setInt(13, this.parent.getId());
                 else
-                	stmt.setNull(13, java.sql.Types.VARCHAR);
+                    stmt.setNull(13, java.sql.Types.VARCHAR);
             
             } else {
                 stmt = conn.prepareStatement(
@@ -281,9 +281,9 @@ public class Rally {
                 else 
                     stmt.setInt(11, 0);
                 if(this.parent != null && this.parent.getId() > 0)
-                	stmt.setInt(12, this.parent.getId());
+                    stmt.setInt(12, this.parent.getId());
                 else
-                	stmt.setNull(12, java.sql.Types.VARCHAR);
+                    stmt.setNull(12, java.sql.Types.VARCHAR);
                
             }
             
@@ -493,7 +493,7 @@ public class Rally {
     }
     
     public static Rally[] getAllNationalRallies() throws RallyException{
-    	 Connection conn = Database.getConnection();
+         Connection conn = Database.getConnection();
          PreparedStatement stmt;
 
          try {
@@ -507,19 +507,19 @@ public class Rally {
     }
 
     private void setSisters(int parentId) throws RallyException{
-    	 Connection conn = Database.getConnection();
+         Connection conn = Database.getConnection();
          PreparedStatement stmt = null;
          
-    	 try {
-			stmt = conn.prepareStatement("SELECT id, name FROM rallies WHERE parent_id = ?");
+         try {
+            stmt = conn.prepareStatement("SELECT id, name FROM rallies WHERE parent_id = ?");
             stmt.setInt(1, parentId);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         ArrayList<RallyEntry> sisters = new ArrayList<RallyEntry>();
-    	ResultSet results;
+        ResultSet results;
        
         //iterate through results and add to list
         try {

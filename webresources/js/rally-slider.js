@@ -130,7 +130,7 @@ RallySlider.prototype.showDetailPane = function(id, noPush) {
     if(this.detailPaneId !== -1) {
         this.destroyDetailPane(true);   
         setTimeout(function() {
-        	this.showDetailPane(id, noPush);
+            this.showDetailPane(id, noPush);
         }.bind(this), 200);      
         return;
     }

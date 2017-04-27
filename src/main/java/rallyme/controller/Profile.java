@@ -47,8 +47,8 @@ public class Profile extends TemplateServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-    	//create a new user object
-    	Map<String, Object> root = new HashMap<>();
+        //create a new user object
+        Map<String, Object> root = new HashMap<>();
         User user = (User) request.getSession().getAttribute("user");
         root.put("user", user);//for getting user information
         
@@ -60,20 +60,20 @@ public class Profile extends TemplateServlet {
         }
         
     }
-        	
-    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             
-    		//over world user object
-    		Map<String, Object> root = new HashMap<>();
+        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+            
+            //over world user object
+            Map<String, Object> root = new HashMap<>();
             User user = (User) request.getSession().getAttribute("user");
             root.put("user", user);
             
             //call the password checking function in User.java file
             //if the input value of current password doesn't match the database's password, 
             //reload the profile page without submitting any change and print the message
-        	boolean isMatch = User.validatePassword(user.getId(), request.getParameter("CurP"));
-        	if(!isMatch){
-        		root.put("error", "Current Password doesn't match.");
+            boolean isMatch = User.validatePassword(user.getId(), request.getParameter("CurP"));
+            if(!isMatch){
+                root.put("error", "Current Password doesn't match.");
                 //print out template
                 try {
                     freemarker.getTemplate("editprofile.ftl").process(root, response.getWriter());
@@ -82,15 +82,15 @@ public class Profile extends TemplateServlet {
                 }
                 //add return
                 return;
-        	}
-        	
-        	//open the connection and won't close it until all of the changes are submitted.
+            }
+            
+            //open the connection and won't close it until all of the changes are submitted.
             Connection conn = Database.getConnection();
             
             //comparing the NewPassword with Confirmed New Password
             if((!request.getParameter("NewP").equals(request.getParameter("CNewP"))))
-        	{
-            	//these two inputs have to be exactly the same, else 
+            {
+                //these two inputs have to be exactly the same, else 
                 root.put("error", "New Password doesn't match the Comfirm New Password.");
                 //if the current password is correct but the NewPassword is not equals to ComfirmNewPassword, reload the profile page
                 try {
@@ -98,28 +98,28 @@ public class Profile extends TemplateServlet {
                 } catch(TemplateException ex2) {
                     throw new RuntimeException(ex2);
                 }
-        	}else if(!request.getParameter("NewP").equals("") && request.getParameter("NewP").equals(request.getParameter("CNewP"))){
-        		//only update the password if user has the input in the NewPassword text field, keep connection opening
-        		try{
-            		PreparedStatement preparedStmt = conn.prepareStatement(
-            				"UPDATE users SET password = ? where id = ?;");  
-                    String passwordHash = BCrypt.hashpw(request.getParameter("NewP"), BCrypt.gensalt());            		
+            }else if(!request.getParameter("NewP").equals("") && request.getParameter("NewP").equals(request.getParameter("CNewP"))){
+                //only update the password if user has the input in the NewPassword text field, keep connection opening
+                try{
+                    PreparedStatement preparedStmt = conn.prepareStatement(
+                        "UPDATE users SET password = ? where id = ?;");  
+                    String passwordHash = BCrypt.hashpw(request.getParameter("NewP"), BCrypt.gensalt());                    
                     preparedStmt.setString(1, passwordHash);
                     preparedStmt.setInt(2, user.getId());
                     preparedStmt.executeUpdate();
-        		}catch (SQLException e)
+                }catch (SQLException e)
                 {
                     System.err.println("Got an exception! ");
                     System.err.println(e.getMessage());
-                  }	
-        	}
-        	
-        	//the edition that without the change of user's password
+                  }    
+            }
+            
+            //the edition that without the change of user's password
             try
             {
               // create the java mysql update preparedstatement
               PreparedStatement preparedStmt = conn.prepareStatement(
-            		  "UPDATE users SET first_name = ?, last_name = ?, email = ?, username = ? where id = ?;");
+                      "UPDATE users SET first_name = ?, last_name = ?, email = ?, username = ? where id = ?;");
               preparedStmt.setString(1, request.getParameter("Fname"));
               preparedStmt.setString(2, request.getParameter("Lname"));
               preparedStmt.setString(3, request.getParameter("Ename"));
@@ -134,7 +134,7 @@ public class Profile extends TemplateServlet {
             {
               System.err.println("Got an exception! ");
               System.err.println(e.getMessage());
-            }	
+            }    
             
             //automatically log user in again with new profile information
             //doing the login without sign the user out
@@ -142,11 +142,11 @@ public class Profile extends TemplateServlet {
             String password;
             //check if the user had update the password
             if(request.getParameter("NewP").equals(""))
-        	{
+            {
                 password = request.getParameter("CurP");
-        	}else{
+            }else{
                 password = request.getParameter("NewP");
-        	}
+            }
             
             try {
                 // Attempt to log user in again

@@ -6,14 +6,14 @@
  
     <link rel="stylesheet" type="text/css" href="css/pure-min.css" />
     <link rel="stylesheet" type="text/css" href="css/pure-grids-responsive-min.css" />
-	<link rel="stylesheet" type="text/css" href="css/dashboard.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.timepicker.min.css" />
 </head>
 
 <body>
-	<header>
+    <header>
         <a id="logo" href="."><img src="images/logo.svg" alt="RallyMe" /></a>
 
         <nav class="pure-menu pure-menu-horizontal">
@@ -36,7 +36,7 @@
                 Logout
             </a>
         </div>
-	</header>
+    </header>
 
     <main>
         <h2>Edit Profile</h2>
@@ -51,7 +51,7 @@
                 <div class="w-box-left">
                     <label for="username">Username: </label> 
                     <input class="pure-input-1" id="username" type="text" name="Uname" value="${user.getUserName()}"
-                    	required /> 
+                        required /> 
                     
                     <label for="Firstname">First name: </label> 
                     <input class="pure-input-1" id="Firstname" name="Fname" value="${user.getFirstName()}"
@@ -74,7 +74,7 @@
                     <label for="CurrentPassword">Current Password: </label> 
                     <input class="pure-input-1" id="CurrentPassword" type="password" name="CurP"
                     required /> 
-               		
+                       
                     <br />
                     <input class="pure-button pure-button-primary" type="submit" value="Submit" />
                 </div>

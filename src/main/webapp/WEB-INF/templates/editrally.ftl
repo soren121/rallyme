@@ -6,14 +6,14 @@
  
     <link rel="stylesheet" type="text/css" href="css/pure-min.css" />
     <link rel="stylesheet" type="text/css" href="css/pure-grids-responsive-min.css" />
-	<link rel="stylesheet" type="text/css" href="css/dashboard.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/dashboard.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css" />
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.theme.min.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery.timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.timepicker.min.css" />
 </head>
 
 <body>
-	<header>
+    <header>
         <a id="logo" href="."><img src="images/logo.svg" alt="RallyMe" /></a>
 
         <nav class="pure-menu pure-menu-horizontal">
@@ -35,30 +35,30 @@
                 Logout
             </a>
         </div>
-	</header>
+    </header>
 
     <main>
         <h2>Edit Rally</h2>
         <form class="pure-form pure-form-stacked pure-g" action="AddRally" method="post">
             <fieldset class="pure-u-1 pure-u-md-1-2">
-            	<input 	type="hidden" name="id" value="${rally.getId()}">
+                <input type="hidden" name="id" value="${rally.getId()}">
                 <div class="w-box-left">
-                	
+                    
                     <label for="name">Event name</label>
                     <input class="pure-input-1" id="name" type="text" value="${rally.getName()}" name="name"required /> 
                     
                     <label for="name">Parent Rally</label>
-               		
-               		<select id="parentRally" name="parentRally" style="width:100%;">
-               		 <option  value="0">No Parent</option>
-               		 <#list rallylist as rallyfromlist>
-               		 	<#if rally.getParent()?? && rallyfromlist.getId() == rally.getParent().getId()>
-               		 		<option selected="selected" value="${rallyfromlist.getId()}">${rallyfromlist.getName()}</option>
-              			<#else>
-              			    <option value="${rallyfromlist.getId()}">${rallyfromlist.getName()}</option>
-              			</#if>
-              		  </#list>
-					</select>
+                       
+                       <select id="parentRally" name="parentRally" style="width:100%;">
+                        <option  value="0">No Parent</option>
+                        <#list rallylist as rallyfromlist>
+                            <#if rally.getParent()?? && rallyfromlist.getId() == rally.getParent().getId()>
+                                <option selected="selected" value="${rallyfromlist.getId()}">${rallyfromlist.getName()}</option>
+                          <#else>
+                              <option value="${rallyfromlist.getId()}">${rallyfromlist.getName()}</option>
+                          </#if>
+                        </#list>
+                    </select>
                     
                     <label for="description">Description</label>
                     <textarea class="pure-input-1" id="description" name="description" required>${rally.getDescription()}</textarea> 
@@ -101,10 +101,10 @@
         </form>
     </main>
 
-	<script type="text/javascript" src="js/lib/jquery-3.2.0.min.js"></script>
-	<script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="js/lib/jquery.timepicker.min.js"></script>
-	<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&sensor=false&libraries=places"></script>
+    <script type="text/javascript" src="js/lib/jquery-3.2.0.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery.timepicker.min.js"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyBahO0DheLyHLVBMVrX7BQFZxxXevgGVxE&sensor=false&libraries=places"></script>
     <script type="text/javascript" src="js/lib/locationpicker.jquery.min.js"></script>
     <script type="text/javascript" async src="js/lib/svgxuse.min.js"></script>
     <script type="text/javascript">
