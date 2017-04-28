@@ -87,6 +87,7 @@ public class AddRally extends TemplateServlet {
         float latitude = Float.parseFloat(request.getParameter("latitude"));
         float longitude = Float.parseFloat(request.getParameter("longitude"));
         User creator = (rallyme.model.User) request.getSession().getAttribute("user");
+        String twitterHandle = request.getParameter("twitterHandle").trim();
                         
         Rally newRally;
         // If we're editing a rally, update the data sent
@@ -96,10 +97,15 @@ public class AddRally extends TemplateServlet {
         } else {
             newRally = new Rally(name, RallyType.LOCAL, startTime, location, latitude, longitude, creator);
         }
+
+        // Remove @handle from Twitter handle if included
+        if(twitterHandle.charAt(0) == '@') {
+            twitterHandle = twitterHandle.substring(1);
+        }
         
         // Set optional fields in Rally objecet
         newRally.setDescription(request.getParameter("description"));
-        newRally.setTwitterHandle(request.getParameter("twitterHandle"));
+        newRally.setTwitterHandle(twitterHandle);
         //newRally.setEventCapacity(Integer.parseInt(request.getParameter("eventCapacity")));
         newRally.setUrl(request.getParameter("url"));
         

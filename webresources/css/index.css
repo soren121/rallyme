@@ -158,7 +158,10 @@ main {
 }
 
 #rally-drawer li > a {
-    display: block;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    align-content: stretch;
     text-decoration: none;
     padding: 8px 0 8px 4px;
 }
@@ -187,10 +190,9 @@ main {
     border-radius: 100%;
     border: 1px solid #ddd;
     background: #fff;
-    margin-right: 8px;
     width: 40px;
     height: 40px;
-    vertical-align: -70%;
+    margin-right: 8px;
 }
 
 #rally-detail {
