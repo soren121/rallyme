@@ -73,6 +73,15 @@ function loadRallies(ajaxOptions, clear) {
         $.each(data, function(index, item) {
             // For each rally, if we have valid coordinates, create a map marker
             if(item.latitude !== null && item.longitude !== null) {
+                // If we're looking up a single rally (i.e. when loading 
+                // a non-local sister rally), we should only save its data.
+                // Otherwise, render an item in the list pane as well.
+                if(ajaxOptions.hasOwnProperty('rally_id')) {
+                    window.rallySlider.items[item.id] = item;
+                } else {
+                    window.rallySlider.add(item.type.toLowerCase(), item);
+                }
+
                 var marker = new google.maps.Marker({
                     position: {
                         lat: item.latitude, 
@@ -83,17 +92,13 @@ function loadRallies(ajaxOptions, clear) {
                     title: item.name
                 });
 
+                // Show detail pane when marker is clicked
+                marker.addListener('click', function() {
+                    window.rallySlider.showDetailPane(item.id);
+                });
+
                 // Add marker to map
                 window.mapMarkers.push(marker);
-
-                // If we're looking up a single rally (i.e. when loading 
-                // a non-local sister rally), we should only save its data.
-                // Otherwise, render an item in the list pane as well.
-                if(ajaxOptions.hasOwnProperty('rally_id')) {
-                    window.rallySlider.items[item.id] = item;
-                } else {
-                    window.rallySlider.add(item.type.toLowerCase(), item);
-                }
             }
         });
 

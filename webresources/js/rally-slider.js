@@ -125,9 +125,12 @@ RallySlider.prototype.destroyDetailPane = function(noPush) {
  * @param {boolean} noPush - If true, do not alter the history state.
  */
 RallySlider.prototype.showDetailPane = function(id, noPush) {
-    // If a detail pane already exists, collapse it and then recall 
-    // this function when the previous detail pane has been destroyed
-    if(this.detailPaneId !== -1) {
+    if(this.detailPaneId === id) {
+        // Don't reload the same event
+        return;
+    } else if(this.detailPaneId !== -1) {
+        // If a detail pane already exists, collapse it and then recall 
+        // this function when the previous detail pane has been destroyed
         this.destroyDetailPane(true);   
         setTimeout(function() {
             this.showDetailPane(id, noPush);
